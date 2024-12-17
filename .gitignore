@@ -2,5 +2,6 @@ node_modules
 tsconfig.temp.json
 dist
 *.tsbuildinfo
-*.prompt.*
 .vscode/*.code-snippets
+.env
+*.local.*

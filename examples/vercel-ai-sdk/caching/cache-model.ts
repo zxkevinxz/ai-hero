@@ -3,13 +3,12 @@
  */
 
 import type {
-  LanguageModelV1,
   Experimental_LanguageModelV1Middleware as LanguageModelV1Middleware,
   LanguageModelV1StreamPart,
 } from "ai";
 import { simulateReadableStream } from "ai/test";
 import type { StorageCache } from "./types";
-import { fixTimestampsOnCachedObject } from "./utils";
+import { createKey, fixTimestampsOnCachedObject } from "./utils";
 
 /**
  * Creates a middleware that caches the responses of the
@@ -20,8 +19,8 @@ import { fixTimestampsOnCachedObject } from "./utils";
 export const createCacheMiddleware = (
   cache: StorageCache
 ): LanguageModelV1Middleware => ({
-  wrapGenerate: async ({ doGenerate, params }) => {
-    const cacheKey = JSON.stringify(params);
+  wrapGenerate: async ({ doGenerate, params, model }) => {
+    const cacheKey = createKey({ params, model });
 
     const cached = await cache.get(cacheKey);
 
@@ -35,8 +34,8 @@ export const createCacheMiddleware = (
 
     return result;
   },
-  wrapStream: async ({ doStream, params }) => {
-    const cacheKey = JSON.stringify(params);
+  wrapStream: async ({ doStream, params, model }) => {
+    const cacheKey = createKey({ params, model });
 
     // Check if the result is in the cache
     const cached = await cache.get(cacheKey);

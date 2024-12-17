@@ -5,7 +5,7 @@ export default defineConfig({
   test: {
     include: ["src/**/*{problem,solution,explainer}*.{ts,tsx}"],
     passWithNoTests: true,
-    environment: "jsdom",
+    setupFiles: ["dotenv/config"],
   },
   plugins: [tsconfigPaths()],
 });
