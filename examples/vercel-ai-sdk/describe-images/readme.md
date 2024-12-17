@@ -1,3 +1,3 @@
-An example of getting structured outputs from an LLM with Vercel's AI SDK.
+An example of asking the AI SDK to describe an image.
 
-Start with [./structured-outputs.ts](./structured-outputs.ts).
+Start with [./describe-images.ts](./describe-images.ts).

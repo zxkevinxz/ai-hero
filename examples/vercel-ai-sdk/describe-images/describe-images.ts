@@ -9,7 +9,9 @@ export const describeImage = async (imagePath: string) => {
   const { text } = await generateText({
     model,
     system:
-      `You will receive an image. ` + `Please describe the image in detail.`,
+      `You will receive an image. ` +
+      `Please create an alt text for the image. ` +
+      `Be concise and descriptive. `,
     messages: [
       {
         role: "user",

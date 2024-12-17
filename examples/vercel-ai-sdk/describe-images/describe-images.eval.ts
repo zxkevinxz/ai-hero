@@ -1,7 +1,6 @@
 import { createScorer, evalite } from "evalite";
 import { describeImage } from "./describe-images";
 import path from "path";
-import { readFileSync } from "fs";
 
 evalite<string, Awaited<ReturnType<typeof describeImage>>>("Describe Image", {
   data: async () => [
@@ -14,7 +13,12 @@ evalite<string, Awaited<ReturnType<typeof describeImage>>>("Describe Image", {
 
     return output;
   },
-  scorers: [],
+  scorers: [
+    createScorer({
+      name: "Under 200 Chars",
+      scorer: async ({ output }) => (output.length < 200 ? 1 : 0),
+    }),
+  ],
   experimental_customColumns: async (result) => [
     {
       label: "Image File",
@@ -23,6 +27,10 @@ evalite<string, Awaited<ReturnType<typeof describeImage>>>("Describe Image", {
     {
       label: "Description",
       value: result.output,
+    },
+    {
+      label: "Description Length",
+      value: result.output.length,
     },
   ],
 });
