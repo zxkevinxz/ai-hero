@@ -18,8 +18,8 @@ dependencies:
     specifier: ^16.4.7
     version: 16.4.7
   evalite:
-    specifier: ^0.7.0
-    version: 0.7.0
+    specifier: 0.7.3
+    version: 0.7.3
   prettier:
     specifier: ^3.0.0
     version: 3.3.3
@@ -1200,8 +1200,8 @@ packages:
       '@types/estree': 1.0.5
     dev: false
 
-  /evalite@0.7.0:
-    resolution: {integrity: sha512-GuOrgf4ylzyhYxEBQfYNd44zeuA2dTsnde7uRYQcyfMK76/xOXXEmyj+u/QWiX5V0Il4S1p465cEWqEoNzWk4g==}
+  /evalite@0.7.3:
+    resolution: {integrity: sha512-bGrVTc9Z9GkQy/qqs4ypr3A9HT8dJNL5Re4mlapfa5MSh5PSyulVc9BTDsR/LrAjyJF5tuUDMtUQQs6DBI/L/A==}
     hasBin: true
     dependencies:
       '@evalite/core': 0.5.0
