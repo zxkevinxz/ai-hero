@@ -10,7 +10,7 @@
     "@types/node": "^22.10.2",
     "ai": "^4.0.18",
     "dotenv": "^16.4.7",
-    "evalite": "0.7.3",
+    "evalite": "0.8.0",
     "prettier": "^3.0.0",
     "typescript": "^5.7.2",
     "unstorage": "^1.13.1",
