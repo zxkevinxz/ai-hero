@@ -1,9 +1,9 @@
 {
-  "name": "pro-essentials-workshop",
+  "name": "ai-hero",
   "version": "1.0.0",
   "packageManager": "pnpm@8.15.6",
   "main": "index.js",
-  "author": "Matt Pocock <team@totaltypescript.com>",
+  "author": "Matt Pocock <team@aihero.dev>",
   "license": "GPL",
   "dependencies": {
     "@ai-sdk/anthropic": "^1.0.6",
