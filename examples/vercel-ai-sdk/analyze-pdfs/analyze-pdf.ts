@@ -5,6 +5,9 @@ import { cacheModelInFs } from "../caching/cache-model-in-fs";
 import { readFileSync } from "fs";
 import { anthropic } from "@ai-sdk/anthropic";
 
+/**
+ * We're using a model which supports analysing PDF's:
+ */
 const model = cacheModelInFs(anthropic("claude-3-5-sonnet-latest"));
 
 export const extractDataFromInvoice = async (invoicePath: string) => {
@@ -12,20 +15,27 @@ export const extractDataFromInvoice = async (invoicePath: string) => {
     model,
     system:
       `You will receive an invoice. ` +
-      `Please extract the following information from the invoice: ` +
-      `the total amount, the invoice number, the company address, the company name, and the invoicee address. `,
+      `Please extract the data from the invoice.`,
     messages: [
       {
         role: "user",
         content: [
           {
             type: "file",
+            /**
+             * We provide the PDF file as a buffer:
+             */
             data: readFileSync(invoicePath),
             mimeType: "application/pdf",
           },
         ],
       },
     ],
+    /**
+     * In this case, we're extracting an object from the invoice.
+     *
+     * We carefully describe each attribute of the object:
+     */
     schema: z
       .object({
         total: z.number().describe("The total amount of the invoice."),
@@ -34,6 +44,13 @@ export const extractDataFromInvoice = async (invoicePath: string) => {
           .string()
           .describe("The invoice number.")
           .transform((n) => {
+            /**
+             * Here, we're using a Zod transform to remove the "#" character
+             * from the invoice number.
+             *
+             * We could ask the LLM to do this, but why bother when you
+             * can do it deterministically.
+             */
             if (n.startsWith("#")) {
               return n.slice(1);
             }
