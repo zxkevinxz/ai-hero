@@ -1,14 +1,12 @@
-import { openai } from "@ai-sdk/openai";
 import { generateObject } from "ai";
-import { z } from "zod";
-import { cacheModelInFs } from "../caching/cache-model-in-fs";
 import { readFileSync } from "fs";
-import { anthropic } from "@ai-sdk/anthropic";
+import { z } from "zod";
+import { pdfModel } from "../_shared/models";
 
 /**
  * We're using a model which supports analysing PDF's:
  */
-const model = cacheModelInFs(anthropic("claude-3-5-sonnet-latest"));
+const model = pdfModel;
 
 export const extractDataFromInvoice = async (invoicePath: string) => {
   const { object } = await generateObject({

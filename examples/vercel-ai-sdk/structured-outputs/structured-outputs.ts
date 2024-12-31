@@ -1,10 +1,8 @@
-import { openai } from "@ai-sdk/openai";
 import { generateObject } from "ai";
-import { traceAISDKModel } from "evalite/ai-sdk";
 import { z } from "zod";
-import { cacheModelInFs } from "../caching/cache-model-in-fs";
+import { smallOpenAiModel } from "../_shared/models";
 
-const model = traceAISDKModel(cacheModelInFs(openai("gpt-4o")));
+const model = smallOpenAiModel;
 
 export const createRecipe = async (prompt: string) => {
   const { object } = await generateObject({

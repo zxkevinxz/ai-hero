@@ -1,8 +1,9 @@
 import { openai } from "@ai-sdk/openai";
 import { generateObject } from "ai";
 import { cacheModelInFs } from "../caching/cache-model-in-fs";
+import { smallOpenAiModel } from "../_shared/models";
 
-const model = cacheModelInFs(openai("gpt-4o-mini"));
+const model = smallOpenAiModel;
 
 export const classifySentiment = async (text: string) => {
   /**
