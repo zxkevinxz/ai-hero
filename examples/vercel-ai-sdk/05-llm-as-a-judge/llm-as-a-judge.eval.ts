@@ -2,7 +2,7 @@ import { createScorer, evalite } from "evalite";
 import { scoreForFactuality } from "./llm-as-a-judge";
 import { NumericDiff } from "autoevals";
 
-evalite("Custom Fact Checker Eval", {
+evalite("Fact Checker Eval", {
   data: async () => [
     {
       input: {
