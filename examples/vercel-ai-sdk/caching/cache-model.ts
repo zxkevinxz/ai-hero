@@ -1,5 +1,5 @@
 /**
- * A modified version of https://sdk.vercel.ai/docs/advanced/caching#caching-responses
+ * A modified version of {@link https://sdk.vercel.ai/docs/advanced/caching#caching-responses}
  */
 
 import type {
