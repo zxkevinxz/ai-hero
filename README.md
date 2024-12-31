@@ -1,3 +1,7 @@
+# AI Hero
+
+`Nice banner goes here`
+
 ## Quickstart
 
 ### Install PNPM

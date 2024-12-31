@@ -1,7 +1,7 @@
 import { openai } from "@ai-sdk/openai";
 import { generateText } from "ai";
 import { readFileSync } from "fs";
-import { cacheModelInFs } from "../caching/cache-model-in-fs";
+import { cacheModelInFs } from "../09-caching/cache-model-in-fs";
 
 const model = cacheModelInFs(openai("gpt-4o-mini"));
 
