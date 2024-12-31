@@ -20,7 +20,14 @@ export const describeImage = async (imagePath: string) => {
         role: "user",
         content: [
           {
+            /**
+             * 1. You can pass images into generateText,
+             * if the model supports them.
+             */
             type: "image",
+            /**
+             * 2. Here, readFileSync is just a buffer.
+             */
             image: readFileSync(imagePath),
           },
         ],
