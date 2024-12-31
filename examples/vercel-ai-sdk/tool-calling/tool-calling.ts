@@ -1,7 +1,5 @@
-import { openai } from "@ai-sdk/openai";
 import { generateText, tool } from "ai";
 import { z } from "zod";
-import { cacheModelInFs } from "../caching/cache-model-in-fs";
 import { smallOpenAiModel } from "../_shared/models";
 
 const model = smallOpenAiModel;

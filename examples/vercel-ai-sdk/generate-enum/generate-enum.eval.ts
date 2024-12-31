@@ -1,4 +1,4 @@
-import { ExactMatch, Levenshtein } from "autoevals";
+import { ExactMatch } from "autoevals";
 import { evalite } from "evalite";
 import { classifySentiment } from "./generate-enum";
 
