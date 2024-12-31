@@ -1,5 +1,5 @@
 import { anthropic } from "@ai-sdk/anthropic";
-import { cacheModelInFs } from "../09-caching/cache-model-in-fs";
+import { cacheModelInFs } from "../11-caching/cache-model-in-fs";
 import { openai } from "@ai-sdk/openai";
 
 export const pdfModel = cacheModelInFs(anthropic("claude-3-5-sonnet-latest"));

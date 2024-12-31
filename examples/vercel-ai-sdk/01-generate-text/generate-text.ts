@@ -1,38 +1,18 @@
-import { openai } from "@ai-sdk/openai";
 import { generateText } from "ai";
-import { readFileSync } from "fs";
-import { cacheModelInFs } from "../09-caching/cache-model-in-fs";
+import { smallOpenAiModel } from "../_shared/models";
 
-const model = cacheModelInFs(openai("gpt-4o-mini"));
+const model = smallOpenAiModel;
 
-export const describeImage = async (imagePath: string) => {
+/**
+ * This is the simplest setup the AI SDK supports.
+ *
+ * You generate some text, based on a question passed in and
+ * a target model.
+ */
+export const answerMyQuestion = async (prompt: string) => {
   const { text } = await generateText({
     model,
-    system:
-      `You will receive an image. ` +
-      `Please create an alt text for the image. ` +
-      `Be concise. ` +
-      `Use adjectives only when necessary. ` +
-      `Do not pass 160 characters. ` +
-      `Use simple language. `,
-    messages: [
-      {
-        role: "user",
-        content: [
-          {
-            /**
-             * 1. You can pass images into generateText,
-             * if the model supports them.
-             */
-            type: "image",
-            /**
-             * 2. Here, readFileSync is just a buffer.
-             */
-            image: readFileSync(imagePath),
-          },
-        ],
-      },
-    ],
+    prompt,
   });
 
   return text;
