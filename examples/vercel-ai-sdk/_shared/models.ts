@@ -1,5 +1,5 @@
 import { anthropic } from "@ai-sdk/anthropic";
-import { cacheModelInFs } from "../11-caching/cache-model-in-fs";
+import { cacheModelInFs } from "../12-caching/cache-model-in-fs";
 import { openai } from "@ai-sdk/openai";
 import { createOpenAICompatible } from "@ai-sdk/openai-compatible";
 
