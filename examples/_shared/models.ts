@@ -1,5 +1,5 @@
 import { anthropic } from "@ai-sdk/anthropic";
-import { cacheModelInFs } from "../12-caching/cache-model-in-fs";
+import { cacheModelInFs } from "../vercel-ai-sdk/13-caching/cache-model-in-fs";
 import { openai } from "@ai-sdk/openai";
 import { createOpenAICompatible } from "@ai-sdk/openai-compatible";
 
@@ -44,3 +44,7 @@ export const localModel = cacheModelInFs(
   // you currently have loaded
   lmstudio("")
 );
+
+export const smallModel = process.env.USE_LOCAL_MODEL
+  ? localModel
+  : smallOpenAiModel;

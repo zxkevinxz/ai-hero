@@ -1,8 +1,8 @@
 import { generateText, tool } from "ai";
 import { z } from "zod";
-import { smallOpenAiModel } from "../../_shared/models";
+import { smallModel } from "../../_shared/models";
 
-const model = smallOpenAiModel;
+const model = smallModel;
 
 const systemPrompt =
   `You are interacting with the Star Wars API. ` +

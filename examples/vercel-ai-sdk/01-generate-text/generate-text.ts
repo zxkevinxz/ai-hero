@@ -1,7 +1,7 @@
 import { generateText } from "ai";
-import { smallOpenAiModel } from "../../_shared/models";
+import { smallModel } from "../../_shared/models";
 
-const model = smallOpenAiModel;
+const model = smallModel;
 
 /**
  * This is the simplest setup the AI SDK supports.

@@ -20,7 +20,7 @@
     "zod": "^3.24.1"
   },
   "scripts": {
-    "lint": "eslint",
+    "lint": "tsc --project ./examples/tsconfig.json && eslint",
     "reorder": "node --experimental-strip-types internal/reorder-examples.ts",
     "all-examples": "evalite watch examples"
   },

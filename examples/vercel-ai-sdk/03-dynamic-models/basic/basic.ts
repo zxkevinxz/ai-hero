@@ -1,5 +1,5 @@
 import { generateText } from "ai";
-import { smallModel } from "../../_shared/models";
+import { smallModel } from "../../../_shared/models";
 
 const model = smallModel;
 

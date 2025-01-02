@@ -1,7 +1,7 @@
 import { streamText } from "ai";
-import { smallOpenAiModel } from "../../_shared/models";
+import { smallModel } from "../../_shared/models";
 
-const model = smallOpenAiModel;
+const model = smallModel;
 
 /**
  * Instead of generating the text, we are now streaming it!

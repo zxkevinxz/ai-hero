@@ -19,5 +19,6 @@
     /* If NOT transpiling with TypeScript: */
     "module": "preserve",
     "noEmit": true
-  }
+  },
+  "exclude": ["./examples"]
 }
