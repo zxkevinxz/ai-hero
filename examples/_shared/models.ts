@@ -48,3 +48,7 @@ export const localModel = cacheModelInFs(
 export const smallModel = process.env.USE_LOCAL_MODEL
   ? localModel
   : smallOpenAiModel;
+
+export const smallEmbeddingModel = process.env.USE_LOCAL_MODEL
+  ? lmstudio.textEmbeddingModel("")
+  : openai.embedding("text-embedding-3-small");
