@@ -1,6 +1,6 @@
 import { generateText, tool } from "ai";
 import { z } from "zod";
-import { smallOpenAiModel } from "../_shared/models";
+import { smallOpenAiModel } from "../../_shared/models";
 
 const model = smallOpenAiModel;
 

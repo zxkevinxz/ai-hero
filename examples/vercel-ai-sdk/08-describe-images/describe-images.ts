@@ -1,6 +1,6 @@
 import { generateText } from "ai";
 import { readFileSync } from "fs";
-import { smallOpenAiModel } from "../_shared/models";
+import { smallOpenAiModel } from "../../_shared/models";
 
 const model = smallOpenAiModel;
 

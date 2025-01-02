@@ -1,6 +1,6 @@
 import { generateObject } from "ai";
 import { z } from "zod";
-import { flagshipAnthropicModel } from "../_shared/models";
+import { flagshipAnthropicModel } from "../../_shared/models";
 
 const model = flagshipAnthropicModel;
 
