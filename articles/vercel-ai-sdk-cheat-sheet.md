@@ -134,6 +134,8 @@ const { object } = await generateObject({
 });
 ```
 
+## Passing Files TODO
+
 ## Tracking Token Usage
 
 `usage` returns the tokens used in the prompt and completion.
