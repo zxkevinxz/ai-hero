@@ -91,7 +91,11 @@ export const getPathsToChange = (
 const exampleDirs = await readdir("./examples");
 
 for (const exampleDir of exampleDirs) {
-  if (exampleDir.startsWith("_") || exampleDir === "node_modules") {
+  if (
+    exampleDir.startsWith("_") ||
+    exampleDir === "node_modules" ||
+    exampleDir === "tsconfig.json"
+  ) {
     continue;
   }
 

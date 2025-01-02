@@ -1,5 +1,5 @@
 import { anthropic } from "@ai-sdk/anthropic";
-import { cacheModelInFs } from "../vercel-ai-sdk/13-caching/cache-model-in-fs";
+import { cacheModelInFs } from "../vercel-ai-sdk/14-caching/cache-model-in-fs";
 import { openai } from "@ai-sdk/openai";
 import { createOpenAICompatible } from "@ai-sdk/openai-compatible";
 

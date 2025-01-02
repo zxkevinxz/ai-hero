@@ -21,7 +21,7 @@
   },
   "scripts": {
     "lint": "tsc --project ./examples/tsconfig.json && eslint",
-    "reorder": "node --experimental-strip-types internal/reorder-examples.ts",
+    "reorder": "node --experimental-strip-types internal/reorder-examples.ts && pnpm run lint",
     "all-examples": "evalite watch examples"
   },
   "type": "module",
