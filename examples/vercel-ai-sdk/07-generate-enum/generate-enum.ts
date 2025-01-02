@@ -1,7 +1,7 @@
 import { generateObject } from "ai";
-import { smallModel } from "../../_shared/models";
+import { smallOpenAiModel } from "../../_shared/models";
 
-const model = smallModel;
+const model = smallOpenAiModel;
 
 export const classifySentiment = async (text: string) => {
   /**

@@ -1,8 +1,8 @@
 import { generateText } from "ai";
 import { readFileSync } from "fs";
-import { smallModel } from "../../_shared/models";
+import { smallOpenAiModel } from "../../_shared/models";
 
-const model = smallModel;
+const model = smallOpenAiModel;
 
 export const describeImage = async (imagePath: string) => {
   const { text } = await generateText({

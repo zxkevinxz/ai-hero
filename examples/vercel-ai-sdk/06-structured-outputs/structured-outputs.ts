@@ -1,8 +1,8 @@
 import { generateObject } from "ai";
 import { z } from "zod";
-import { smallModel } from "../../_shared/models";
+import { smallOpenAiModel } from "../../_shared/models";
 
-const model = smallModel;
+const model = smallOpenAiModel;
 
 export const createRecipe = async (prompt: string) => {
   const { object } = await generateObject({

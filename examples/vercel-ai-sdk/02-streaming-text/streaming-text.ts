@@ -14,11 +14,6 @@ export const answerMyQuestion = async (prompt: string) => {
 
   // The textStream is an AsyncIterable, so it can be
   // iterated over like an array.
-  for await (const chunk of textStream) {
-    // Here, we're just console.logging every chunk
-    // that comes in.
-    console.log(chunk);
-  }
 
   return textStream;
 };

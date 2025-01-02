@@ -43,21 +43,27 @@ export const createCacheMiddleware = (
     // If cached, return a simulated ReadableStream that yields the cached result
     if (cached !== null) {
       // Format the timestamps in the cached response
-      const formattedChunks = (cached as LanguageModelV1StreamPart[]).map(
-        (p) => {
-          if (p.type === "response-metadata" && p.timestamp) {
-            return { ...p, timestamp: new Date(p.timestamp) };
-          } else return p;
-        }
-      );
-      return {
-        stream: simulateReadableStream({
-          initialDelayInMs: 0,
-          chunkDelayInMs: 10,
-          chunks: formattedChunks,
-        }),
-        rawCall: { rawPrompt: null, rawSettings: {} },
-      };
+      try {
+        const formattedChunks = (cached as LanguageModelV1StreamPart[]).map(
+          (p) => {
+            if (p.type === "response-metadata" && p.timestamp) {
+              return { ...p, timestamp: new Date(p.timestamp) };
+            } else return p;
+          }
+        );
+        return {
+          stream: simulateReadableStream({
+            initialDelayInMs: 0,
+            chunkDelayInMs: 10,
+            chunks: formattedChunks,
+          }),
+          rawCall: { rawPrompt: null, rawSettings: {} },
+        };
+      } catch (e) {
+        // For now, only log to console - but your error
+        // tracker should know about this!
+        console.log(e);
+      }
     }
 
     // If not cached, proceed with streaming
