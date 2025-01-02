@@ -18,7 +18,9 @@
 
     /* If NOT transpiling with TypeScript: */
     "module": "preserve",
-    "noEmit": true
+    "noEmit": true,
+
+    "lib": ["ESNext"]
   },
   "exclude": ["./examples"]
 }
