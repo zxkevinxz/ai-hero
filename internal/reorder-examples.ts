@@ -1,4 +1,4 @@
-import { mkdir, readdir, rename } from "fs/promises";
+import { readdir, rename } from "fs/promises";
 import path from "path";
 
 const parsePath = (relativePath: string) => {
@@ -91,6 +91,10 @@ export const getPathsToChange = (
 const exampleDirs = await readdir("./examples");
 
 for (const exampleDir of exampleDirs) {
+  if (exampleDir.startsWith("_") || exampleDir === "node_modules") {
+    continue;
+  }
+
   const examples = await readdir(path.join("./examples", exampleDir));
 
   const { changes } = getPathsToChange(
