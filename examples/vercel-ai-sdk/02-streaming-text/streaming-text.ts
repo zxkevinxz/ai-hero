@@ -7,7 +7,7 @@ const model = smallModel;
  * Instead of generating the text, we are now streaming it!
  */
 export const answerMyQuestion = async (prompt: string) => {
-  const { textStream, text } = await streamText({
+  const { textStream } = await streamText({
     model,
     prompt,
   });

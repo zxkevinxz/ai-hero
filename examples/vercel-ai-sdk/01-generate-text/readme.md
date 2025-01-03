@@ -8,14 +8,52 @@ Let's look at literally the simplest setup that the AI SDK supports: generating 
 
 You take the `generateText` function that you import from `ai`, pass it a prompt and a model, and you get back an object that contains some text.
 
+```ts
+import { generateText } from "ai";
+
+export const answerMyQuestion = async (prompt: string) => {
+  const { text } = await generateText({
+    model,
+    prompt,
+  });
+
+  return text;
+};
+```
+
 The model we're using is Anthropic's `claude-3.5-haiku`, which we're getting from Vercel's `@ai-sdk/anthropic`.
+
+```ts
+import { anthropic } from "@ai-sdk/anthropic";
+
+const model = anthropic("claude-3-5-haiku-latest");
+```
 
 If we wanted to, we could specify a different model - let's say we're using `claude-3.5-sonnet` instead.
 
 We can then use the function that we've created called `answerMyQuestion`.
 
+```ts
+const answer = await answerMyQuestion(
+  "what is the chemical formula for dihydrogen monoxide?"
+);
+
+console.log(answer);
+```
+
 Let's say we ask it "what is the chemical formula for dihydrogen monoxide?"
 
-When we run this, it will call Anthropic with our query and get back the thing we asked it.
+When we run this, it will call Anthropic with our query and get back the answer to the question we asked it.
 
 There's also a bunch of other stuff in this object that we get back, but we'll cover that in our other examples.
+
+```ts
+// Lots of other properties on
+// this returned object!
+const { text } = await generateText({
+  model,
+  prompt,
+});
+
+return text;
+```

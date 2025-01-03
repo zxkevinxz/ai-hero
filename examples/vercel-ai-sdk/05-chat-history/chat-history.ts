@@ -3,7 +3,9 @@ import { localModel } from "../../_shared/models";
 
 const model = localModel;
 
-export const generateManyExamples = async (prompt: string) => {
+export const generateManyExamples = async (
+  prompt: string,
+) => {
   /**
    * We first create a set of 'core messages'. 'Core' here
    * refers to the AI SDK Core, as opposed to AI SDK UI or
