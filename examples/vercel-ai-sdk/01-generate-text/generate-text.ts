@@ -1,14 +1,8 @@
+import { anthropic } from "@ai-sdk/anthropic";
 import { generateText } from "ai";
-import { smallModel } from "../../_shared/models";
 
-const model = smallModel;
+const model = anthropic("claude-3-5-haiku-latest");
 
-/**
- * This is the simplest setup the AI SDK supports.
- *
- * You generate some text, based on a question passed in and
- * a target model.
- */
 export const answerMyQuestion = async (prompt: string) => {
   const { text } = await generateText({
     model,
@@ -17,3 +11,9 @@ export const answerMyQuestion = async (prompt: string) => {
 
   return text;
 };
+
+const answer = await answerMyQuestion(
+  "what is the chemical formula for dihydrogen monoxide?"
+);
+
+console.log(answer);
