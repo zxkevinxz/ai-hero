@@ -1,4 +1,4 @@
-import { cosineSimilarity, embed } from "ai";
+import { cosineSimilarity, embed, embedMany } from "ai";
 import { smallEmbeddingModel } from "../../_shared/models";
 
 /**
@@ -11,24 +11,12 @@ const model = smallEmbeddingModel;
  * Here, we're creating a very small vector database, where
  * we're embedding the words "Dog", "Cat", "Car", and "Bike".
  */
-const embeddings = await Promise.all([
-  embed({
-    model,
-    value: "Dog",
-  }),
-  embed({
-    model,
-    value: "Cat",
-  }),
-  embed({
-    model,
-    value: "Car",
-  }),
-  embed({
-    model,
-    value: "Bike",
-  }),
-]);
+const values = ["Dog", "Cat", "Car", "Bike"];
+
+const { embeddings } = await embedMany({
+  model,
+  values,
+});
 
 /**
  * We then create a target embedding for the word "Canine".
@@ -43,10 +31,10 @@ const target = await embed({
  * using cosineSimilarity from the "ai" package.
  */
 const distances = embeddings
-  .map((embedding) => {
+  .map((embedding, index) => {
     return {
-      value: embedding.value,
-      similarity: cosineSimilarity(embedding.embedding, target.embedding),
+      value: values[index],
+      similarity: cosineSimilarity(embedding, target.embedding),
     };
   })
   .sort((a, b) => b.similarity - a.similarity);
