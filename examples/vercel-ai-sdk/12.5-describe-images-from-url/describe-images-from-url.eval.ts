@@ -2,18 +2,21 @@ import { Factuality } from "autoevals";
 import { createScorer, evalite } from "evalite";
 import { describeImage } from "./describe-images-from-url";
 
-evalite("Describe Image", {
+evalite("Describe Image From URL", {
   data: async () => [
     {
-      input: "",
+      input:
+        "https://github.com/ai-hero-dev/ai-hero/blob/main/internal/assets/image.jpg?raw=true",
       expected: `A church next to a lake, with mountains in the background.`,
     },
     {
-      input: "",
+      input:
+        "https://github.com/ai-hero-dev/ai-hero/blob/main/internal/assets/fireworks.jpg?raw=true",
       expected: `A fireworks display in the night sky.`,
     },
     {
-      input: "",
+      input:
+        "https://github.com/ai-hero-dev/ai-hero/blob/main/internal/assets/man-with-computer.jpg?raw=true",
       expected: `A person looking at a computer screen displaying a chart, holding a glass.`,
     },
   ],
