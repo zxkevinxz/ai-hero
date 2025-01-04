@@ -1,9 +1,11 @@
 import { generateText } from "ai";
-import { localModel } from "../../_shared/models";
+import { smallModel } from "../../_shared/models";
 
-const model = localModel;
+const model = smallModel;
 
-export const askLocalLLMQuestion = async (input: string) => {
+export const askLocalLLMQuestion = async (
+  input: string,
+) => {
   const { text } = await generateText({
     model,
     prompt: input,

@@ -15,3 +15,5 @@ A simple setup for using the Vercel AI SDK to connect to [LM Studio](https://lms
 ## Code
 
 Start with [./local-llm.ts](./local-llm.ts).
+
+## Description

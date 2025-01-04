@@ -1,7 +1,7 @@
 import { generateText, type CoreMessage } from "ai";
-import { localModel } from "../../_shared/models";
+import { smallModel } from "../../_shared/models";
 
-const model = localModel;
+const model = smallModel;
 
 export const generateManyExamples = async (
   prompt: string,
