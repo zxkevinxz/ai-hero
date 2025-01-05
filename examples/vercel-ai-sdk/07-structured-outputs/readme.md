@@ -14,6 +14,8 @@ This lets you ask the LLM a question, tell it what format you want the answer in
 
 Not all lm support this and not all of them have 100 percent confidence they will always return structured outputs but Open AI is pretty good at this, so we're going to use them.
 
+### Example: Recipe Generation
+
 In this example, we're going to ask the LLM for a recipe. We want the recipe name, an array of ingredients, and an array of steps that the chef needs to take to make the recipe.
 
 ```json
@@ -70,6 +72,8 @@ In this example, we're going to ask the LLM for a recipe. We want the recipe nam
 }
 ```
 
+### Creating the Schema
+
 The first step is to create a `zod` schema that describes the data type that we want to get back from the LLM.
 
 If you've never seen `zod` before, I have a [free tutorial](https://www.totaltypescript.com/tutorials/zod) on my sister site which is called Total TypeScript.
@@ -115,6 +119,8 @@ Thanks to TypeScript being clever, we also get type-safe access to the `name`, `
 const steps = object.recipe.steps;
 ```
 
+### Describing Properties
+
 But we're not quite done here. We should provide the AI with more information about what each individual property means.
 
 Currently, all it's got to go on are `name`, `ingredients`, and `steps`.
@@ -152,6 +158,8 @@ const { object } = await generateObject({
   prompt,
 });
 ```
+
+### Putting It All Together
 
 Let's give this a go and see what outputs we get. Let's ask how to make Baba Ganoush.
 
