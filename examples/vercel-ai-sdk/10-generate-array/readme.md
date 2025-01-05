@@ -1,3 +1,64 @@
 An example of using a LLM to generate an array of data using Vercel's AI SDK.
 
 Start with [./generate-array.ts](./generate-array.ts).
+
+## Description
+
+So far we've looked at returning an object from your LLM calls using structured outputs.
+
+But what if you want to return multiple objects? For instance, you want your LLM to generate tonnes of fake data.
+
+## Zod Schema
+
+Let's first create a Zod schema that we first encountered in our structured outputs example.
+
+```ts
+const schema = z.object({
+  name: z.string().describe("The name of the user"),
+  age: z.number().describe("The user's age"),
+  email: z
+    .string()
+    .email()
+    .describe("The user's email address, @example.com"),
+});
+```
+
+If you don't understand this I've got a [free course on Zod](https://www.totaltypescript.com/tutorials/zod) on my sister site Total TypeScript.
+
+This schema describes a single user name, age, and email, and it's using the `.describe` functionality that we saw earlier too.
+
+## Passing The Schema To `generateObject`
+
+Then we can pass this schema to the `generateObject` function but we also pass in an output of array.
+
+```ts
+export const createFakeUsers = async (input: string) => {
+  const { object } = await generateObject({
+    model,
+    prompt: input,
+    system: `You are generating fake user data.`,
+    output: "array",
+    schema,
+  });
+
+  return object;
+};
+```
+
+Now the object that we get back from `generateObject` will be this array of users.
+
+Let's give this a go. We're going to generate some fake users:
+
+```ts
+const fakeUsers = await createFakeUsers(
+  "Generate 5 fake users from the UK.",
+);
+```
+
+What's powerful about this is that we can seed various information about the users, so in this case, they're going to be from the UK like me.
+
+When we run this we can see our great British users being generated, lovely.
+
+This is particularly cool with `streamObject` too, where you can stream in the users as they're being created.
+
+So that's how to generate an array of structured objects using the AI SDK.

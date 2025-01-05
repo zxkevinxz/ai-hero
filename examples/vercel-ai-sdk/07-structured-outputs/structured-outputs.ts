@@ -31,9 +31,3 @@ export const createRecipe = async (prompt: string) => {
 
   return object.recipe;
 };
-
-const recipe = await createRecipe(
-  "How to make baba ganoush?",
-);
-
-console.dir(recipe, { depth: null });

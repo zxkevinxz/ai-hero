@@ -100,6 +100,8 @@ export const createRecipe = async (prompt: string) => {
     schema,
     prompt,
   });
+
+  return object.recipe;
 };
 ```
 
@@ -137,7 +139,7 @@ const schema = z.object({
 
 Now it's clear to the AI what we're asking for from each property. This is especially useful when the property names are not that descriptive.
 
-And finally we can pass a schema name property to the generate object function:
+And finally, we can pass a `schemaName` property to the `generateObject` function:
 
 ```ts
 const { object } = await generateObject({
@@ -151,7 +153,7 @@ const { object } = await generateObject({
 });
 ```
 
-Let's give this a go and see what outputs we get. Let's ask how to make Babaganouche.
+Let's give this a go and see what outputs we get. Let's ask how to make Baba Ganoush.
 
 ```ts
 const recipe = await createRecipe(
@@ -161,4 +163,6 @@ const recipe = await createRecipe(
 console.dir(recipe, { depth: null });
 ```
 
-When we run this we're going to get back a recipe for Babaganesh.
+When we run this, we're going to get back a recipe for Baba Ganoush.
+
+And there we go, that's how you get structured outputs from the AI SDK.

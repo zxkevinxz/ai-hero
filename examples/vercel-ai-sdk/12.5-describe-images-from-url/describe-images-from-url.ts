@@ -18,14 +18,7 @@ export const describeImage = async (imageUrl: string) => {
         role: "user",
         content: [
           {
-            /**
-             * 1. You can pass images into generateText,
-             * if the model supports them.
-             */
             type: "image",
-            /**
-             * 2.
-             */
             image: new URL(imageUrl),
           },
         ],

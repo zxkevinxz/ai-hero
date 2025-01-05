@@ -4,16 +4,18 @@ import { smallOpenAiModel } from "../../_shared/models";
 
 const model = smallOpenAiModel;
 
+const systemPrompt =
+  `You will receive an image. ` +
+  `Please create an alt text for the image. ` +
+  `Be concise. ` +
+  `Use adjectives only when necessary. ` +
+  `Do not pass 160 characters. ` +
+  `Use simple language. `;
+
 export const describeImage = async (imagePath: string) => {
   const { text } = await generateText({
     model,
-    system:
-      `You will receive an image. ` +
-      `Please create an alt text for the image. ` +
-      `Be concise. ` +
-      `Use adjectives only when necessary. ` +
-      `Do not pass 160 characters. ` +
-      `Use simple language. `,
+    system: systemPrompt,
     messages: [
       {
         role: "user",
