@@ -18,10 +18,17 @@ const { embeddings } = await embedMany({
   values,
 });
 
+const vectorDatabase = embeddings.map(
+  (embedding, index) => ({
+    value: values[index],
+    embedding,
+  }),
+);
+
 /**
  * We then create a target embedding for the word "Canine".
  */
-const target = await embed({
+const searchTerm = await embed({
   model,
   value: "Canine",
 });
@@ -30,11 +37,14 @@ const target = await embed({
  * We then calculate the cosine similarity between the target,
  * using cosineSimilarity from the "ai" package.
  */
-const distances = embeddings
-  .map((embedding, index) => {
+const entries = vectorDatabase
+  .map((entry) => {
     return {
-      value: values[index],
-      similarity: cosineSimilarity(embedding, target.embedding),
+      value: entry.value,
+      similarity: cosineSimilarity(
+        entry.embedding,
+        searchTerm.embedding,
+      ),
     };
   })
   .sort((a, b) => b.similarity - a.similarity);
@@ -53,4 +63,7 @@ const distances = embeddings
  * This indicates that Dog is the most similar to Canine, and
  * Bike is the least similar.
  */
-console.dir(distances, { depth: null, numericSeparator: true });
+console.dir(entries, {
+  depth: null,
+  numericSeparator: true,
+});
