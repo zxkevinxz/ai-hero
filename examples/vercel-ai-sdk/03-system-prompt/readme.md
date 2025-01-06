@@ -4,17 +4,23 @@ Start with [./basic.ts](./basic.ts).
 
 ## Description
 
-Sometimes you need the AI to act in a certain way.
+Sometimes you need the AI to act in a certain way no matter what prompt it receives.
 
-In this case, we want the AI to summarize the text that it receives.
+In this example, we want the AI to summarize the text that it receives.
 
 We want to give it a role. We want to give it instructions.
 
 And we want to do all of that before it receives the prompt from the user.
 
-To do that, we can use a system prompt. Doing that in Vercel AI SDK is as simple as passing a system property.
+<Scrollycoding>
 
-```ts
+# !!steps
+
+To do that, we can use a system prompt.
+
+Doing that in Vercel's AI SDK is as simple as passing a `system` property.
+
+```ts ! example.ts
 const { text } = await generateText({
   model,
   prompt: input,
@@ -29,11 +35,13 @@ const { text } = await generateText({
 });
 ```
 
+# !!steps
+
 Under the hood, this prepends a special message with a role of "system" that has our system prompt in it.
 
-We could do that in the AI SDK as well if we wanted to. You can pass a messages property that has an array of messages.
+We could do that in the AI SDK as well if we wanted to. You can pass a `messages` property that has an array of messages.
 
-```ts
+```ts ! example.ts
 const { text } = await generateText({
   model,
   messages: [
@@ -56,4 +64,10 @@ const { text } = await generateText({
 });
 ```
 
-This can be done in generateText, streamText, and all of the other APIs that contact LLM's and GenAI.
+This can be done in `generateText`, `streamText`, and all of the other APIs that contact LLMs and GenAI.
+
+</Scrollycoding>
+
+Working with system prompts is one of the key parts of working with LLMs, so it's really nice that the AI SDK makes it so easy.
+
+In our next example, we're going to see how easy it is to swap out your models whenever you need to.
