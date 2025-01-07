@@ -16,9 +16,12 @@ export const smallOpenAiModel = cacheModelInFs(
   openai("gpt-4o-mini"),
 );
 
-export const smallToolCallingModel = cacheModelInFs(
+export const smallAnthropicModel = cacheModelInFs(
   anthropic("claude-3-5-haiku-latest"),
 );
+
+export const smallToolCallingModel =
+  smallAnthropicModel;
 
 /**
  * 1. We use `@ai-sdk/openai-compatible` to create a model

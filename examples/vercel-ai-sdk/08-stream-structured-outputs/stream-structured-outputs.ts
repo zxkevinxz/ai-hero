@@ -47,6 +47,4 @@ export const createRecipe = async (prompt: string) => {
   return finalObject.recipe;
 };
 
-const recipe = await createRecipe(
-  "How to make hummus?",
-);
+await createRecipe("How to make hummus?");

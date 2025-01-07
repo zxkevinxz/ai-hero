@@ -1,4 +1,3 @@
-import { Levenshtein } from "autoevals";
 import { evalite } from "evalite";
 import { createFakeUsers } from "./generate-array";
 

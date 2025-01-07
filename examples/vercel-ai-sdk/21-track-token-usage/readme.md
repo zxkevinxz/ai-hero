@@ -11,7 +11,7 @@ Every time you query an LLM in the AI SDK, the object that you get back will con
 
 ```ts
 const { usage } = await generateText({
-  model: smallModel,
+  model,
   prompt: "Tell me a story about a dragon.",
 });
 ```

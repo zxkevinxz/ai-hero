@@ -1,6 +1,5 @@
 import { generateText, type CoreMessage } from "ai";
 import { smallModel } from "../../_shared/models";
-import { writeFileSync } from "fs";
 
 const model = smallModel;
 
