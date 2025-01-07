@@ -1,6 +1,6 @@
 # AI Hero
 
-`Nice banner goes here`
+<a href="https://aihero.dev"><img width="830" alt="From Zero to AI Hero" src="https://github.com/user-attachments/assets/930f3e81-981f-48ec-a1b0-8ff77568c34c" /></a>
 
 ## Quickstart
 
