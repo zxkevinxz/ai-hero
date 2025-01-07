@@ -4,13 +4,37 @@ Start with [./stream-structured-outputs.ts](./stream-structured-outputs.ts).
 
 ## Description
 
-In the previous example I showed you how to get structured outputs from an LLM but the outputs were all generated at once we waited for a little bit and then we saw all the outputs at once.
+<Scrollycoding>
 
-What if you want to see the output as they're generated in other words what if you want to stream an object instead of generate it.
+# !!steps
+
+In the previous example, I showed you how to get structured outputs from an LLM, but the outputs were all generated at once.
+
+We waited for a little bit and then we saw all the outputs at once.
+
+```ts ! example.ts
+export const createRecipe = async (prompt: string) => {
+  const { object } = await generateObject({
+    model,
+    schema,
+    prompt,
+    system:
+      `You are helping a user create a recipe. ` +
+      `Use British English variants of ingredient names,` +
+      `like Coriander over Cilantro.`,
+  });
+
+  return object.recipe;
+};
+```
+
+# !!steps
+
+What if you want to see the output as they're generated? In other words, what if you want to stream an object?
 
 You can do that by changing `generateObject` to `streamObject`.
 
-```ts
+```ts ! example.ts
 export const createRecipe = async (prompt: string) => {
   const result = await streamObject({
     model,
@@ -29,7 +53,7 @@ export const createRecipe = async (prompt: string) => {
 };
 ```
 
-## Awaiting The Final Result
+</Scrollycoding>
 
 You'll notice a couple of changes from the previous example.
 
@@ -42,20 +66,42 @@ The reason for this is that `streamObject` returns its result as soon as the fir
 If we want access to the partial object as it's being generated, we can use `result.partialObjectStream`.
 
 ```ts
-for await (const obj of result.partialObjectStream) {
-  console.dir(obj, { depth: null });
-}
+export const createRecipe = async (prompt: string) => {
+  const result = await streamObject({
+    model,
+    system:
+      `You are helping a user create a recipe. ` +
+      `Use British English variants of ingredient names,` +
+      `like Coriander over Cilantro.`,
+    schemaName: "Recipe",
+    schema,
+    prompt,
+  });
+
+  for await (const obj of result.partialObjectStream) {
+    console.clear();
+    console.dir(obj, { depth: null });
+  }
+
+  const finalObject = await result.object;
+
+  return finalObject.recipe;
+};
 ```
 
 This is an async iterable. That means we can use a `for await...of` loop to log every update to the object as it's posted to us.
 
+We're going to clear the console first and then log the object so we should see it streaming in live.
+
 Let's give this a go and see what outputs we get. Let's ask it how to make hummus.
 
 ```ts
-const recipe = await createRecipe("How to make hummus?");
+const recipe = await createRecipe(
+  "How to make hummus?",
+);
 ```
 
-As you can see, the objects are coming in as they're generated and slowly building the object up over time.
+As you can see, the objects are coming in as they're generated and building the object up over time.
 
 Then the final chunk of this stream contains the entire object.
 

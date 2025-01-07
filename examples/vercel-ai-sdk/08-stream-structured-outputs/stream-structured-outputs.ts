@@ -6,7 +6,9 @@ const model = smallOpenAiModel;
 
 const schema = z.object({
   recipe: z.object({
-    name: z.string().describe("The title of the recipe"),
+    name: z
+      .string()
+      .describe("The title of the recipe"),
     ingredients: z
       .array(
         z.object({
@@ -14,7 +16,9 @@ const schema = z.object({
           amount: z.string(),
         }),
       )
-      .describe("The ingredients needed for the recipe"),
+      .describe(
+        "The ingredients needed for the recipe",
+      ),
     steps: z
       .array(z.string())
       .describe("The steps to make the recipe"),
@@ -33,19 +37,16 @@ export const createRecipe = async (prompt: string) => {
     prompt,
   });
 
-  // You can iterate over the partialObjectStream to get
-  // partial results:
   for await (const obj of result.partialObjectStream) {
-    // `obj` will be the latest version of the object,
-    // sometimes with not all properties populated
-    //
-    // In this case it may not contain steps, ingredients,
-    // or name.
+    console.clear();
     console.dir(obj, { depth: null });
   }
 
-  // You can await result.object to get the final result:
   const finalObject = await result.object;
 
   return finalObject.recipe;
 };
+
+const recipe = await createRecipe(
+  "How to make hummus?",
+);
