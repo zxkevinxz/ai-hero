@@ -15,7 +15,9 @@ You take the `generateText` function that you import from `ai`, pass it a prompt
 ```ts ! example.ts
 import { generateText } from "ai";
 
-export const answerMyQuestion = async (prompt: string) => {
+export const answerMyQuestion = async (
+  prompt: string,
+) => {
   const { text } = await generateText({
     model,
     prompt,
@@ -35,7 +37,9 @@ import { anthropic } from "@ai-sdk/anthropic";
 
 const model = anthropic("claude-3-5-haiku-latest");
 
-export const answerMyQuestion = async (prompt: string) => {
+export const answerMyQuestion = async (
+  prompt: string,
+) => {
   const { text } = await generateText({
     model,
     prompt,
@@ -55,7 +59,9 @@ import { anthropic } from "@ai-sdk/anthropic";
 
 const model = anthropic("claude-3-5-sonnet-latest");
 
-export const answerMyQuestion = async (prompt: string) => {
+export const answerMyQuestion = async (
+  prompt: string,
+) => {
   const { text } = await generateText({
     model,
     prompt,
@@ -79,7 +85,9 @@ import { anthropic } from "@ai-sdk/anthropic";
 
 const model = anthropic("claude-3-5-sonnet-latest");
 
-export const answerMyQuestion = async (prompt: string) => {
+export const answerMyQuestion = async (
+  prompt: string,
+) => {
   const { text } = await generateText({
     model,
     prompt,

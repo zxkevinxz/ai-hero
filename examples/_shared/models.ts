@@ -16,6 +16,10 @@ export const smallOpenAiModel = cacheModelInFs(
   openai("gpt-4o-mini"),
 );
 
+export const smallToolCallingModel = cacheModelInFs(
+  anthropic("claude-3-5-haiku-latest"),
+);
+
 /**
  * 1. We use `@ai-sdk/openai-compatible` to create a model
  * that is compatible with OpenAI's API.
@@ -41,7 +45,7 @@ export const localModel = cacheModelInFs(
 
 export const smallModel = process.env.USE_LOCAL_MODEL
   ? localModel
-  : smallOpenAiModel;
+  : smallAnthropicModel;
 
 export const smallEmbeddingModel = process.env
   .USE_LOCAL_MODEL

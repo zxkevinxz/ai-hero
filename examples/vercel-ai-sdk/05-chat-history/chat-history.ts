@@ -1,16 +1,12 @@
 import { generateText, type CoreMessage } from "ai";
 import { smallModel } from "../../_shared/models";
+import { writeFileSync } from "fs";
 
 const model = smallModel;
 
 export const generateManyExamples = async (
   prompt: string,
 ) => {
-  /**
-   * We first create a set of 'core messages'. 'Core' here
-   * refers to the AI SDK Core, as opposed to AI SDK UI or
-   * AI SDK RSC.
-   */
   const messages: CoreMessage[] = [
     {
       role: "user",
@@ -18,7 +14,6 @@ export const generateManyExamples = async (
     },
   ];
 
-  // In a for loop, we then...
   for (let i = 0; i < 3; i++) {
     const { text } = await generateText({
       model,
@@ -38,10 +33,6 @@ export const generateManyExamples = async (
       content: "Please add more examples.",
     });
   }
-
-  // In this way, we can generate infinite examples
-  // if we keep the for loop going indefinitely.
-  // For now, we'll stop at 3.
 
   return messages;
 };
