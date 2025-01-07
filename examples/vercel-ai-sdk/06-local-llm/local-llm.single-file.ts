@@ -1,11 +1,6 @@
-/**
- * Same setup as ./local-llm.single-file.ts, but
- * in a single file for easier video creation.
- */
-
 import { createOpenAICompatible } from "@ai-sdk/openai-compatible";
-import { generateText } from "ai";
 import { getLocalhost } from "../../_shared/utils";
+import { generateText } from "ai";
 
 const lmstudio = createOpenAICompatible({
   name: "lmstudio",
@@ -28,6 +23,7 @@ export const askLocalLLMQuestion = async (
 
 const input = `Tell me a story about your grandmother.`;
 
-const localLLMResult = await askLocalLLMQuestion(input);
+const localLLMResult =
+  await askLocalLLMQuestion(input);
 
 console.log(localLLMResult);

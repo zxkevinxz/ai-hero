@@ -246,7 +246,9 @@ Let's see what happens when we run this.
 Hello, world!
 ```
 
-First (success!) we're seeing "hello world" printed out to the console.
+Success! We're seeing "hello world" printed out to the console.
+
+## Debugging
 
 That's pretty good, but it's quite opaque. How do we go in and debug this?
 
