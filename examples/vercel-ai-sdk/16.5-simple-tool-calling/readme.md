@@ -18,15 +18,108 @@ We're going to start by creating the simplest tool imaginable and then we're goi
 
 # !!steps
 
-We're going to make the most expensive `logToConsole` function ever.
+Our tool is simply going to log to the console. To create it we're going to import `tool` from `ai`.
 
 ```ts ! example.ts
-const logToConsole = async (prompt: string) => {};
+import { tool } from "ai";
+
+const logToConsoleTool = tool({});
 ```
 
 # !!steps
 
-To do this we're going to use `generateText` as usual, passing in the model in the prompt.
+The first thing that any tool needs is a description of the parameters it's going to receive.
+
+We can add this by specifying parameters on the tool.
+
+This is done with a Zod schema just like we did with structured outputs before.
+
+```ts ! example.ts
+import { tool } from "ai";
+import { z } from "zod";
+
+const logToConsoleTool = tool({
+  parameters: z.object({
+    message: z.string(),
+  }),
+});
+```
+
+# !!steps
+
+We're also using `describe` to describe the different parameters for the LLM.
+
+```ts ! example.ts
+import { tool } from "ai";
+import { z } from "zod";
+
+const logToConsoleTool = tool({
+  parameters: z.object({
+    message: z
+      .string()
+      .describe("The message to log to the console"),
+  }),
+});
+```
+
+# !!steps
+
+Next we need to say what the tool is going to do.
+
+We do that by specifying an `execute` function.
+
+This `execute` function can be asynchronous, so it can do virtually anything - call APIs, write to a database, etc.
+
+In our case we're just going to log to the console.
+
+```ts ! example.ts
+import { tool } from "ai";
+import { z } from "zod";
+
+const logToConsoleTool = tool({
+  parameters: z.object({
+    message: z
+      .string()
+      .describe("The message to log to the console"),
+  }),
+  execute: async ({ message }) => {
+    console.log(message);
+  },
+});
+```
+
+# !!steps
+
+Next we're going to add a `description` field to the tool itself.
+
+This tells the LLM what it's supposed to do with the tool.
+
+```ts ! example.ts
+import { tool } from "ai";
+import { z } from "zod";
+
+const logToConsoleTool = tool({
+  description: "Log a message to the console",
+  parameters: z.object({
+    message: z
+      .string()
+      .describe("The message to log to the console"),
+  }),
+  execute: async ({ message }) => {
+    console.log(message);
+  },
+});
+```
+
+</Scrollycoding>
+
+Now our tool's been created, let's actually use it inside a `generateText` call.
+
+<Scrollycoding>
+
+# !!steps
+
+Let's create our function called `logToConsole`, passing in a model and a prompt.
 
 ```ts ! example.ts
 import { generateText } from "ai";
@@ -41,184 +134,30 @@ const logToConsole = async (prompt: string) => {
 
 # !!steps
 
-We're then going to create our tool importing `tool` from `ai`.
+We'll give it a system prompt to encourage it to use the tool.
 
 ```ts ! example.ts
-import { generateText, tool } from "ai";
-
-const logToConsoleTool = tool({});
+import { generateText } from "ai";
 
 const logToConsole = async (prompt: string) => {
   await generateText({
     model,
     prompt,
+    system:
+      `Your only role in life is to log ` +
+      `messages to the console. ` +
+      `Use the tool provided to log the ` +
+      `prompt to the console.`,
   });
 };
 ```
 
 # !!steps
 
-The first thing that any tool needs is a description of the parameters it's going to receive.
-
-We can add this by specifying parameters on the tool.
-
-This is done with a Zod schema just like we did with structured outputs before.
+And finally let's pass it our tool.
 
 ```ts ! example.ts
-import { generateText, tool } from "ai";
-import { z } from "zod";
-
-const logToConsoleTool = tool({
-  parameters: z.object({
-    message: z.string(),
-  }),
-});
-
-const logToConsole = async (prompt: string) => {
-  await generateText({
-    model,
-    prompt,
-  });
-};
-```
-
-# !!steps
-
-We're also using `describe` to describe the different parameters for the LLM.
-
-```ts ! example.ts
-import { generateText, tool } from "ai";
-import { z } from "zod";
-
-const logToConsoleTool = tool({
-  parameters: z.object({
-    message: z
-      .string()
-      .describe("The message to log to the console"),
-  }),
-});
-
-const logToConsole = async (prompt: string) => {
-  await generateText({
-    model,
-    prompt,
-  });
-};
-```
-
-# !!steps
-
-Next we need to say what the tool is going to do.
-
-We do that by specifying an `execute` function.
-
-This `execute` function can be asynchronous so it can do virtually anything.
-
-In our case we're just going to log to the console.
-
-```ts ! example.ts
-import { generateText, tool } from "ai";
-import { z } from "zod";
-
-const logToConsoleTool = tool({
-  parameters: z.object({
-    message: z
-      .string()
-      .describe("The message to log to the console"),
-  }),
-  execute: async ({ message }) => {
-    console.log(message);
-  },
-});
-
-const logToConsole = async (prompt: string) => {
-  await generateText({
-    model,
-    prompt,
-  });
-};
-```
-
-# !!steps
-
-Next we're going to add a `description` field to the tool itself.
-
-This tells the LLM what it's supposed to do with the tool.
-
-```ts ! example.ts
-import { generateText, tool } from "ai";
-import { z } from "zod";
-
-const logToConsoleTool = tool({
-  description: "Log a message to the console",
-  parameters: z.object({
-    message: z
-      .string()
-      .describe("The message to log to the console"),
-  }),
-  execute: async ({ message }) => {
-    console.log(message);
-  },
-});
-
-const logToConsole = async (prompt: string) => {
-  await generateText({
-    model,
-    prompt,
-  });
-};
-```
-
-# !!steps
-
-Let's pass this tool to `generateText`, in a tools record.
-
-```ts ! example.ts
-import { generateText, tool } from "ai";
-import { z } from "zod";
-
-const logToConsoleTool = tool({
-  description: "Log a message to the console",
-  parameters: z.object({
-    message: z
-      .string()
-      .describe("The message to log to the console"),
-  }),
-  execute: async ({ message }) => {
-    console.log(message);
-  },
-});
-
-const logToConsole = async (prompt: string) => {
-  await generateText({
-    model,
-    prompt,
-    tools: {
-      logToConsole: logToConsoleTool,
-    },
-  });
-};
-```
-
-# !!steps
-
-And finally we're going to give it a system prompt to encourage it to use the tool.
-
-```ts ! example.ts
-import { generateText, tool } from "ai";
-import { z } from "zod";
-
-const logToConsoleTool = tool({
-  description: "Log a message to the console",
-  parameters: z.object({
-    message: z
-      .string()
-      .describe("The message to log to the console"),
-  }),
-  execute: async ({ message }) => {
-    console.log(message);
-  },
-});
+import { generateText } from "ai";
 
 const logToConsole = async (prompt: string) => {
   await generateText({
@@ -263,6 +202,8 @@ Let's destructure the `steps` property from the result of `generateText`.
 We'll look at `steps` later because it starts to get into interesting stuff like agentic behavior and reasoning.
 
 ```ts ! example.ts
+import { generateText } from "ai";
+
 const logToConsole = async (prompt: string) => {
   const { steps } = await generateText({
     model,
@@ -286,6 +227,8 @@ For now we're just going to pull out a property from the first step taken which 
 This tells you all of the tools that were called during that step.
 
 ```ts ! example.ts
+import { generateText } from "ai";
+
 const logToConsole = async (prompt: string) => {
   const { steps } = await generateText({
     model,

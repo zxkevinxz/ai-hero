@@ -157,6 +157,58 @@ const description = await describeImage(
 console.log(description);
 ```
 
-And there we go. We've got a pretty workable description of the image.
-
 To sum up, we read an image into memory, passed it directly into `generateText` via the `messages` array, and got back a description of that image. Pretty sweet.
+
+## Reading From A URL
+
+Our current approach works if you have the file in memory. But what if you only have a URL to the file?
+
+Well, there's a really nice shortcut - You can pass the URL directly to the AI SDK.
+
+```ts
+import { generateText } from "ai";
+
+export const describeImage = async (
+  imageUrl: string,
+) => {
+  const { text } = await generateText({
+    model,
+    system:
+      `You will receive an image. ` +
+      `Please create an alt text for the image. ` +
+      `Be concise. ` +
+      `Use adjectives only when necessary. ` +
+      `Do not pass 160 characters. ` +
+      `Use simple language. `,
+    messages: [
+      {
+        role: "user",
+        content: [
+          {
+            type: "image",
+            image: new URL(imageUrl),
+          },
+        ],
+      },
+    ],
+  });
+
+  return text;
+};
+```
+
+We're wrapping the URL with `new URL` to indicate to the AI SDK that this is a URL on the web that we want to send along to the LLM.
+
+Let's test it out. We've got an image of a church that we wanted to describe, that I've hosted on GitHub:
+
+```ts
+const description = await describeImage(
+  "https://github.com/ai-hero-dev/ai-hero/blob/main/internal/assets/image.jpg?raw=true",
+);
+
+console.log(description);
+```
+
+When we run this, it's going to pass the URL to the LLM. The LLM will then download the image and have a look at it. And then we get back our description.
+
+This is a really great way to take a shortcut when you're working with images hosted on the web.

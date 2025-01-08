@@ -15,6 +15,8 @@ This is an extremely common and very powerful use case for LLMs. It means you ca
 Since we're using structured data, let's create a `Zod` schema to handle this.
 
 ```ts
+import { z } from "zod";
+
 const schema = z
   .object({
     total: z
@@ -51,29 +53,105 @@ We've seen this before, but note how I'm providing descriptions to every single 
 
 ### Extracting Data from the Invoice
 
+<Scrollycoding>
+
+# !!steps
+
 Let's create an `extractDataFromInvoice` function. Inside, we'll pass the schema to `generateObject`, with a little system prompt.
 
-```ts
+We're expecting an `invoicePath`, which is a path to a PDF on our file system.
+
+```ts ! example.ts
+import { generateObject } from "ai";
+
 export const extractDataFromInvoice = async (
   invoicePath: string,
 ) => {
-  const { object } = await generateObject({
+  await generateObject({
     model,
     system:
       `You will receive an invoice. ` +
       `Please extract the data from the invoice.`,
     schema,
   });
-
-  return object;
 };
 ```
 
-We're expecting an `invoicePath`, which is a path to a PDF on our file system.
+# !!steps
 
 The image example that we saw before used the `messages` array. We can do the same thing with the PDF, but this time we're going to use a content type of `file` instead of `image`.
 
-```ts
+We're using `readFileSync` here to grab the raw binary data from the file on the file system, and pass that directly to the AI SDK.
+
+```ts ! example.ts
+import { readFileSync } from "fs";
+import { generateObject } from "ai";
+
+export const extractDataFromInvoice = async (
+  invoicePath: string,
+) => {
+  await generateObject({
+    model,
+    system:
+      `You will receive an invoice. ` +
+      `Please extract the data from the invoice.`,
+    schema,
+    messages: [
+      {
+        role: "user",
+        content: [
+          {
+            type: "file",
+            data: readFileSync(invoicePath),
+          },
+        ],
+      },
+    ],
+  });
+};
+```
+
+# !!steps
+
+We also need to pass it a MIME type to tell the LLM what sort of file it's receiving. It could probably work this out on its own by checking the magic numbers of the file, but it's just polite, isn't it?
+
+```ts ! example.ts
+import { readFileSync } from "fs";
+import { generateObject } from "ai";
+
+export const extractDataFromInvoice = async (
+  invoicePath: string,
+) => {
+  await generateObject({
+    model,
+    system:
+      `You will receive an invoice. ` +
+      `Please extract the data from the invoice.`,
+    schema,
+    messages: [
+      {
+        role: "user",
+        content: [
+          {
+            type: "file",
+            data: readFileSync(invoicePath),
+            mimeType: "application/pdf",
+          },
+        ],
+      },
+    ],
+  });
+};
+```
+
+# !!steps
+
+Finally, we return the object so we should get the object back that we're expecting.
+
+```ts ! example.ts
+import { readFileSync } from "fs";
+import { generateObject } from "ai";
+
 export const extractDataFromInvoice = async (
   invoicePath: string,
 ) => {
@@ -101,19 +179,16 @@ export const extractDataFromInvoice = async (
 };
 ```
 
-We're using `readFileSync` here to grab the raw binary data from the file on the file system, and pass that directly to the AI SDK.
-
-We also need to pass it a MIME type to tell the LLM what sort of file it's receiving. It could probably work this out on its own by checking the magic numbers of the file, but it's just polite, isn't it?
-
-Finally, we return the object so we should get the object back that we're expecting.
+</Scrollycoding>
 
 ### Running the Example
 
-Let's give it a crack. I've got a PDF of a fake invoice here. Let's pass it in and see how it does.
+Let's give it a go. I've got a PDF of a fake invoice here. Let's pass it in and see how it does.
 
 ```ts
-const result =
-  await extractDataFromInvoice("./invoice.pdf");
+const result = await extractDataFromInvoice(
+  "./invoice.pdf",
+);
 
 console.dir(result, { depth: null });
 ```
