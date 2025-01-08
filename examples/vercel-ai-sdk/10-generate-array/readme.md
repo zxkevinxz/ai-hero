@@ -10,29 +10,55 @@ But what if you want to return multiple objects? For instance, you want your LLM
 
 ## Zod Schema
 
+<Scrollycoding>
+
+# !!steps
+
 Let's first create a Zod schema that we first encountered in our structured outputs example.
 
-```ts
+If you don't understand this I've got a [free course on Zod](https://www.totaltypescript.com/tutorials/zod) on my sister site Total TypeScript.
+
+```ts ! example.ts
+import { z } from "zod";
+
+const schema = z.object({
+  name: z.string(),
+  age: z.number(),
+  email: z.string().email(),
+});
+```
+
+# !!steps
+
+We should also use descriptions on the schema fields to give the AI more context. Like we've seen before, we can use `.describe` here.
+
+```ts ! example.ts
+import { z } from "zod";
+
 const schema = z.object({
   name: z.string().describe("The name of the user"),
   age: z.number().describe("The user's age"),
   email: z
     .string()
     .email()
-    .describe("The user's email address, @example.com"),
+    .describe(
+      "The user's email address, @example.com",
+    ),
 });
 ```
 
-If you don't understand this I've got a [free course on Zod](https://www.totaltypescript.com/tutorials/zod) on my sister site Total TypeScript.
-
-This schema describes a single user name, age, and email, and it's using the `.describe` functionality that we saw earlier too.
+</Scrollycoding>
 
 ## Passing The Schema To `generateObject`
 
-Then we can pass this schema to the `generateObject` function but we also pass in an output of array.
+Then we can pass this schema to the `generateObject` function - but we also pass in an output of array.
 
 ```ts
-export const createFakeUsers = async (input: string) => {
+import { generateObject } from "ai";
+
+export const createFakeUsers = async (
+  input: string,
+) => {
   const { object } = await generateObject({
     model,
     prompt: input,
@@ -53,7 +79,11 @@ Let's give this a go. We're going to generate some fake users:
 const fakeUsers = await createFakeUsers(
   "Generate 5 fake users from the UK.",
 );
+
+console.dir(fakeUsers, { depth: null });
 ```
+
+And just like that, we get our users.
 
 What's powerful about this is that we can seed various information about the users, so in this case, they're going to be from the UK like me.
 

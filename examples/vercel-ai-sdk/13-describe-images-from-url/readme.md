@@ -4,14 +4,18 @@ Start with [./describe-images-from-url.ts](./describe-images-from-url.ts).
 
 ## Description
 
-We saw last time how to upload images to LLM using Vercel's AI SDK.
+We saw last time how to upload images to [Vercel's AI SDK](https://sdk.vercel.ai/docs/introduction).
 
 This works when you have the entire file in memory. But if you have just the URL to the file, there is a shortcut.
 
 We can tweak our `describeImage` function that we saw last time to instead pass a URL instead of a `Uint8Array`.
 
 ```ts
-export const describeImage = async (imageUrl: string) => {
+import { generateText } from "ai";
+
+export const describeImage = async (
+  imageUrl: string,
+) => {
   const { text } = await generateText({
     model,
     system:
@@ -38,7 +42,7 @@ export const describeImage = async (imageUrl: string) => {
 };
 ```
 
-Let's test it out. We've got an image of a church that we wanted to describe, that I've hosted on GitHub:
+Let's test it out. We've got an ![image of a church](https://github.com/ai-hero-dev/ai-hero/blob/main/internal/assets/image.jpg?raw=true) that we wanted to describe, that I've hosted on GitHub:
 
 ```ts
 const result = await describeImage(
@@ -48,6 +52,6 @@ const result = await describeImage(
 console.log(result);
 ```
 
-When we run this, it's going to pass the url to the lm. The L L M will then download the image and have a look at it. And then we get back our description.
+When we run this, it's going to pass the url to the lm. The LLM will then download the image and have a look at it. And then we get back our description.
 
 This is just a really great way to take a shortcut when you're working with images hosted on the web.
