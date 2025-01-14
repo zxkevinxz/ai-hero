@@ -24,7 +24,7 @@ const askAQuestion = async (prompt: string) => {
     tools: {
       getWeather: getWeatherTool,
     },
-    maxSteps: 10,
+    maxSteps: 2,
   });
 
   for await (const text of textStream) {
