@@ -1,8 +1,10 @@
+Extracting structured data out of unstructured data is one of the most powerful use cases for LLM's.
+
 In this example, we're going to be passing an arbitrary file to an LLM and getting it to analyze it for us.
 
 In this case, a PDF of an invoice. We're going to pass it the PDF, and it's going to extract some structured data for us.
 
-This is an extremely common and very powerful use case for LLMs. It means you can turn all the documents that you might have on your system into something that you can store in a database, query, and search.
+It means you can turn all the documents that you might have on your system into something that you can store in a database, query, and search.
 
 ### Creating the Schema
 

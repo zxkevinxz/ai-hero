@@ -1,18 +1,9 @@
-import { generateObject } from "ai";
-import { readFileSync } from "fs";
 import { z } from "zod";
-import { pdfModel } from "../../_shared/models.ts";
+import { generateObject } from "ai";
+import { pdfModel as model } from "../../_shared/models.ts";
+import { readFileSync } from "fs";
+import path from "path";
 
-/**
- * We're using a model which supports analysing PDF's:
- */
-const model = pdfModel;
-
-/**
- * In this case, we're extracting an object from the invoice.
- *
- * We carefully describe each attribute of the object:
- */
 const schema = z
   .object({
     total: z
@@ -23,20 +14,7 @@ const schema = z
       .describe("The currency of the total amount."),
     invoiceNumber: z
       .string()
-      .describe("The invoice number.")
-      .transform((n) => {
-        /**
-         * Here, we're using a Zod transform to remove the "#" character
-         * from the invoice number.
-         *
-         * We could ask the LLM to do this, but why bother when you
-         * can do it deterministically.
-         */
-        if (n.startsWith("#")) {
-          return n.slice(1);
-        }
-        return n;
-      }),
+      .describe("The invoice number."),
     companyAddress: z
       .string()
       .describe(
@@ -63,23 +41,26 @@ export const extractDataFromInvoice = async (
     system:
       `You will receive an invoice. ` +
       `Please extract the data from the invoice.`,
+    schema,
     messages: [
       {
         role: "user",
         content: [
           {
             type: "file",
-            /**
-             * We provide the PDF file as a buffer:
-             */
             data: readFileSync(invoicePath),
             mimeType: "application/pdf",
           },
         ],
       },
     ],
-    schema,
   });
 
   return object;
 };
+
+const result = await extractDataFromInvoice(
+  path.join(import.meta.dirname, "./invoice-1.pdf"),
+);
+
+console.dir(result, { depth: null });
