@@ -6,7 +6,7 @@
 
 [AI Hero](https://www.aihero.dev/) is the course I'm building to take you from **zero to fully-fledged AI engineer**.
 
-It's going to be the perfect course for anyone **looking to transition from frontend, backend, or full-stack** development to working with AI.
+It's going to be the perfect course for anyone looking to **transition from frontend, backend, or full-stack** development to working with AI.
 
 I'm **open sourcing most of the code** for the course, including:
 
