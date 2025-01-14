@@ -1,5 +1,5 @@
 import { createScorer, evalite } from "evalite";
-import { scoreForFactuality } from "./llm-as-a-judge";
+import { scoreForFactuality } from "./llm-as-a-judge.ts";
 import { NumericDiff } from "autoevals";
 
 evalite("Fact Checker Eval", {
@@ -7,7 +7,8 @@ evalite("Fact Checker Eval", {
     {
       input: {
         question: "Is the sky blue?",
-        groundTruth: "The sky appears blue due to Rayleigh scattering.",
+        groundTruth:
+          "The sky appears blue due to Rayleigh scattering.",
         submission: "Yes, the sky is blue",
       },
       expected: {
@@ -17,7 +18,8 @@ evalite("Fact Checker Eval", {
     {
       input: {
         question: "What is the capital of France?",
-        groundTruth: "Paris is the capital and largest city of France.",
+        groundTruth:
+          "Paris is the capital and largest city of France.",
         submission: "Paris is the capital of France",
       },
       expected: {
@@ -29,7 +31,8 @@ evalite("Fact Checker Eval", {
         question: "Who invented the telephone?",
         groundTruth:
           "Alexander Graham Bell is credited with inventing the first practical telephone.",
-        submission: "Thomas Edison invented the telephone",
+        submission:
+          "Thomas Edison invented the telephone",
       },
       expected: {
         score: 0,
@@ -40,7 +43,8 @@ evalite("Fact Checker Eval", {
         question: "What is the speed of light?",
         groundTruth:
           "The speed of light in vacuum is approximately 299,792,458 meters per second.",
-        submission: "Light travels at about 300,000 kilometers per second",
+        submission:
+          "Light travels at about 300,000 kilometers per second",
       },
       expected: {
         score: 1,
@@ -61,7 +65,11 @@ evalite("Fact Checker Eval", {
       },
     }),
   ],
-  experimental_customColumns: async ({ input, output, expected }) => [
+  experimental_customColumns: async ({
+    input,
+    output,
+    expected,
+  }) => [
     {
       label: "Input",
       value: [

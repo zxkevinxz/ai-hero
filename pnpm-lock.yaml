@@ -49,6 +49,9 @@ devDependencies:
   '@eslint/markdown':
     specifier: ^6.2.1
     version: 6.2.1
+  commander:
+    specifier: ^13.0.0
+    version: 13.0.0
   eslint:
     specifier: ^9.17.0
     version: 9.17.0
@@ -1717,6 +1720,11 @@ packages:
     resolution: {integrity: sha512-Vw8qHK3bZM9y/P10u3Vib8o/DdkvA2OtPtZvD871QKjy74Wj1WSKFILMPRPSdUSx5RFK1arlJzEtA4PkFgnbuA==}
     engines: {node: '>=18'}
     dev: false
+
+  /commander@13.0.0:
+    resolution: {integrity: sha512-oPYleIY8wmTVzkvQq10AEok6YcTC4sRUBl8F9gVuwchGVUCTbl/vhLTaQqutuuySYOsu8YTgV+OxKc/8Yvx+mQ==}
+    engines: {node: '>=18'}
+    dev: true
 
   /compute-cosine-similarity@1.1.0:
     resolution: {integrity: sha512-FXhNx0ILLjGi9Z9+lglLzM12+0uoTnYkHm7GiadXDAr0HGVLm25OivUS1B/LPkbzzvlcXz/1EvWg9ZYyJSdhTw==}

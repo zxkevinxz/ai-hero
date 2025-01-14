@@ -1,6 +1,6 @@
 import { generateObject } from "ai";
 import { z } from "zod";
-import { flagshipAnthropicModel } from "../../_shared/models";
+import { flagshipAnthropicModel } from "../../_shared/models.ts";
 
 const model = flagshipAnthropicModel;
 
@@ -37,10 +37,14 @@ export const scoreForFactuality = async (opts: {
       (E) The answers differ, but these differences don't matter from the perspective of factuality.
     `,
     schema: z.object({
-      answer: z.enum(["A", "B", "C", "D", "E"]).describe("Your selection."),
+      answer: z
+        .enum(["A", "B", "C", "D", "E"])
+        .describe("Your selection."),
       rationale: z
         .string()
-        .describe("Why you chose this answer. Be very detailed."),
+        .describe(
+          "Why you chose this answer. Be very detailed.",
+        ),
     }),
   });
 

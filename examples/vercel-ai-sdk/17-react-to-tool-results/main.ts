@@ -1,6 +1,6 @@
 import { streamText, tool } from "ai";
 import { z } from "zod";
-import { smallToolCallingModel } from "../../_shared/models";
+import { smallToolCallingModel } from "../../_shared/models.ts";
 
 const model = smallToolCallingModel;
 

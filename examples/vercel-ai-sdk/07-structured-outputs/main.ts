@@ -1,8 +1,8 @@
-import { streamObject } from "ai";
+import { generateObject } from "ai";
 import { z } from "zod";
-import { smallOpenAiModel } from "../../_shared/models";
+import { smallToolCallingModel } from "../../_shared/models.ts";
 
-const model = smallOpenAiModel;
+const model = smallToolCallingModel;
 
 const schema = z.object({
   recipe: z.object({
@@ -26,25 +26,22 @@ const schema = z.object({
 });
 
 export const createRecipe = async (prompt: string) => {
-  const result = await streamObject({
+  const { object } = await generateObject({
     model,
+    schema,
+    prompt,
+    schemaName: "Recipe",
     system:
       `You are helping a user create a recipe. ` +
       `Use British English variants of ingredient names,` +
       `like Coriander over Cilantro.`,
-    schemaName: "Recipe",
-    schema,
-    prompt,
   });
 
-  for await (const obj of result.partialObjectStream) {
-    console.clear();
-    console.dir(obj, { depth: null });
-  }
-
-  const finalObject = await result.object;
-
-  return finalObject.recipe;
+  return object.recipe;
 };
 
-await createRecipe("How to make hummus?");
+const recipe = await createRecipe(
+  "How to make baba ganoush?",
+);
+
+console.dir(recipe, { depth: null });

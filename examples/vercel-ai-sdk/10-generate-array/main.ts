@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { generateObject } from "ai";
-import { smallAnthropicModel } from "../../_shared/models";
+import { smallAnthropicModel } from "../../_shared/models.ts";
 
 const schema = z.object({
   name: z.string().describe("The name of the user"),

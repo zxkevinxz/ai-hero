@@ -1,6 +1,6 @@
 import { Levenshtein } from "autoevals";
 import { evalite } from "evalite";
-import { someFunc } from "./basic";
+import { someFunc } from "./basic.ts";
 
 evalite("Some Func", {
   data: async () => [

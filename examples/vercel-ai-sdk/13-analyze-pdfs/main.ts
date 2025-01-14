@@ -1,7 +1,7 @@
 import { generateObject } from "ai";
 import { readFileSync } from "fs";
 import { z } from "zod";
-import { pdfModel } from "../../_shared/models";
+import { pdfModel } from "../../_shared/models.ts";
 
 /**
  * We're using a model which supports analysing PDF's:

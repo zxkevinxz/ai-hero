@@ -1,5 +1,9 @@
-import { cosineSimilarity, embed, embedMany } from "ai";
-import { smallEmbeddingModel } from "../../_shared/models";
+import {
+  cosineSimilarity,
+  embed,
+  embedMany,
+} from "ai";
+import { smallEmbeddingModel } from "../../_shared/models.ts";
 
 /**
  * We use an embedding model, which is a model that converts

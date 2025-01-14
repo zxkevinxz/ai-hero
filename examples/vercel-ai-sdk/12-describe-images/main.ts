@@ -1,5 +1,5 @@
 import { generateText } from "ai";
-import { flagshipAnthropicModel } from "../../_shared/models";
+import { flagshipAnthropicModel } from "../../_shared/models.ts";
 
 const model = flagshipAnthropicModel;
 

@@ -1,5 +1,5 @@
 import { createOpenAICompatible } from "@ai-sdk/openai-compatible";
-import { getLocalhost } from "../../_shared/utils";
+import { getLocalhost } from "../../_shared/utils.ts";
 import { generateText } from "ai";
 
 const lmstudio = createOpenAICompatible({

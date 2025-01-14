@@ -1,5 +1,5 @@
 import { generateObject } from "ai";
-import { smallAnthropicModel } from "../../_shared/models";
+import { smallAnthropicModel } from "../../_shared/models.ts";
 
 const model = smallAnthropicModel;
 

@@ -1,5 +1,5 @@
 import { generateText, type CoreMessage } from "ai";
-import { smallModel } from "../../_shared/models";
+import { smallModel } from "../../_shared/models.ts";
 
 const model = smallModel;
 

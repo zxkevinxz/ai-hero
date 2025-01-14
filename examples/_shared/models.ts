@@ -1,8 +1,8 @@
 import { anthropic } from "@ai-sdk/anthropic";
-import { cacheModelInFs } from "../vercel-ai-sdk/20-caching/cache-model-in-fs";
+import { cacheModelInFs } from "../vercel-ai-sdk/20-caching/cache-model-in-fs.ts";
 import { openai } from "@ai-sdk/openai";
 import { createOpenAICompatible } from "@ai-sdk/openai-compatible";
-import { getLocalhost } from "./utils";
+import { getLocalhost } from "./utils.ts";
 
 export const pdfModel = cacheModelInFs(
   anthropic("claude-3-5-sonnet-latest"),

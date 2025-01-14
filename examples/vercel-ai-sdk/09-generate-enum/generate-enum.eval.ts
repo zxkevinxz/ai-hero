@@ -1,6 +1,6 @@
 import { ExactMatch } from "autoevals";
 import { evalite } from "evalite";
-import { classifySentiment } from "./generate-enum";
+import { classifySentiment } from "./main.ts";
 
 evalite("Classify Sentiment", {
   data: async () => [

@@ -1,32 +1,45 @@
 import { Levenshtein, NumericDiff } from "autoevals";
-import { createScorer, evalite, EvaliteFile } from "evalite";
+import {
+  createScorer,
+  evalite,
+  EvaliteFile,
+} from "evalite";
 import path from "path";
-import { extractDataFromInvoice } from "./analyze-pdf";
+import { extractDataFromInvoice } from "./main.ts";
 
 evalite("Analyze PDF", {
   data: async () => [
     {
       input: EvaliteFile.fromPath(
-        path.join(import.meta.dirname, "./invoice-1.pdf")
+        path.join(
+          import.meta.dirname,
+          "./invoice-1.pdf",
+        ),
       ),
       expected: {
         invoiceNumber: "20130304",
         currency: "AUD",
         total: 39.6,
-        companyAddress: "123 Somewhere St, Melbourne VIC 3000",
+        companyAddress:
+          "123 Somewhere St, Melbourne VIC 3000",
         companyName: "Sunny Farm",
-        invoiceeAddress: "221 Queen St, Melbourne VIC 3000",
+        invoiceeAddress:
+          "221 Queen St, Melbourne VIC 3000",
       },
     },
     {
       input: EvaliteFile.fromPath(
-        path.join(import.meta.dirname, "./invoice-2.pdf")
+        path.join(
+          import.meta.dirname,
+          "./invoice-2.pdf",
+        ),
       ),
       expected: {
         currency: "EUR",
         invoiceNumber: "123100401",
         total: 381.12,
-        companyAddress: "Im Bruch 3, 63897 Miltenberg/Main",
+        companyAddress:
+          "Im Bruch 3, 63897 Miltenberg/Main",
         companyName: "CPB Software",
         invoiceeAddress:
           "Musterkunde AG Mr. John Doe Musterstr. 23 12345 Musterstadt",

@@ -1,10 +1,11 @@
 import { evalite } from "evalite";
-import { generateManyExamples } from "./chat-history";
+import { generateManyExamples } from "./main.ts";
 
 evalite("Generate Many Examples", {
   data: async () => [
     {
-      input: "Write 5 tweets on the topic of painting landscapes.",
+      input:
+        "Write 5 tweets on the topic of painting landscapes.",
     },
   ],
   task: async (input) => {

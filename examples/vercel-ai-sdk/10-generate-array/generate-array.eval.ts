@@ -1,5 +1,5 @@
 import { evalite } from "evalite";
-import { createFakeUsers } from "./generate-array";
+import { createFakeUsers } from "./main.ts";
 
 evalite("Create Fake Users", {
   data: async () => [

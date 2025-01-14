@@ -7,8 +7,11 @@ import type {
   LanguageModelV1StreamPart,
 } from "ai";
 import { simulateReadableStream } from "ai/test";
-import type { StorageCache } from "./types";
-import { createKey, fixTimestampsOnCachedObject } from "./utils";
+import type { StorageCache } from "./types.ts";
+import {
+  createKey,
+  fixTimestampsOnCachedObject,
+} from "./utils.ts";
 
 /**
  * Creates a middleware that caches the responses of the
@@ -17,9 +20,13 @@ import { createKey, fixTimestampsOnCachedObject } from "./utils";
  * Compatible with {@link https://github.com/unjs/unstorage Unstorage}.
  */
 export const createCacheMiddleware = (
-  cache: StorageCache
+  cache: StorageCache,
 ): LanguageModelV1Middleware => ({
-  wrapGenerate: async ({ doGenerate, params, model }) => {
+  wrapGenerate: async ({
+    doGenerate,
+    params,
+    model,
+  }) => {
     const cacheKey = createKey({ params, model });
 
     const cached = await cache.get(cacheKey);
@@ -44,20 +51,29 @@ export const createCacheMiddleware = (
     if (cached !== null) {
       // Format the timestamps in the cached response
       try {
-        const formattedChunks = (cached as LanguageModelV1StreamPart[]).map(
-          (p) => {
-            if (p.type === "response-metadata" && p.timestamp) {
-              return { ...p, timestamp: new Date(p.timestamp) };
-            } else return p;
-          }
-        );
+        const formattedChunks = (
+          cached as LanguageModelV1StreamPart[]
+        ).map((p) => {
+          if (
+            p.type === "response-metadata" &&
+            p.timestamp
+          ) {
+            return {
+              ...p,
+              timestamp: new Date(p.timestamp),
+            };
+          } else return p;
+        });
         return {
           stream: simulateReadableStream({
             initialDelayInMs: 0,
             chunkDelayInMs: 10,
             chunks: formattedChunks,
           }),
-          rawCall: { rawPrompt: null, rawSettings: {} },
+          rawCall: {
+            rawPrompt: null,
+            rawSettings: {},
+          },
         };
       } catch (e) {
         // For now, only log to console - but your error
@@ -69,7 +85,8 @@ export const createCacheMiddleware = (
     // If not cached, proceed with streaming
     const { stream, ...rest } = await doStream();
 
-    const fullResponse: LanguageModelV1StreamPart[] = [];
+    const fullResponse: LanguageModelV1StreamPart[] =
+      [];
 
     const transformStream = new TransformStream<
       LanguageModelV1StreamPart,

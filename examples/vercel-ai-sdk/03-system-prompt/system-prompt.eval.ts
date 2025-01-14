@@ -1,5 +1,5 @@
 import { evalite } from "evalite";
-import { summarizeText } from "./system-prompt";
+import { summarizeText } from "./main.ts";
 import { readFileSync } from "node:fs";
 import path from "node:path";
 
@@ -8,7 +8,7 @@ evalite("Summarize Text", {
     {
       input: readFileSync(
         path.join(import.meta.dirname, "article.md"),
-        "utf-8"
+        "utf-8",
       ),
     },
   ],

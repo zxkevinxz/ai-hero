@@ -16,8 +16,9 @@
     "noUncheckedIndexedAccess": true,
     "noImplicitOverride": true,
 
-    /* If NOT transpiling with TypeScript: */
-    "module": "preserve",
+    "module": "NodeNext",
+    "allowImportingTsExtensions": true,
+    "rewriteRelativeImportExtensions": true,
     "noEmit": true,
 
     "lib": ["ESNext"]

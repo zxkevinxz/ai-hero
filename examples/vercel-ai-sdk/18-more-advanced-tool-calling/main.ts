@@ -1,6 +1,6 @@
 import { generateText, tool } from "ai";
 import { z } from "zod";
-import { smallModel } from "../../_shared/models";
+import { smallModel } from "../../_shared/models.ts";
 
 const model = smallModel;
 
@@ -42,7 +42,7 @@ export const askSwapiApi = async (prompt: string) => {
             .startsWith("https://swapi.py4e.com/api/")
             .describe(
               "The URL to fetch data from, " +
-                "such as https://swapi.py4e.com/api/films/"
+                "such as https://swapi.py4e.com/api/films/",
             ),
         }),
       }),
