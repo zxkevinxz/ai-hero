@@ -7,7 +7,10 @@ evalite("Summarize Text", {
   data: async () => [
     {
       input: readFileSync(
-        path.join(import.meta.dirname, "article.md"),
+        path.join(
+          import.meta.dirname,
+          "fox-who-devoured-history.md",
+        ),
         "utf-8",
       ),
     },

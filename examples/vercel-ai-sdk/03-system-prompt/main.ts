@@ -1,5 +1,7 @@
 import { generateText } from "ai";
 import { smallModel } from "../../_shared/models.ts";
+import { readFileSync } from "fs";
+import path from "path";
 
 const model = smallModel;
 
@@ -19,3 +21,15 @@ export const summarizeText = async (input: string) => {
 
   return text;
 };
+
+const text = readFileSync(
+  path.join(
+    import.meta.dirname,
+    "fox-who-devoured-history.md",
+  ),
+  "utf-8",
+);
+
+const summary = await summarizeText(text);
+
+console.log(summary);
