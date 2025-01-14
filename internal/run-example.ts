@@ -73,7 +73,7 @@ program
       }
 
       execSync(
-        `node --env-file=.env --experimental-strip-types --no-warnings ${mainFilePath}`,
+        `pnpm tsx --env-file=.env ${mainFilePath}`,
         {
           stdio: "inherit",
         },

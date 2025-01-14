@@ -21,9 +21,9 @@
   },
   "scripts": {
     "lint": "tsc --project ./examples/tsconfig.json && eslint",
-    "reorder": "node --experimental-strip-types --no-warnings internal/reorder-examples.ts && pnpm run lint",
+    "reorder": "tsx internal/reorder-examples.ts && pnpm run lint",
     "all-examples": "evalite watch examples",
-    "example": "node --experimental-strip-types --no-warnings internal/run-example.ts"
+    "example": "tsx internal/run-example.ts"
   },
   "type": "module",
   "devDependencies": {
