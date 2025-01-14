@@ -1,7 +1,5 @@
 import { generateText } from "ai";
-import { readFileSync } from "fs";
 import { flagshipAnthropicModel } from "../../_shared/models";
-import path from "path";
 
 const model = flagshipAnthropicModel;
 
@@ -36,7 +34,7 @@ export const describeImage = async (
 };
 
 const description = await describeImage(
-  "https://raw.githubusercontent.com/ai-hero-dev/ai-hero/refs/heads/main/internal/assets/fireworks.jpg?token=GHSAT0AAAAAACZQ4KTLUF265PDICHWARKEWZ4FPTJA",
+  "https://github.com/ai-hero-dev/ai-hero/blob/main/internal/assets/fireworks.jpg?raw=true",
 );
 
 console.log(description);
