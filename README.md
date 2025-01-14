@@ -4,20 +4,30 @@
 
 ## Welcome!
 
-[AI Hero](https://www.aihero.dev/) is the course I'm building to take you from zero to fully-fledged AI engineer.
+[AI Hero](https://www.aihero.dev/) is the course I'm building to take you from **zero to fully-fledged AI engineer**.
 
-It's going to be the perfect course for anyone looking to transition from frontend, backend, or full-stack development to working with AI.
+It's going to be the perfect course for anyone **looking to transition from frontend, backend, or full-stack** development to working with AI.
 
-I'm open sourcing most of the code for the course, including:
+I'm **open sourcing most of the code** for the course, including:
 
 - Examples
 - Exercises
 - Libraries & SDKs (like [Evalite](https://www.evalite.dev/), my evals framework)
 - Articles
 
-Following repo notifications can be pretty painful, so get on my newsletter to stay up to date.
+Following repo notifications can be pretty painful, so [get on my newsletter](https://aihero.dev) to stay up to date.
+
+## Examples
+
+The bit I'm currently working on is the [examples](./examples/) directory.
+
+Each example is a self-contained, runnable code sample that demonstrates a concept or technique.
+
+Anything marked with `TODO` is, well, you get it.
 
 ## Quickstart
+
+Let's get you running your first example.
 
 ### 1. Install node
 
@@ -48,6 +58,8 @@ OPENAI_API_KEY=your-api-key
 # OR your Anthropic API key
 ANTHROPIC_API_KEY=your-api-key
 ```
+
+I'll be adding a guide on running the examples with local models soon.
 
 ### 5. Run An Example
 
