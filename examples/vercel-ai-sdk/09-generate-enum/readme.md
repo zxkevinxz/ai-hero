@@ -79,7 +79,7 @@ export const classifySentiment = async (
       `positive, negative, or neutral.`,
   });
 
-  return object; // positive, negative, or neutral
+  return object;
 };
 ```
 

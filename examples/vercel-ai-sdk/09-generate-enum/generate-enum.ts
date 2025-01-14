@@ -1,25 +1,26 @@
 import { generateObject } from "ai";
-import { smallOpenAiModel } from "../../_shared/models";
+import { smallAnthropicModel } from "../../_shared/models";
 
-const model = smallOpenAiModel;
+const model = smallAnthropicModel;
 
-export const classifySentiment = async (text: string) => {
-  /**
-   * 1. Using the generateObject function...
-   */
+export const classifySentiment = async (
+  text: string,
+) => {
   const { object } = await generateObject({
     model,
-    /**
-     * 2. ...we can specify the output type as "enum".
-     */
     output: "enum",
-    /**
-     * 3. Then, we can specify the enum values.
-     */
     enum: ["positive", "negative", "neutral"],
     prompt: text,
-    system: `Classify the sentiment of the text as either positive, negative, or neutral.`,
+    system:
+      `Classify the sentiment of the text as either ` +
+      `positive, negative, or neutral.`,
   });
 
   return object;
 };
+
+const result = await classifySentiment(
+  `This is terrible`,
+);
+
+console.log(result); // negative

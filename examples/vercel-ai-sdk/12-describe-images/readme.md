@@ -157,6 +157,12 @@ const description = await describeImage(
 console.log(description);
 ```
 
+We get back our beautiful description:
+
+```bash
+Colorful fireworks display over a city skyline at night, with bursts of red, white, and blue reflections on the water. Spectators watch from the shoreline.
+```
+
 To sum up, we read an image into memory, passed it directly into `generateText` via the `messages` array, and got back a description of that image. Pretty sweet.
 
 ## Reading From A URL
@@ -210,5 +216,9 @@ console.log(description);
 ```
 
 When we run this, it's going to pass the URL to the LLM. The LLM will then download the image and have a look at it. And then we get back our description.
+
+```bash
+Lake Bled in Slovenia with church on small peninsula and castle on cliff, surrounded by mountains. Calm water reflects buildings and autumn trees.
+```
 
 This is a really great way to take a shortcut when you're working with images hosted on the web.

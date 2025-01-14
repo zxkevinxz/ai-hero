@@ -4,9 +4,11 @@ Start with [./generate-array.ts](./generate-array.ts).
 
 ## Description
 
-So far we've looked at returning an object from your LLM calls using structured outputs.
+So far we've looked at getting an LLM to return objects or enums (enumerated values) instead of just returning text.
 
-But what if you want to return multiple objects? For instance, you want your LLM to generate tonnes of fake data.
+But what if you want to return multiple objects - an array of objects? What then?
+
+For instance, you might want your LLM to generate lots of fake data.
 
 ## Zod Schema
 
@@ -73,6 +75,8 @@ export const createFakeUsers = async (
 
 Now the object that we get back from `generateObject` will be this array of users.
 
+What's powerful about this is that we can seed various information about the users, so in this case, they're going to be from the UK like me.
+
 Let's give this a go. We're going to generate some fake users:
 
 ```ts
@@ -84,10 +88,6 @@ console.dir(fakeUsers, { depth: null });
 ```
 
 And just like that, we get our users.
-
-What's powerful about this is that we can seed various information about the users, so in this case, they're going to be from the UK like me.
-
-When we run this we can see our great British users being generated, lovely.
 
 This is particularly cool with `streamObject` too, where you can stream in the users as they're being created.
 

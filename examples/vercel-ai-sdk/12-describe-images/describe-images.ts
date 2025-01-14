@@ -1,8 +1,9 @@
 import { generateText } from "ai";
 import { readFileSync } from "fs";
-import { smallOpenAiModel } from "../../_shared/models";
+import { flagshipAnthropicModel } from "../../_shared/models";
+import path from "path";
 
-const model = smallOpenAiModel;
+const model = flagshipAnthropicModel;
 
 const systemPrompt =
   `You will receive an image. ` +
@@ -12,7 +13,9 @@ const systemPrompt =
   `Do not pass 160 characters. ` +
   `Use simple language. `;
 
-export const describeImage = async (imagePath: string) => {
+export const describeImage = async (
+  imageUrl: string,
+) => {
   const { text } = await generateText({
     model,
     system: systemPrompt,
@@ -21,15 +24,8 @@ export const describeImage = async (imagePath: string) => {
         role: "user",
         content: [
           {
-            /**
-             * 1. You can pass images into generateText,
-             * if the model supports them.
-             */
             type: "image",
-            /**
-             * 2. Here, readFileSync is just a buffer.
-             */
-            image: readFileSync(imagePath),
+            image: new URL(imageUrl),
           },
         ],
       },
@@ -38,3 +34,9 @@ export const describeImage = async (imagePath: string) => {
 
   return text;
 };
+
+const description = await describeImage(
+  "https://raw.githubusercontent.com/ai-hero-dev/ai-hero/refs/heads/main/internal/assets/fireworks.jpg?token=GHSAT0AAAAAACZQ4KTLUF265PDICHWARKEWZ4FPTJA",
+);
+
+console.log(description);
