@@ -2,9 +2,11 @@ In our previous example, we saw how LLMs can call tools to do things in the worl
 
 But they can do more than that - they can react to the information they receive from their tools.
 
-This can create a powerful feedback loop that is at the core of agentic behavior.
+This can create a powerful feedback loop where the LLM is continually grounding itself in the real world.
 
-And the Vercel AI SDK makes this super easy with a concept called steps.
+And this feedback loop is what most people, including Anthropic, call agents.
+
+The Vercel AI SDK makes this super easy with a concept called steps.
 
 We're going to make an agent that can retrieve the current weather for us at the city we specify.
 
@@ -58,6 +60,7 @@ const getWeatherTool = tool({
 ```
 
 </Scrollycoding>
+
 Next, we're going to hook this tool up to a function called `askAQuestion`.
 
 <Scrollycoding>

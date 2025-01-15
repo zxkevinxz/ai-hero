@@ -30,8 +30,6 @@ const askAQuestion = async (prompt: string) => {
   for await (const text of textStream) {
     process.stdout.write(text);
   }
-
-  console.dir(await steps, { depth: null });
 };
 
 await askAQuestion(`What's the weather in London?`);
