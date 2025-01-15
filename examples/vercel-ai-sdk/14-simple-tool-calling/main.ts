@@ -1,6 +1,7 @@
-import { generateText, tool } from "ai";
-import { z } from "zod";
 import { smallToolCallingModel } from "../../_shared/models.ts";
+import { tool } from "ai";
+import { z } from "zod";
+import { generateText } from "ai";
 
 const model = smallToolCallingModel;
 
@@ -30,7 +31,7 @@ const logToConsole = async (prompt: string) => {
     },
   });
 
-  console.dir(steps[0]?.toolResults, { depth: null });
+  console.dir(steps[0]?.toolCalls, { depth: null });
 };
 
-await logToConsole("Hello, world!");
+await logToConsole("Hello world!");

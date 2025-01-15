@@ -277,6 +277,6 @@ console.dir(steps[0]?.toolResults, { depth: null });
 ]
 ```
 
-These two results can be fed back into the LLM to provide it more information, especially when run over multiple steps.
+These `toolResults` can be fed back into the LLM to provide it more information, especially when run over multiple steps.
 
 So debugging using `steps` is a way that you can get some insight as to what is happening with your tool calls.
