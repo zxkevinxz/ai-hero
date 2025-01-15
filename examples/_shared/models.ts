@@ -31,7 +31,7 @@ export const smallToolCallingModel =
  * run on Windows, Mac, and Linux. It serves an API which is
  * compatible with OpenAI's API - so we can use it here.
  */
-const lmstudio = createOpenAICompatible({
+export const lmstudio = createOpenAICompatible({
   name: "lmstudio",
   baseURL: `http://${getLocalhost()}:1234/v1`,
 });

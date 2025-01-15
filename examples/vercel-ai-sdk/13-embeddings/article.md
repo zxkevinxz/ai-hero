@@ -15,7 +15,7 @@ This makes embeddings a really powerful primitive for tasks like searching or ca
 The first step is to grab the embedding model, the one we're using is from OpenAI.
 
 ```ts ! example.ts
-import { openai } from "@vercel/ai-sdk/openai";
+import { openai } from "@ai-sdk/openai";
 
 const model = openai.embedding(
   "text-embedding-3-small",
@@ -27,7 +27,7 @@ const model = openai.embedding(
 We're just going to embed some words: dog, cat, car, and bike. So we're going to put those in an array.
 
 ```ts ! example.ts
-import { openai } from "@vercel/ai-sdk/openai";
+import { openai } from "@ai-sdk/openai";
 
 const model = openai.embedding(
   "text-embedding-3-small",
@@ -41,7 +41,7 @@ const values = ["Dog", "Cat", "Car", "Bike"];
 Then we're going to use the `embedMany` function from the AI SDK, passing in our model and the values.
 
 ```ts ! example.ts
-import { openai } from "@vercel/ai-sdk/openai";
+import { openai } from "@ai-sdk/openai";
 import { embedMany } from "ai";
 
 const model = openai.embedding(
