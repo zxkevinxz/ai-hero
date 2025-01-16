@@ -53,10 +53,9 @@ program
       }
 
       if (exampleToRun.endsWith("TODO")) {
-        console.error(
-          `Example ${number} in ${directory} is not implemented yet.`,
+        console.log(
+          `Example ${number} in ${directory} is still in TODO state. Running it may produce unexpected results.`,
         );
-        process.exit(1);
       }
 
       const mainFilePath = path.resolve(
@@ -72,12 +71,17 @@ program
         process.exit(1);
       }
 
-      execSync(
-        `pnpm tsx --env-file=.env ${mainFilePath}`,
-        {
-          stdio: "inherit",
-        },
-      );
+      try {
+        execSync(
+          `pnpm tsx --env-file=.env ${mainFilePath}`,
+          {
+            stdio: "inherit",
+          },
+        );
+      } catch (e) {
+        console.error(e);
+        process.exit(1);
+      }
     },
   );
 
