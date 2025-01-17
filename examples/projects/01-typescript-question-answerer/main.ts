@@ -8,6 +8,7 @@ import {
 } from "ai";
 import vectorDatabase from "../../../datasets/typescript-q-and-a/embeddings.json" with { type: "json" };
 import { lmstudio } from "../../_shared/models.ts";
+import { cliChat } from "../../_shared/cli-chat.ts";
 
 const SIMILARITY_THRESHOLD = 0.6;
 
@@ -28,97 +29,70 @@ const takeFirstUnique =
     return Array.from(answerSet);
   };
 
-const messages: CoreMessage[] = [];
+await cliChat({
+  intro: "Welcome to MattGPT!",
+  askQuestion: async (question, prevMessages) => {
+    const userMessages = prevMessages
+      .filter((message) => message.role === "user")
+      .map((message) => message.content)
+      .filter(
+        (content) => typeof content === "string",
+      );
 
-const askQuestion = async () => {
-  const question = await p.text({
-    message: "Ask a question:",
-  });
+    const embeddedQuestion = await embed({
+      value: [question, ...userMessages].join("\n"),
+      model: embeddingModel,
+    });
 
-  if (p.isCancel(question)) {
-    p.outro();
-    process.exit(0);
-  }
+    const dbEntries = vectorDatabase
+      .map((entry) => ({
+        answer: entry.answer,
+        question: entry.question,
+        similarity: cosineSimilarity(
+          entry.vector,
+          embeddedQuestion.embedding,
+        ),
+      }))
+      .filter(
+        (entry) =>
+          entry.similarity > SIMILARITY_THRESHOLD,
+      )
+      .sort((a, b) => b.similarity - a.similarity);
 
-  const userMessages = messages
-    .filter((message) => message.role === "user")
-    .map((message) => message.content)
-    .filter((content) => typeof content === "string");
+    const contentToInclude =
+      takeFirstUnique(6)(dbEntries);
 
-  const embeddedQuestion = await embed({
-    value: [question, ...userMessages].join("\n"),
-    model: embeddingModel,
-  });
+    prevMessages.push({
+      role: "user",
+      content: `
+        <dataset>
+          ${contentToInclude.join("\n\n")}
+        </dataset>
+    
+        <question>
+          ${question}
+        </question>
+      `,
+    });
 
-  const dbEntries = vectorDatabase
-    .map((entry) => ({
-      answer: entry.answer,
-      question: entry.question,
-      similarity: cosineSimilarity(
-        entry.vector,
-        embeddedQuestion.embedding,
-      ),
-    }))
-    .filter(
-      (entry) =>
-        entry.similarity > SIMILARITY_THRESHOLD,
-    )
-    .sort((a, b) => b.similarity - a.similarity);
+    const result = streamText({
+      model: anthropic("claude-3-5-haiku-latest"),
+      messages: prevMessages,
+      system: `
+        You are Matt Pocock, a helpful TypeScript expert
+        from Oxford, UK.
+        Answer only using the information in
+        the <dataset> tags.
+        Answer only the question asked. Do not elaborate.
+        Use code samples.
+        Answer the question in the <question> tags.
+        If the information cannot be directly found in your context,
+        respond with "I don't know. That's not in my dataset yet.".
+        Return only the answer.
+        Speak in short sentences. Use newlines often.
+      `,
+    });
 
-  const contentToInclude =
-    takeFirstUnique(6)(dbEntries);
-
-  messages.push({
-    role: "user",
-    content: `
-      <dataset>
-        ${contentToInclude.join("\n\n")}
-      </dataset>
-  
-      <question>
-        ${question}
-      </question>
-    `,
-  });
-
-  const result = streamText({
-    model: anthropic("claude-3-5-haiku-latest"),
-    messages,
-    system: `
-      You are Matt Pocock, a helpful TypeScript expert
-      from Oxford, UK.
-      Answer only using the information in
-      the <dataset> tags.
-      Answer only the question asked. Do not elaborate.
-      Use code samples.
-      Answer the question in the <question> tags.
-      If the information cannot be directly found in your context,
-      respond with "I don't know. That's not in my dataset yet.".
-      Return only the answer.
-      Speak in short sentences. Use newlines often.
-    `,
-  });
-
-  p.log.message("");
-
-  for await (const chunk of result.textStream) {
-    process.stdout.write(chunk);
-  }
-
-  p.log.message("");
-
-  const finalMessages = (await result.response)
-    .messages;
-
-  messages.push(...finalMessages);
-};
-
-// BIN
-
-console.clear();
-
-p.intro("Welcome to MattGPT!");
-
-while (true) {
-  await askQuestion();
-}
+    return result;
+  },
+});
