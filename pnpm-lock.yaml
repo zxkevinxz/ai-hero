@@ -14,6 +14,9 @@ dependencies:
   '@ai-sdk/openai-compatible':
     specifier: ^0.0.13
     version: 0.0.13(zod@3.24.1)
+  '@clack/prompts':
+    specifier: 0.9.1
+    version: 0.9.1
   '@types/node':
     specifier: ^22.10.2
     version: 22.10.2
@@ -196,6 +199,21 @@ packages:
       '@asteasolutions/zod-to-openapi': 6.4.0(zod@3.24.1)
       uuid: 9.0.1
       zod: 3.24.1
+    dev: false
+
+  /@clack/core@0.4.1:
+    resolution: {integrity: sha512-Pxhij4UXg8KSr7rPek6Zowm+5M22rbd2g1nfojHJkxp5YkFqiZ2+YLEM/XGVIzvGOcM0nqjIFxrpDwWRZYWYjA==}
+    dependencies:
+      picocolors: 1.1.0
+      sisteransi: 1.0.5
+    dev: false
+
+  /@clack/prompts@0.9.1:
+    resolution: {integrity: sha512-JIpyaboYZeWYlyP0H+OoPPxd6nqueG/CmN6ixBiNFsIDHREevjIf0n0Ohh5gr5C8pEDknzgvz+pIJ8dMhzWIeg==}
+    dependencies:
+      '@clack/core': 0.4.1
+      picocolors: 1.1.0
+      sisteransi: 1.0.5
     dev: false
 
   /@esbuild/aix-ppc64@0.21.5:
@@ -3721,6 +3739,10 @@ packages:
       decompress-response: 6.0.0
       once: 1.4.0
       simple-concat: 1.0.1
+    dev: false
+
+  /sisteransi@1.0.5:
+    resolution: {integrity: sha512-bLGGlR1QxBcynn2d5YmDX4MGjlZvy2MRBDRNHLJ8VI6l6+9FUiyTFNJ0IveOSP0bcXgVDPRcfGqA0pjaqUpfVg==}
     dev: false
 
   /slice-ansi@4.0.0:
