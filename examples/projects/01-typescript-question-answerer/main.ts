@@ -1,13 +1,13 @@
+import { anthropic } from "@ai-sdk/anthropic";
+import * as p from "@clack/prompts";
 import {
   cosineSimilarity,
   embed,
   streamText,
   type CoreMessage,
 } from "ai";
-import { createInterface } from "node:readline/promises";
 import vectorDatabase from "../../../datasets/typescript-q-and-a/embeddings.json" with { type: "json" };
 import { lmstudio } from "../../_shared/models.ts";
-import { anthropic } from "@ai-sdk/anthropic";
 
 const SIMILARITY_THRESHOLD = 0.6;
 
@@ -31,16 +31,14 @@ const takeFirstUnique =
 const messages: CoreMessage[] = [];
 
 const askQuestion = async () => {
-  const rl = createInterface({
-    input: process.stdin,
-    output: process.stdout,
+  const question = await p.text({
+    message: "Ask a question:",
   });
-  console.log("");
-  const question = await rl.question(
-    "Ask a question: ",
-  );
 
-  rl.close();
+  if (p.isCancel(question)) {
+    p.outro();
+    process.exit(0);
+  }
 
   const userMessages = messages
     .filter((message) => message.role === "user")
@@ -66,8 +64,6 @@ const askQuestion = async () => {
         entry.similarity > SIMILARITY_THRESHOLD,
     )
     .sort((a, b) => b.similarity - a.similarity);
-
-  console.dir(dbEntries, { depth: null });
 
   const contentToInclude =
     takeFirstUnique(6)(dbEntries);
@@ -99,19 +95,29 @@ const askQuestion = async () => {
       If the information cannot be directly found in your context,
       respond with "I don't know. That's not in my dataset yet.".
       Return only the answer.
+      Speak in short sentences. Use newlines often.
     `,
   });
+
+  p.log.message("");
 
   for await (const chunk of result.textStream) {
     process.stdout.write(chunk);
   }
-  console.log("");
+
+  p.log.message("");
 
   const finalMessages = (await result.response)
     .messages;
 
   messages.push(...finalMessages);
 };
+
+// BIN
+
+console.clear();
+
+p.intro("Welcome to MattGPT!");
 
 while (true) {
   await askQuestion();

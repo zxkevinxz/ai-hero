@@ -1,6 +1,6 @@
 [
   {
-    "answer": "```ts\n// Namespaces in the same file can declaration merge\n\nnamespace MyNamespace {\n  export const name = \"MyNamespace\";\n}\n\nnamespace MyNamespace {\n  export const version = \"1.0.0\";\n}\n\n// Usage\nconst name = MyNamespace.name;\nconst version = MyNamespace.version;\n```",
+    "answer": "Note that the phrase is \"declaration merge\", not \"merge declarations\".\n\n```ts\n// Namespaces in the same file can declaration merge\n\nnamespace MyNamespace {\n  export const name = \"MyNamespace\";\n}\n\nnamespace MyNamespace {\n  export const version = \"1.0.0\";\n}\n\n// Usage\nconst name = MyNamespace.name;\nconst version = MyNamespace.version;\n```",
     "question": "Can namespaces declaration merge?",
     "vector": [
       -0.0012383484281599522,
@@ -774,7 +774,7 @@
     ]
   },
   {
-    "answer": "```ts\n// Namespaces in the same file can declaration merge\n\nnamespace MyNamespace {\n  export const name = \"MyNamespace\";\n}\n\nnamespace MyNamespace {\n  export const version = \"1.0.0\";\n}\n\n// Usage\nconst name = MyNamespace.name;\nconst version = MyNamespace.version;\n```",
+    "answer": "Note that the phrase is \"declaration merge\", not \"merge declarations\".\n\n```ts\n// Namespaces in the same file can declaration merge\n\nnamespace MyNamespace {\n  export const name = \"MyNamespace\";\n}\n\nnamespace MyNamespace {\n  export const version = \"1.0.0\";\n}\n\n// Usage\nconst name = MyNamespace.name;\nconst version = MyNamespace.version;\n```",
     "question": "Can anything other than interfaces and enums declaration merge?",
     "vector": [
       -0.061387885361909866,
@@ -1548,7 +1548,7 @@
     ]
   },
   {
-    "answer": "```ts\n// Namespaces in the same file can declaration merge\n\nnamespace MyNamespace {\n  export const name = \"MyNamespace\";\n}\n\nnamespace MyNamespace {\n  export const version = \"1.0.0\";\n}\n\n// Usage\nconst name = MyNamespace.name;\nconst version = MyNamespace.version;\n```",
+    "answer": "Note that the phrase is \"declaration merge\", not \"merge declarations\".\n\n```ts\n// Namespaces in the same file can declaration merge\n\nnamespace MyNamespace {\n  export const name = \"MyNamespace\";\n}\n\nnamespace MyNamespace {\n  export const version = \"1.0.0\";\n}\n\n// Usage\nconst name = MyNamespace.name;\nconst version = MyNamespace.version;\n```",
     "question": "What is declaration merging?",
     "vector": [
       0.011046781204640865,

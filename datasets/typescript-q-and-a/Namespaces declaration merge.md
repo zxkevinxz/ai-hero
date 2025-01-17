@@ -6,6 +6,8 @@ What is declaration merging?
 
 # Answer
 
+Note that the phrase is "declaration merge", not "merge declarations".
+
 ```ts
 // Namespaces in the same file can declaration merge
 
