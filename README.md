@@ -43,8 +43,8 @@ You'll need [Node.js](https://nodejs.org/en/download) installed to run the exerc
 # Installs all dependencies
 pnpm install
 
-# Asks you which exercise you'd like to run, and runs it
-pnpm run exercise
+# Runs an example in the given directory
+pnpm run exercise v 01
 ```
 
 ### 4. Add A `.env` File
