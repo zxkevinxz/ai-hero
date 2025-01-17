@@ -19,6 +19,12 @@ interface User {
 
 This is because `interface extends` is much more powerful than `&`. `interface extends` is faster for TypeScript to process.
 
+This speed difference can add up in large codebases. For an example, check out this article:
+
+https://www.totaltypescript.com/react-apps-ts-performance
+
+Measuring the speed difference is extremely complex (as is any TS performance question) so it's better not to guess and always measure your own codebase.
+
 Note that interfaces are not necessarily faster than types - that's a common misconception. Instead, `interface extends` is faster than `&` (intersections).
 
 Intersection types (`&`) on objects should only be used as a last resort.
