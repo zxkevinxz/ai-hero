@@ -32,6 +32,9 @@ dependencies:
   evalite:
     specifier: 0.8.0
     version: 0.8.0
+  openid-client:
+    specifier: ^6.1.7
+    version: 6.1.7
   prettier:
     specifier: ^3.0.0
     version: 3.3.3
@@ -2596,6 +2599,10 @@ packages:
     hasBin: true
     dev: false
 
+  /jose@5.9.6:
+    resolution: {integrity: sha512-AMlnetc9+CV9asI19zHmrgS/WYsWUwCn2R7RzlbJWD7F9eWYUTGyBmU9o6PxngtLGOiDGPRu+Uc4fhKzbpteZQ==}
+    dev: false
+
   /js-levenshtein@1.1.6:
     resolution: {integrity: sha512-X2BB11YZtrRqY4EnQcLX5Rh373zbK4alC1FW7D7MBhL2gtcC17cTnr6DmfHZeS0s2rTHjUTMMHfG7gO8SSdw+g==}
     engines: {node: '>=0.10.0'}
@@ -3334,6 +3341,10 @@ packages:
       path-key: 4.0.0
     dev: false
 
+  /oauth4webapi@3.1.4:
+    resolution: {integrity: sha512-eVfN3nZNbok2s/ROifO0UAc5G8nRoLSbrcKJ09OqmucgnhXEfdIQOR4gq1eJH1rN3gV7rNw62bDEgftsgFtBEg==}
+    dev: false
+
   /ofetch@1.4.1:
     resolution: {integrity: sha512-QZj2DfGplQAr2oj9KzceK9Hwz6Whxazmn85yYeVuS3u9XTMOGMRx0kO95MQ+vLsj/S/NwBDMMLU5hpxvI6Tklw==}
     dependencies:
@@ -3384,6 +3395,13 @@ packages:
     resolution: {integrity: sha512-9asTNB9IkKEzWMcHmVZE7Ts3kC9G7AFHfs8i7caD8HbI76gEjdkId4z/AkP83xdZsH7PLAnnbl47qZkXuxpArw==}
     dependencies:
       yaml: 2.7.0
+    dev: false
+
+  /openid-client@6.1.7:
+    resolution: {integrity: sha512-JfY/KvQgOutmG2P+oVNKInE7zIh+im1MQOaO7g5CtNnTWMociA563WweiEMKfR9ry9XG3K2HGvj9wEqhCQkPMg==}
+    dependencies:
+      jose: 5.9.6
+      oauth4webapi: 3.1.4
     dev: false
 
   /optionator@0.9.4:

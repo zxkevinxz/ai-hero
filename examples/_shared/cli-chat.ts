@@ -1,17 +1,31 @@
 import type {
   CoreMessage,
+  CoreTool,
   StreamTextResult,
 } from "ai";
 import * as p from "@clack/prompts";
 
-export const cliChat = async (opts: {
+export const cliChat = async <
+  T extends Record<string, CoreTool<any, any>>,
+>(opts: {
   intro?: string;
   outro?: string;
-  askQuestion: (
+  /**
+   * The price per million tokens, used to calculate usage
+   */
+  dollarsPerMillionTokens?: number;
+  answerQuestion: (
     question: string,
     prevMessages: CoreMessage[],
-  ) => Promise<StreamTextResult<any>>;
+  ) => Promise<StreamTextResult<T>>;
+  processQuestionResults?: (opts: {
+    messages: CoreMessage[];
+    result: StreamTextResult<T>;
+  }) => Promise<void>;
 }) => {
+  const costPerToken = opts.dollarsPerMillionTokens
+    ? opts.dollarsPerMillionTokens / 1_000_000
+    : undefined;
   console.clear();
 
   p.intro(opts.intro ?? "Welcome to the chat!");
@@ -23,12 +37,9 @@ export const cliChat = async (opts: {
       message: "Ask a question:",
     });
 
-    if (p.isCancel(question)) {
-      p.outro();
-      process.exit(0);
-    }
+    exitProcessIfCancel(question);
 
-    const result = await opts.askQuestion(
+    const result = await opts.answerQuestion(
       question,
       messages,
     );
@@ -45,5 +56,31 @@ export const cliChat = async (opts: {
       .messages;
 
     messages.push(...finalMessages);
+
+    if (opts.processQuestionResults) {
+      await opts.processQuestionResults({
+        messages,
+        result,
+      });
+    }
+
+    const usage = await result.usage;
+
+    if (typeof costPerToken === "number") {
+      p.log.message(
+        `Cost: $${
+          usage.completionTokens * costPerToken
+        }`,
+      );
+    }
   }
 };
+
+export function exitProcessIfCancel<T>(
+  input: T | symbol,
+): asserts input is T {
+  if (p.isCancel(input)) {
+    p.outro();
+    process.exit(0);
+  }
+}

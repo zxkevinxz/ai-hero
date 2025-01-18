@@ -31,7 +31,7 @@ const takeFirstUnique =
 
 await cliChat({
   intro: "Welcome to MattGPT!",
-  askQuestion: async (question, prevMessages) => {
+  answerQuestion: async (question, prevMessages) => {
     const userMessages = prevMessages
       .filter((message) => message.role === "user")
       .map((message) => message.content)
