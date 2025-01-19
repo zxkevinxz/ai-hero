@@ -18,7 +18,7 @@ const getWeatherTool = tool({
 });
 
 const askAQuestion = async (prompt: string) => {
-  const { textStream, steps } = await streamText({
+  const { textStream } = await streamText({
     model,
     prompt,
     tools: {

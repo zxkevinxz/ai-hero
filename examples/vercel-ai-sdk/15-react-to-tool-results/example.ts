@@ -1,4 +1,4 @@
-const step = [
+export const step = [
   {
     stepType: "initial",
     text: "I'll help you check the current weather in London right away.",
