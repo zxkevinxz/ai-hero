@@ -1,8 +1,8 @@
-import { generateText, type CoreMessage } from "ai";
-import { serve } from "@hono/node-server";
 import { smallModel } from "../../_shared/models.ts";
 import { Hono } from "hono";
+import { serve } from "@hono/node-server";
 import { once } from "node:events";
+import { generateText, type CoreMessage } from "ai";
 
 const model = smallModel;
 

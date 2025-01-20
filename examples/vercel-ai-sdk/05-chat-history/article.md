@@ -32,7 +32,7 @@ const messages: CoreMessage[] = [];
 
 Every message has to contain a role property. This is a string that can be user, system, assistant or tool.
 
-```ts
+```ts ! example.ts
 import { type CoreMessage } from "ai";
 
 const messages: CoreMessage[] = [
@@ -48,7 +48,7 @@ Each message must also contain a `content` property - this is the content of the
 
 In this example, the conversation history contains a single message from the user saying "Hello, you!".
 
-```ts
+```ts ! example.ts
 import { type CoreMessage } from "ai";
 
 const messages: CoreMessage[] = [
@@ -63,7 +63,7 @@ const messages: CoreMessage[] = [
 
 To represent the LLM replying, we use the "assistant" role:
 
-```ts
+```ts ! example.ts
 import { type CoreMessage } from "ai";
 
 const messages: CoreMessage[] = [
@@ -84,7 +84,7 @@ We had a brief look at system prompts earlier. They're represented in the messag
 
 In this case, we're telling the LLM to greet everyone that speaks to it.
 
-```ts
+```ts ! example.ts
 import { type CoreMessage } from "ai";
 
 const messages: CoreMessage[] = [
