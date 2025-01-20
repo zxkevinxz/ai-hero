@@ -1,37 +1,31 @@
-import { generateText, type CoreMessage } from "ai";
-import { smallModel } from "../../_shared/models.ts";
+import { type CoreMessage } from "ai";
+import { startServer } from "./server.ts";
 
-const model = smallModel;
+const server = await startServer();
 
-export const generateManyExamples = async (
-  prompt: string,
-) => {
-  const messages: CoreMessage[] = [
-    {
-      role: "user",
-      content: prompt,
+const messagesToSend: CoreMessage[] = [
+  {
+    role: "user",
+    content: "What's the capital of Wales?",
+  },
+];
+
+const newMessages = await fetch(
+  `http://localhost:4317/api/get-completions`,
+  {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
     },
-  ];
+    body: JSON.stringify(messagesToSend),
+  },
+).then((res) => res.json() as Promise<CoreMessage[]>);
 
-  for (let i = 0; i < 3; i++) {
-    const { text } = await generateText({
-      model,
-      // Pass the existing messages to `generateText`
-      messages,
-    });
+const allMessages = [
+  ...messagesToSend,
+  ...newMessages,
+];
 
-    // Push the result to the messages array
-    messages.push({
-      role: "assistant",
-      content: text,
-    });
+console.dir(allMessages, { depth: null });
 
-    // Ask the assistant to add more examples
-    messages.push({
-      role: "user",
-      content: "Please add more examples.",
-    });
-  }
-
-  return messages;
-};
+server.close();
