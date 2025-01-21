@@ -3,6 +3,7 @@
   "path-aliases": {
     "v": "vercel-ai-sdk",
     "ai-sdk": "vercel-ai-sdk",
-    "p": "projects"
+    "p": "projects",
+    "a": "agents"
   }
 }

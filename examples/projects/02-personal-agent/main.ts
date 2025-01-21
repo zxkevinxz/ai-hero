@@ -34,7 +34,6 @@ const viewPosts = async () => {
     id: post.id,
     type: post.type,
     title: post.fields.title,
-    body: post.fields.body,
     summary: post.fields.summary,
     description: post.fields.description,
     slug: post.fields.slug,
@@ -48,7 +47,7 @@ const viewPosts = async () => {
   return massagedPosts;
 };
 
-const viewPost = async (postId: string) => {
+const viewPostBody = async (postId: string) => {
   const post = (await fetchFromAiHero(
     `/posts/${postId}`,
   )) as any;
@@ -90,22 +89,23 @@ const confirmWithUser = async (toolCall: {
 
 const viewPostsTool = tool({
   parameters: z.object({}),
-  description: "View all posts on AI Hero",
+  description:
+    "View all posts on AI Hero. The body of each post is not included.",
   execute: async () => {
     return viewPosts();
   },
 });
 
-// const viewPostTool = tool({
-//   parameters: z.object({
-//     postId: z.string().min(1),
-//   }),
-//   description:
-//     "View a post on AI Hero. Used for fetching the body of the post.",
-//   execute: async (args) => {
-//     return viewPost(args.postId);
-//   },
-// });
+const viewPostBodyTool = tool({
+  parameters: z.object({
+    postId: z.string().min(1),
+  }),
+  description:
+    "View a post, including its body, on AI Hero. Used for fetching the body of the post.",
+  execute: async (args) => {
+    return viewPostBody(args.postId);
+  },
+});
 
 const updatePostTool = tool({
   parameters: z.object({
@@ -200,7 +200,7 @@ await cliChat({
         `If a tool call fails, show the raw JSON error to the user.`,
 
       tools: {
-        // viewPost: viewPostTool,
+        viewPostBody: viewPostBodyTool,
         viewPosts: viewPostsTool,
         createPost: createPostTool,
         updatePost: updatePostTool,
