@@ -1,17 +1,15 @@
 import { streamText, tool } from "ai";
+import { z } from "zod";
 import { cliChat } from "../../_shared/cli-chat.ts";
+import { smallToolCallingModel } from "../../_shared/models.ts";
 import { createCmsClient } from "./client.ts";
 import { seedDatabase } from "./seed.ts";
 import { startServer } from "./server.ts";
-import { smallToolCallingModel } from "../../_shared/models.ts";
-import { z } from "zod";
 
 // Setup code
 const server = await startServer();
 await seedDatabase();
 const client = createCmsClient();
-
-// Actual Code
 
 await cliChat({
   answerQuestion: async (question, messages) => {

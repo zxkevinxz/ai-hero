@@ -7,7 +7,7 @@ async function processReadmeFile(readmePath: string) {
       readmePath,
       "utf-8",
     );
-    const [_, articleContent] = readmeContent.split(
+    const [, articleContent] = readmeContent.split(
       "## Description",
     );
 

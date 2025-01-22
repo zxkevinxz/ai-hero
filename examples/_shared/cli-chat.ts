@@ -7,6 +7,7 @@ import * as p from "@clack/prompts";
 
 export const cliChat = async <
   T extends Record<string, CoreTool<any, any>>,
+  U,
 >(opts: {
   intro?: string;
   outro?: string;
@@ -17,10 +18,10 @@ export const cliChat = async <
   answerQuestion: (
     question: string,
     prevMessages: CoreMessage[],
-  ) => Promise<StreamTextResult<T>>;
+  ) => Promise<StreamTextResult<T, U>>;
   processQuestionResults?: (opts: {
     messages: CoreMessage[];
-    result: StreamTextResult<T>;
+    result: StreamTextResult<T, U>;
   }) => Promise<void>;
 }) => {
   const costPerToken = opts.dollarsPerMillionTokens
