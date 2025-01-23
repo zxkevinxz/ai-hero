@@ -63,9 +63,7 @@ app.post("/posts", async (c) => {
 // Get all posts
 app.get("/posts", async (c) => {
   const db = await readDb();
-  const posts = Object.values(db).map(
-    ({ content, ...rest }) => rest,
-  );
+  const posts = Object.values(db);
   return c.json(posts);
 });
 

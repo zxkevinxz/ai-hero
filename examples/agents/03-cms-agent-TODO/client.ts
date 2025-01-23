@@ -1,3 +1,5 @@
+import { setTimeout } from "node:timers/promises";
+
 interface Post {
   id: string;
   title: string;
@@ -6,14 +8,13 @@ interface Post {
   updatedAt?: string;
 }
 
-type PostWithoutContent = Omit<Post, "content">;
-
 const API_URL = "http://localhost:4317";
 
 export class CmsClient {
   async createPost(
     data: Pick<Post, "title" | "content">,
   ): Promise<Post> {
+    await setTimeout(500);
     const response = await fetch(`${API_URL}/posts`, {
       method: "POST",
       headers: {
@@ -31,7 +32,8 @@ export class CmsClient {
     return response.json() as any;
   }
 
-  async getAllPosts(): Promise<PostWithoutContent[]> {
+  async getAllPosts(): Promise<Post[]> {
+    await setTimeout(500);
     const response = await fetch(`${API_URL}/posts`);
 
     if (!response.ok) {
@@ -44,6 +46,7 @@ export class CmsClient {
   }
 
   async getPost(id: string): Promise<Post> {
+    await setTimeout(500);
     const response = await fetch(
       `${API_URL}/posts/${id}`,
     );
@@ -64,6 +67,7 @@ export class CmsClient {
     id: string,
     data: Partial<Pick<Post, "title" | "content">>,
   ): Promise<Post> {
+    await setTimeout(500);
     const response = await fetch(
       `${API_URL}/posts/${id}`,
       {
@@ -90,6 +94,7 @@ export class CmsClient {
   async deletePost(
     id: string,
   ): Promise<{ success: boolean }> {
+    await setTimeout(500);
     const response = await fetch(
       `${API_URL}/posts/${id}`,
       {
