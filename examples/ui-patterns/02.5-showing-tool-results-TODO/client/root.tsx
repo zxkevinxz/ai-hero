@@ -15,6 +15,8 @@ const App = () => {
     handleSubmit,
   } = useChat({
     api: "http://localhost:4317/api/chat",
+    initialInput:
+      "What's inside the examples directory?",
   });
 
   return (
@@ -26,6 +28,20 @@ const App = () => {
             role={message.role}
             content={message.content}
           />
+          {message.toolInvocations
+            ?.filter(
+              (invocation) =>
+                invocation.state === "result",
+            )
+            ?.map((invocation) => (
+              <pre key={invocation.toolCallId}>
+                {JSON.stringify(
+                  invocation.result,
+                  null,
+                  2,
+                )}
+              </pre>
+            ))}
         </>
       ))}
       <ChatInput
