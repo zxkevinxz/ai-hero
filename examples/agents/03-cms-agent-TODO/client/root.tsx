@@ -13,12 +13,11 @@ const App = () => {
     messages,
     addToolResult,
     input,
-    isLoading,
     handleInputChange,
     handleSubmit,
+    isLoading,
   } = useChat({
     api: "http://localhost:4317/api/chat",
-    initialInput: "Delete example.ts for me",
   });
 
   const hasUncalledTools =

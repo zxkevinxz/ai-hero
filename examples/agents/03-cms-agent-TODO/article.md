@@ -15,14 +15,42 @@ But there are annoying jobs that suck up a surprising amount of time:
 
 So I'm going to create an AI agent to automate a lot of this work.
 
-## The CMS
+## The Setup
 
-For this example, I've created a dummy CMS which saves a bunch of posts into a JSON file locally.
-
-We can access the server by calling methods from the `client.ts`.
+For this example, I've created a dummy CMS using Hono which saves a bunch of posts into a JSON file locally.
 
 ```ts
-import { createCmsClient } from "./client.ts";
+const honoApp = new Hono();
+
+honoApp.post("/api/cms/posts", async (c) => {
+  // Create a post
+});
+
+honoApp.get("/api/cms/posts", async (c) => {
+  // Get all posts
+});
+
+honoApp.get("/api/cms/posts/:id", async (c) => {
+  // Get single post
+});
+
+honoApp.put("/api/cms/posts/:id", async (c) => {
+  // Update a post
+});
+
+honoApp.delete("/api/cms/posts/:id", async (c) => {
+  // Delete a post
+});
+```
+
+For the purposes of this exercise, I'm going to imagine that this is not on my API but on some third-party API.
+
+In other words, there's a network boundary between my agent and the CMS.
+
+So, I've created a CMS client in `cms-client.ts`, which fetches from the CMS. This gives us helper methods like `getAllPosts`.
+
+```ts ! example.ts
+import { createCmsClient } from "./cms-client.ts";
 
 const client = createCmsClient();
 
@@ -30,31 +58,15 @@ const client = createCmsClient();
 const posts = await client.getAllPosts();
 ```
 
-In the example itself we're going to start the server, seed the database, and then create the client:
-
-```ts !
-import { startServer } from "./server.ts";
-import { seedDatabase } from "./seed.ts";
-import { createCmsClient } from "./client.ts";
-
-const server = await startServer();
-await seedDatabase();
-const client = createCmsClient();
-```
-
-And we'll use the `cliChat` function inside AI Hero as a base, which will allow us to interact with the agent via the command line.
+Our agent will live at API, at `/api/chat`.
 
 ```ts
-import { cliChat } from "../../_shared/cli-chat.ts";
-
-await cliChat({
-  answerQuestion: async (messages) => {
-    // Agent goes here
-  },
+honoApp.post("/api/chat", async (c) => {
+  // Agent goes here
 });
 ```
 
-Our agent is now ready to do its thing. Let's build it.
+We're going to contact this agent from our SPA (Single Page App), at `localhost:3000`. I'm using Vite as my dev server, and React as my frontend framework.
 
 ## The Basics
 
@@ -62,21 +74,19 @@ Our agent is now ready to do its thing. Let's build it.
 
 # !!steps
 
-We'll start by using the [streamText](https://www.aihero.dev/streaming-text-with-vercel-ai-sdk) function, passing it a model and the message history.
+We'll start by using the [streamText](https://www.aihero.dev/streaming-text-with-vercel-ai-sdk) function, passing it a model and the message history, which we'll receive from the client.
 
 ```ts ! example.ts
 import { streamText } from "ai";
-import { cliChat } from "../../_shared/cli-chat.ts";
 
-await cliChat({
-  answerQuestion: async (messages) => {
-    const result = await streamText({
-      messages,
-      model,
-    });
+honoApp.post("/api/chat", async (c) => {
+  const { messages } = await c.req.json();
+  const result = await streamText({
+    messages,
+    model,
+  });
 
-    return result;
-  },
+  return result;
 });
 ```
 
@@ -86,23 +96,20 @@ Let's now add a helpful [system prompt](https://www.aihero.dev/system-prompts-wi
 
 ```ts ! example.ts
 import { streamText } from "ai";
-import { cliChat } from "../../_shared/cli-chat.ts";
 
-await cliChat({
-  answerQuestion: async (messages) => {
-    const result = await streamText({
-      messages,
-      model,
-      system:
-        `You are a content management agent. ` +
-        `You help to update a CMS based on user input. ` +
-        `Think step-by-step. ` +
-        `Before updating content, offer the user the ` +
-        `chance to make changes. `,
-    });
+honoApp.post("/api/chat", async (c) => {
+  const { messages } = await c.req.json();
+  const result = await streamText({
+    messages,
+    model,
+    system:
+      `You are a content management agent. ` +
+      `You help to update a CMS based on user input. ` +
+      `Think step-by-step. ` +
+      `Before updating content, offer the user the chance to make changes. `,
+  });
 
-    return result;
-  },
+  return result;
 });
 ```
 
@@ -112,24 +119,21 @@ We should add `maxSteps`, to let the agent [respond to the results of its own to
 
 ```ts ! example.ts
 import { streamText } from "ai";
-import { cliChat } from "../../_shared/cli-chat.ts";
 
-await cliChat({
-  answerQuestion: async (messages) => {
-    const result = await streamText({
-      messages,
-      model,
-      system:
-        `You are a content management agent. ` +
-        `You help to update a CMS based on user input. ` +
-        `Think step-by-step. ` +
-        `Before updating content, offer the user the ` +
-        `chance to make changes. `,
-      maxSteps: 10,
-    });
+honoApp.post("/api/chat", async (c) => {
+  const { messages } = await c.req.json();
+  const result = await streamText({
+    messages,
+    model,
+    system:
+      `You are a content management agent. ` +
+      `You help to update a CMS based on user input. ` +
+      `Think step-by-step. ` +
+      `Before updating content, offer the user the chance to make changes. `,
+    maxSteps: 10,
+  });
 
-    return result;
-  },
+  return result;
 });
 ```
 
@@ -139,24 +143,20 @@ Finally, let's add a tools record, which we'll implement below.
 
 ```ts ! example.ts
 import { streamText } from "ai";
-import { cliChat } from "../../_shared/cli-chat.ts";
 
-const tools = {
-  // Implement tools here
-};
+const tools = {};
 
-await cliChat({
-  answerQuestion: async (messages) => {
-    const result = await streamText({
-      messages,
-      model,
-      system,
-      tools,
-      maxSteps: 10,
-    });
+honoApp.post("/api/chat", async (c) => {
+  const { messages } = await c.req.json();
+  const result = await streamText({
+    messages,
+    model,
+    system,
+    maxSteps: 10,
+    tools,
+  });
 
-    return result;
-  },
+  return result;
 });
 ```
 
@@ -323,28 +323,136 @@ Now we have all our tools set up, let's try out the agent.
 
 Let's ask it to view all the posts in a markdown table:
 
-```bash
-┌  Welcome to the chat!
-│
-◇  Ask a question:
-│  View all posts in a markdown table
-│
-│  I'll help you view all the posts in a markdown
-│  table format.
-│  I'll first retrieve all the posts and then format them
-│  into a markdown table.
-│
-◇  Posts fetched!
-│
-│  Here's the posts in a markdown table format:
-```
+<!-- Insert screenshot -->
 
-| ID                                   | Title                                 | Created At               |
-| ------------------------------------ | ------------------------------------- | ------------------------ |
-| c7a59691-e481-4485-a863-6257f56c607c | Best Practices for Prompt Engineering | 2025-01-22T16:49:18.261Z |
-| 1dc99f27-6127-49e6-87d9-ecb60d2a74a8 | Understanding Large Language Models   | 2025-01-22T16:49:18.766Z |
-| 484b4ef7-9270-4385-b9c5-0364ec0cef29 | AI System Architecture Design         | 2025-01-22T16:49:19.269Z |
-
-(view the video above for more demonstrations)
+Now, let's get it to delete all posts.
 
 ## Human In The Loop
+
+It's pretty scary to me how quickly it just deleted a bunch of posts.
+
+I was not remotely involved in that process. I don't feel particularly comfortable handing over the keys to my data to the `LLM`.
+
+So let's take the keys away. I'm going to ask the agent to confirm each deletion with me.
+
+I could, of course, just ask the `LLM` via the system prompt to confirm every decision with me.
+
+But that's flaky and scary. I want to make it programmatically impossible for the LLM to do anything I don't want it to.
+
+### Extracting the `execute` Functions
+
+The way to do that is to remove the `execute` functions from each potentially destructive tool.
+
+<Scrollycoding>
+
+# !!steps
+
+Let's take `updatePost` as an example.
+
+```ts ! example.ts
+import { tool } from "ai";
+import { z } from "zod";
+
+const tools = {
+  updatePost: tool({
+    parameters: z.object({
+      id: z.string(),
+      title: z.string(),
+      content: z.string(),
+    }),
+    description:
+      "Update a specific post with a new title and content",
+    execute: async ({ id, title, content }) => {
+      return await client.updatePost(id, {
+        title,
+        content,
+      });
+    },
+  }),
+};
+```
+
+# !!steps
+
+I'm going to take its `execute` function and move it into an object of `dangerousToolExecutors`:
+
+```ts ! example.ts
+import { tool } from "ai";
+import { z } from "zod";
+
+const dangerousToolExecutors = {
+  updatePost: async ({ id, title, content }) => {
+    return await client.updatePost(id, {
+      title,
+      content,
+    });
+  },
+};
+
+const tools = {
+  // ...other tools
+  updatePost: tool({
+    parameters: z.object({
+      id: z.string(),
+      title: z.string(),
+      content: z.string(),
+    }),
+    description:
+      "Update a specific post with a new title and content",
+  }),
+};
+```
+
+</Scrollycoding>
+
+I'll also do the same for `deletePost` and `createPost`, but I'll hide that for brevity.
+
+### Setting Up The Confirmation Endpoint
+
+Next, I'm going to create an API endpoint for handling these tool calls.
+
+<Scrollycoding>
+
+# !!steps
+
+It'll receive the tool name and arguments...
+
+```ts
+honoApp.post("/api/call-tool", async (ctx) => {
+  const { toolName, args } = await ctx.req.json();
+});
+```
+
+# !!steps
+
+...and call the appropriate function from `dangerousToolExecutors`.
+
+This means we'll be able to confirm the use of these dangerous tools from the frontend.
+
+```ts
+honoApp.post("/api/call-tool", async (ctx) => {
+  const { toolName, args } = await ctx.req.json();
+
+  const result = await (dangerousToolExecutors as any)[
+    toolName
+  ]?.(args);
+
+  return ctx.json(result);
+});
+```
+
+</Scrollycoding>
+
+### Building The Frontend
+
+Finally, we're going to set this all up in the frontend.
+
+The plan here is when the LLM calls a tool, because the tool doesn't have an execute function it will pause.
+
+We'll be able to catch that pause in the frontend. We'll then ask the user if they want to proceed.
+
+If they want to proceed we'll pass the information to the call tool endpoint.
+
+It'll give us back the information we want, and we'll pass that back to the LLM as a tool result.
+
+So it's like the LLM tried to call the tool, took a little break, and then received the result as normal.

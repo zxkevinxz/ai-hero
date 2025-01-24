@@ -15,13 +15,16 @@ export class CmsClient {
     data: Pick<Post, "title" | "content">,
   ): Promise<Post> {
     await setTimeout(500);
-    const response = await fetch(`${API_URL}/posts`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
+    const response = await fetch(
+      `${API_URL}/api/cms/posts`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
       },
-      body: JSON.stringify(data),
-    });
+    );
 
     if (!response.ok) {
       throw new Error(
@@ -34,11 +37,13 @@ export class CmsClient {
 
   async getAllPosts(): Promise<Post[]> {
     await setTimeout(500);
-    const response = await fetch(`${API_URL}/posts`);
+    const response = await fetch(
+      `${API_URL}/api/cms/posts`,
+    );
 
     if (!response.ok) {
       throw new Error(
-        `Failed to fetch posts: ${response.statusText}`,
+        `Failed to fetch api/cms/posts: ${response.statusText}`,
       );
     }
 
@@ -48,7 +53,7 @@ export class CmsClient {
   async getPost(id: string): Promise<Post> {
     await setTimeout(500);
     const response = await fetch(
-      `${API_URL}/posts/${id}`,
+      `${API_URL}/api/cms/posts/${id}`,
     );
 
     if (!response.ok) {
@@ -69,7 +74,7 @@ export class CmsClient {
   ): Promise<Post> {
     await setTimeout(500);
     const response = await fetch(
-      `${API_URL}/posts/${id}`,
+      `${API_URL}/api/cms/posts/${id}`,
       {
         method: "PUT",
         headers: {
@@ -96,7 +101,7 @@ export class CmsClient {
   ): Promise<{ success: boolean }> {
     await setTimeout(500);
     const response = await fetch(
-      `${API_URL}/posts/${id}`,
+      `${API_URL}/api/cms/posts/${id}`,
       {
         method: "DELETE",
       },
