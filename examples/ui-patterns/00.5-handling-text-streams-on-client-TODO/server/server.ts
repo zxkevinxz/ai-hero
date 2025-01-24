@@ -1,7 +1,7 @@
 import { smoothStream, streamText } from "ai";
 import { Hono } from "hono";
-import { cors } from "hono/cors";
 import { smallModel } from "../../../_shared/models.ts";
+import { cors } from "hono/cors";
 import { logger } from "hono/logger";
 
 export const honoApp = new Hono();
