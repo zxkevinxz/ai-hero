@@ -21,13 +21,15 @@ const App = () => {
     initialInput: "Delete example.ts for me",
   });
 
-  const hasUncalledTools =
-    !isLoading &&
-    messages.some((message) =>
-      message.toolInvocations?.some(
-        (invocation) => invocation.state === "call",
-      ),
-    );
+  const toolsAwaitingConfirmation = isLoading
+    ? []
+    : messages.flatMap(
+        (message) =>
+          message.toolInvocations?.filter(
+            (invocation) =>
+              invocation.state === "call",
+          ) ?? [],
+      );
 
   return (
     <Wrapper>
@@ -38,55 +40,44 @@ const App = () => {
             role={message.role}
             content={message.content}
           />
-          {hasUncalledTools
-            ? message.toolInvocations
-                ?.filter(
-                  (invocation) =>
-                    invocation.state === "call",
-                )
-                ?.map((invocation) => (
-                  <ToolInvocation
-                    key={invocation.toolCallId}
-                    toolName={invocation.toolName}
-                    args={invocation.args}
-                    onProceed={() => {
-                      fetch(
-                        "http://localhost:4317/api/call-tool",
-                        {
-                          method: "POST",
-                          body: JSON.stringify(
-                            invocation,
-                          ),
-                        },
-                      )
-                        .then((r) => r.json())
-                        .then((r) => {
-                          addToolResult({
-                            toolCallId:
-                              invocation.toolCallId,
-                            result: r,
-                          });
-                        })
-                        .catch((e) => {
-                          addToolResult({
-                            toolCallId:
-                              invocation.toolCallId,
-                            result: JSON.stringify({
-                              error: e.message,
-                            }),
-                          });
-                        });
-                    }}
-                  />
-                ))
-            : null}
         </>
+      ))}
+      {toolsAwaitingConfirmation.map((invocation) => (
+        <ToolInvocation
+          key={invocation.toolCallId}
+          toolName={invocation.toolName}
+          args={invocation.args}
+          onProceed={() => {
+            fetch(
+              "http://localhost:4317/api/call-tool",
+              {
+                method: "POST",
+                body: JSON.stringify(invocation),
+              },
+            )
+              .then((r) => r.json())
+              .then((r) => {
+                addToolResult({
+                  toolCallId: invocation.toolCallId,
+                  result: r,
+                });
+              })
+              .catch((e) => {
+                addToolResult({
+                  toolCallId: invocation.toolCallId,
+                  result: JSON.stringify({
+                    error: e.message,
+                  }),
+                });
+              });
+          }}
+        />
       ))}
       <ChatInput
         input={input}
         onChange={handleInputChange}
         onSubmit={handleSubmit}
-        disabled={hasUncalledTools}
+        disabled={toolsAwaitingConfirmation.length > 0}
       />
     </Wrapper>
   );
