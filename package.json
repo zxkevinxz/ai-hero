@@ -32,7 +32,8 @@
     "all-examples": "evalite watch examples",
     "embed-datasets": "tsx --env-file=.env internal/create-embeddings-from-dataset.ts",
     "example": "tsx internal/run-example.ts",
-    "get-token": "tsx internal/get-ai-hero-token.ts"
+    "get-token": "tsx internal/get-ai-hero-token.ts",
+    "gitkeep": "tsx internal/add-gitkeeps.ts"
   },
   "type": "module",
   "devDependencies": {
