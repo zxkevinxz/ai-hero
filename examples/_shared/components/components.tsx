@@ -12,9 +12,11 @@ export const Wrapper = (props: {
 
 export const FadeIn = (props: {
   children: ReactNode;
+  className?: string;
 }) => {
   return (
     <span
+      className={props.className}
       style={{
         animation: "fadeIn 0.2s",
       }}
@@ -31,12 +33,17 @@ export const Message = ({
   role: string;
   content: string;
 }) => (
-  <div className="whitespace-pre-wrap my-6">
-    <FadeIn>
+  <div className="whitespace-pre-wrap my-6 leading-7">
+    <FadeIn className="font-semibold text-gray-200">
       {role === "user" ? "User: " : "AI: "}
     </FadeIn>
     {content.split(" ").map((word, i) => (
-      <FadeIn key={`${word}_${i}`}>{word} </FadeIn>
+      <FadeIn
+        key={`${word}_${i}`}
+        className="text-gray-100"
+      >
+        {word}{" "}
+      </FadeIn>
     ))}
   </div>
 );
