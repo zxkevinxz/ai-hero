@@ -35,7 +35,8 @@
     "embed-datasets": "tsx --env-file=.env internal/create-embeddings-from-dataset.ts",
     "example": "tsx internal/run-example.ts",
     "get-token": "tsx internal/get-ai-hero-token.ts",
-    "gitkeep": "tsx internal/add-gitkeeps.ts"
+    "gitkeep": "tsx internal/add-gitkeeps.ts",
+    "log": "tsx --env-file=.env internal/run-input-log.ts"
   },
   "type": "module",
   "devDependencies": {
@@ -49,7 +50,8 @@
     "tsx": "^4.19.2",
     "typescript": "^5.7.2",
     "typescript-eslint": "^8.19.0",
-    "vite": "^6.0.11"
+    "vite": "^6.0.11",
+    "chokidar": "^4.0.3"
   },
   "prettier": {
     "printWidth": 55
