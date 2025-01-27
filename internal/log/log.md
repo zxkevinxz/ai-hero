@@ -99,14 +99,6 @@ https://arxiv.org/abs/2310.11324
 
 ---
 
-https://sdk.vercel.ai/docs/ai-sdk-core/agents
-
----
-
-"multiagent reinforcement learning" by shobha sinha
-
----
-
 RAG-QA Arena: Evaluating Domain Robustness for Long-form Retrieval Augmented Question Answering
 
 https://arxiv.org/abs/2407.13998
@@ -146,3 +138,31 @@ https://www.youtube.com/watch?v=vRTcE19M-KE
 Prompt engineering should probably not be a manual process. You should be using tools which generate prompts for you. You should be using data-driven optimizations. Instead of manually working out the perfect thing to say to the LLM, the prompt should be generated for you and tested in a bunch of different ways.
 
 This way, we create a system that is robust to changing the model.
+
+---
+
+Let's say you're building an evaluator which is evaluating some marketing copy based on metrics. You want to grade the marketing copy for emotional appeal and clarity. One way to do this is to say to the LLM just rank this out of 1 to 10, so a 7 for emotional appeal and a 6 for clarity.
+
+It turns out that LLMs are really bad at this. LLMs can't create effective grades for things because they don't really know what the numbers mean in those contexts. This comes up all the time in evaluations.
+
+The best thing to do is to use a natural language-based scale. So:
+
+- Extremely unclear
+- Partially unclear
+- Somewhat unclear
+- Clear
+- Very clear
+- Extremely clear
+
+Then you can map those descriptors into numbers.
+
+---
+
+Thoughtbench is an interesting project to compare different models side by side, including their chain of thought reasoning.
+
+https://github.com/disler/benchy?tab=readme-ov-file
+https://www.youtube.com/watch?v=UgSGtBZnwEo
+
+---
+
+I wonder which properties returned from each API allow you to view the chain of thought. I also wonder whether the AI SDK lets you view those. Maybe on experimental provider metadata?
