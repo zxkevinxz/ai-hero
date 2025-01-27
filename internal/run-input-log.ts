@@ -37,6 +37,7 @@ const tidyUpTranscript = async (contents: string) => {
       Add punctuation where necessary.
       Wrap any references to code in backticks.
       Return the cleaned up text inside <output> tags.
+      Include links as-is - do not modify links.
       
       Common terms:
 
