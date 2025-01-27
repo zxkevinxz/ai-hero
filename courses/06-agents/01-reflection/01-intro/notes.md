@@ -1,1 +1,0 @@
-Reflection will significantly boost the agent's performance. You check whether the plan is good and if it's a bad plan, generate a new one. This is even before receiving any input from the outside world via tool calls.
