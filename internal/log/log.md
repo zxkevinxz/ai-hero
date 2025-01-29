@@ -166,3 +166,67 @@ https://www.youtube.com/watch?v=UgSGtBZnwEo
 ---
 
 I wonder which properties returned from each API allow you to view the chain of thought. I also wonder whether the AI SDK lets you view those. Maybe on experimental provider metadata?
+
+---
+
+Agentic RAG
+
+https://arxiv.org/pdf/2501.09136
+
+---
+
+How do you allow users to use their own API keys in a secure way? For instance, putting in their OpenAI API key?
+
+---
+
+Need to think about error handling during streaming. How to fail gracefully.
+
+---
+
+Need to think about caching LLM responses, and making that caching feel natural.
+
+---
+
+When are LLMs overkill? When should you have a small and more focused neural network defined and trained with Tensorflow or PyTorch?
+
+---
+
+I think models versus systems is an extremely good way to think about it. It defines the role of the AI engineer really well. The AI engineer does not really focus on the model. The engineer focuses on the environment where the model operates.
+
+This means that the AI engineer can squeeze a lot of juice out of a small model by placing it in a part of a smart system.
+
+Which would you consider more powerful: a smart model in a simple system or a simple model in a smart system?
+
+---
+
+Need to not only look at chain of thought, but also self-consistency, active prompting, and multimodal chain of thought. Each has strengths and weaknesses depending on the specific application.
+
+---
+
+Chip Huyen's book draws a distinction between reflection and planning. Other resources in this space don't seem to do that very much.
+
+---
+
+Active Prompting with Chain of Thought
+
+https://arxiv.org/pdf/2302.12246
+
+---
+
+Tree of Thoughts papers:
+
+https://arxiv.org/abs/2305.10601
+
+https://arxiv.org/abs/2305.08291
+
+---
+
+A paper on how in-context learning works from 2022:
+
+https://ai.stanford.edu/blog/understanding-incontext/
+
+---
+
+Multi-agent survey paper
+
+https://arxiv.org/pdf/2402.01680

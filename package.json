@@ -7,6 +7,7 @@
   "license": "GPL",
   "dependencies": {
     "@ai-sdk/anthropic": "^1.0.6",
+    "@ai-sdk/deepseek": "^0.1.6",
     "@ai-sdk/openai": "^1.1.0",
     "@ai-sdk/openai-compatible": "^0.0.13",
     "@clack/prompts": "0.9.1",
@@ -14,7 +15,7 @@
     "@types/node": "^22.10.2",
     "@types/react": "^19.0.7",
     "@types/react-dom": "^19.0.3",
-    "ai": "^4.1.0",
+    "ai": "^4.1.9",
     "autoevals": "^0.0.111",
     "dotenv": "^16.4.7",
     "evalite": "0.8.0",

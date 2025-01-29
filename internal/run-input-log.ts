@@ -61,6 +61,9 @@ const tidyUpTranscript = async (contents: string) => {
       Vite
       TS-999
       BM25
+      o1
+      R1
+      Chip Huyen
     `,
     prompt: `<transcript>${contents}</transcript>`,
   });
