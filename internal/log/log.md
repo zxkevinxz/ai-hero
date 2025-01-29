@@ -337,3 +337,133 @@ You can also define tool caching in CrewAI, which is really fascinating.
 ---
 
 CrewAI allows for code execution simply by passing `allow_code_execution` to the agent as a configuration.
+
+---
+
+Web search - it is extremely complex.
+
+---
+
+https://www.firecrawl.dev/
+
+---
+
+https://exa.ai/
+
+---
+
+shadcn registry
+
+---
+
+https://github.com/transitive-bullshit
+
+Open Tools
+
+---
+
+Data-driven approach for prompt creation.
+
+Black-box approach for prompt creation.
+
+https://github.com/stanfordnlp/dspy
+
+---
+
+If there's additional comments on the downvote, raise them.
+
+---
+
+How do you handle feedback as it scales?
+
+Karpathy spent most of his time at OpenAI working on evals.
+
+---
+
+With DSPy, you're still prompt engineering.
+
+---
+
+Prompt optimizers
+
+https://blog.langchain.dev/exploring-prompt-optimization/
+
+---
+
+Prompt optimizers work off some internal dataset, with a lot of work being put into them.
+
+---
+
+Multi-modal behavior is impossible to secure. Text is inherently easier to police.
+
+---
+
+Groq 3 coming out in two weeks
+
+---
+
+Aider is an awesome example of Reflexion
+
+https://github.com/Aider-AI/aider
+
+---
+
+Anthropic Citations
+
+https://www.anthropic.com/news/introducing-citations-api
+
+---
+
+https://github.com/maitrix-org/llm-reasoners
+
+---
+
+Investigate Anthropic Claude prompt
+
+---
+
+Precision and Accuracy Definitions:
+
+Precision: The degree of refinement with which an operation is performed or a measurement is stated. In statistics and measurement, precision refers to the closeness of multiple measurements to each other (repeatability).
+
+Accuracy: The closeness of a measured value to a true or accepted value. It indicates how close a measurement is to the actual target or standard.
+
+Key Differences:
+
+- Precision is about consistency and reproducibility of measurements
+- Accuracy is about how close the measurement is to the true value
+
+Example:
+
+- A dart board analogy can help:
+  - High precision, low accuracy: Darts clustered tightly but far from the bullseye
+  - High accuracy, low precision: Darts spread out but centered around the bullseye
+  - High accuracy and precision: Darts clustered tightly near the bullseye
+
+---
+
+So with DsPY versus normal prompting or manual prompting, there is a lot to consider. First of all, you need a tonne of data going through the DsPY system in order to make it optimized enough. Then you may want to consider that in a multi-agent setup or a pipeline, you're going to have multiple prompts. So focusing on a single prompt and trying to optimize that—well, how do you get the data for only that prompt?
+
+---
+
+Collapsing Multi-Step Calls into a Single Prompt. There's a really good exercise here where we create an entire chain with potentially smaller models which adds a lot of latency. But what about if we just instead use different XML tags in Claude, let's say, to put this all into one output? You essentially run the entire sequential chain through a single prompt.
+
+---
+
+There's a really great UI idea here where you get the application to create some plans, allow the user to edit those plans, and then take actions based on that. You could even allow it to generate concise thoughts which it feeds to the user. The user can then edit those thoughts, feed them back into the process. You can get some extremely good data off this because you not only have the initial prompt, but also how the user goes and edits that. The user could potentially cancel that as well. The "Human in the loop" stuff is absolutely fascinating.
+
+---
+
+I should introduce the `<thinking>` tag when talking about Anthropic's models, especially since Anthropic's models are optimized for handling XML tags. The `<thinking>` tag allows you to pass reasoning tokens to the user, just like o1 and R1 do, allowing the user to potentially edit those reasoning tags. Also sounds pretty cool.
+
+---
+
+Another question is how do you handle feedback as it scales? You probably want to handle different down votes differently. You may want to score a down vote higher if it belongs to a power user as opposed to a new user. You may even want to preferentially handle certain pieces of feedback if they're from your enterprise customers. You may want to add an extra weight to the down vote if there's additional comments associated with it. Building these systems is extremely important.
+
+---
+
+There's no declarative system for creating prompts right now. We're all just "jQuery-ing" our prompts—we are creating imperative prompts which are resistant to change. Eventually, someone will create the React for prompts and a declarative framework for building prompts. This could be dspy.
+
+---
+
+Every AI product sucks to start with because you haven't put enough data through the system in order to make it better. The fact that these products suck can actually impact whether managers and companies decide to put it out there. Figma AI is a great example.

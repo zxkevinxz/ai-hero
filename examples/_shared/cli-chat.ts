@@ -1,9 +1,61 @@
-import type {
-  CoreMessage,
-  CoreTool,
-  StreamTextResult,
+import {
+  experimental_wrapLanguageModel,
+  type LanguageModelV1StreamPart,
+  type CoreMessage,
+  type CoreTool,
+  type LanguageModel,
+  type StreamTextResult,
 } from "ai";
 import * as p from "@clack/prompts";
+
+/**
+ * WIP - instead of returning the result from cliChat,
+ * it makes sense to wrap it in some middleware that logs
+ * the messages to the CLI.
+ *
+ * I just need to figure out a way to turn the stream chunks
+ * back into a readable result so I can extract their usage
+ * and the final messages.
+ */
+export const wrapModelForCliChat = (
+  model: LanguageModel,
+) => {
+  return experimental_wrapLanguageModel({
+    model,
+    middleware: {
+      wrapStream: async ({ doStream }) => {
+        const { stream, ...rest } = await doStream();
+
+        const fullResponse: LanguageModelV1StreamPart[] =
+          [];
+
+        const transformStream = new TransformStream<
+          LanguageModelV1StreamPart,
+          LanguageModelV1StreamPart
+        >({
+          start() {
+            p.log.message("");
+          },
+          transform(chunk, controller) {
+            fullResponse.push(chunk);
+            if (chunk.type === "text-delta") {
+              process.stdout.write(chunk.textDelta);
+            }
+            controller.enqueue(chunk);
+          },
+          flush() {
+            p.log.message("");
+          },
+        });
+
+        return {
+          stream: stream.pipeThrough(transformStream),
+          ...rest,
+        };
+      },
+    },
+  });
+};
 
 export const cliChat = async <
   T extends Record<string, CoreTool<any, any>>,
@@ -45,14 +97,6 @@ export const cliChat = async <
     });
 
     const result = await opts.answerQuestion(messages);
-
-    p.log.message("");
-
-    for await (const chunk of result.textStream) {
-      process.stdout.write(chunk);
-    }
-
-    p.log.message("");
 
     const finalMessages = (await result.response)
       .messages;
