@@ -230,3 +230,110 @@ https://ai.stanford.edu/blog/understanding-incontext/
 Multi-agent survey paper
 
 https://arxiv.org/pdf/2402.01680
+
+---
+
+CrewAI
+
+https://docs.crewai.com/introduction
+
+---
+
+Atomic Agents
+
+https://github.com/BrainBlend-AI/atomic-agents
+
+---
+
+pyspur
+
+https://github.com/PySpur-Dev/pyspur
+
+---
+
+autogen
+
+https://github.com/microsoft/autogen
+
+---
+
+LangGraph
+
+https://langchain-ai.github.io/langgraph/tutorials/introduction/
+
+---
+
+Mastra AI
+
+https://mastra.ai/
+
+---
+
+CrewAI has four key concepts:
+
+1. Crew: The top-level organization that manages AI agent teams, oversees workflows, ensures collaboration, and delivers outcomes.
+
+2. AI Agents: Specialized team members with specific roles (like researcher and writer). These agents are designated tools that can also delegate tasks.
+
+3. Process: The workflow management system that controls task assignment to specific agents.
+
+4. Tasks: Individual assignments with clear objectives, specific tools, and actionable results.
+
+---
+
+Seems like in CrewAI, you define your tasks and agents in YAML.
+
+---
+
+CrewAI's quick start has you build a crew that researches and reports on the latest AI developments.
+
+---
+
+Each agent in CrewAI is given a role, a goal, and a backstory.
+
+Backstory in particular is such a wonderful property name. For instance, you might be a researcher or a reporting analyst—both of those are roles. Each of those might have goals such as:
+
+- Uncover cutting-edge developments in a certain topic
+- Create detailed reports on a topic or data analysis
+
+And then the backstory is: "You're a meticulous analyst with a keen eye for details."
+
+Several types of prompting are happening here.
+
+---
+
+In the tasks YAML file, you define different tasks assigned to each agent. For instance, a research agent can have a research task. Each task has a description and an expected output.
+
+---
+
+https://serper.dev/
+
+---
+
+A really nice idea would be an AI SDK tools repo. This would simply create a bunch of tool sets that could be used with AI agents. Parameters would be defined in Zod descriptions, etc., and they would be evaluated with Evalite.
+
+---
+
+Crew AI bundles in a CLI that reads all of the files and then runs the output.
+
+For instance, in the quick starts, it creates a report markdown file based on the input that you created.
+
+---
+
+CrewAI bundles in an enterprise solution which lets you deploy your crew to a production environment.
+
+---
+
+You can start to see why these frameworks are so attractive: you not only get a strong set of concepts for building with AI, but also a production-ready solution that bundles in logs and deployment. The tricky part is how to assess how good one of these frameworks is from the off, because you not only have to assess the quality of the code but also the quality of the cloud provider.
+
+---
+
+CrewAI assumed so strongly that you will use its prebuilt toolsets that it buries the create custom tools documentation deep in the docs.
+
+---
+
+You can also define tool caching in CrewAI, which is really fascinating.
+
+---
+
+CrewAI allows for code execution simply by passing `allow_code_execution` to the agent as a configuration.

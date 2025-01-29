@@ -15,6 +15,11 @@ const inputLogLocation = path.join(
   "./log/input-log.md",
 );
 
+const commonTermsLocation = path.join(
+  import.meta.dirname,
+  "./log/common-terms.md",
+);
+
 const outputLogLocation = path.join(
   import.meta.dirname,
   "./log/log.md",
@@ -40,30 +45,7 @@ const tidyUpTranscript = async (contents: string) => {
       Include links as-is - do not modify links.
       
       Common terms:
-
-      LLM-as-a-judge
-      ReAct
-      Reflexion
-      RAG
-      Vercel
-      Vercel's AI SDK
-      AI SDK
-      Uint8Array
-      Zod
-      stdout
-      agentic
-      Deno
-      Bun
-      AI SDK Core
-      AI SDK UI
-      AI SDK RSC
-      Human in the loop
-      Vite
-      TS-999
-      BM25
-      o1
-      R1
-      Chip Huyen
+      ${readFileSync(commonTermsLocation, "utf-8")}
     `,
     prompt: `<transcript>${contents}</transcript>`,
   });
