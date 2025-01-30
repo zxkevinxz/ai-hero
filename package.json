@@ -37,7 +37,8 @@
     "example": "tsx internal/run-example.ts",
     "get-token": "tsx internal/get-ai-hero-token.ts",
     "gitkeep": "tsx internal/add-gitkeeps.ts",
-    "log": "tsx --env-file=.env internal/run-input-log.ts"
+    "log": "tsx --env-file=.env internal/run-input-log.ts",
+    "update-shortlinks": "tsx internal/update-shortlinks.ts"
   },
   "type": "module",
   "devDependencies": {

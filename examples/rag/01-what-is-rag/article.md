@@ -7,7 +7,7 @@ The way the LLMs work is they have been trained on a dataset. This dataset is us
 +-------------+     +----------------+
 ```
 
-These datasets are enormous and they contain most of humanity's knowledge.
+These datasets are absolutely enormous and they contain most of humanity's knowledge.
 
 But often that's not enough.
 
