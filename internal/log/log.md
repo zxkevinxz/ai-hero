@@ -467,3 +467,25 @@ There's no declarative system for creating prompts right now. We're all just "jQ
 ---
 
 Every AI product sucks to start with because you haven't put enough data through the system in order to make it better. The fact that these products suck can actually impact whether managers and companies decide to put it out there. Figma AI is a great example.
+
+---
+
+One fascinating project we could build is essentially building Perplexity. You need to use Serpa in order to grab the web results, but then you also need to go into each page. Going to each page can be parallelized, but then you probably also need to chunk the related information.
+
+Feed that into a RAG system and then retrieve only the relevant chunks related to the user query. You could then also have a query rewriter that rewrites the query to be more specific to the user's actual needs and gives you more information.
+
+How do you perform the RAG? How do you perform the embeddings? Do you use contextual embeddings like Anthropic suggest? How large are your chunks? What should the UI be while all this is happening?
+
+---
+
+The first steps for making Perplexity would be to hook up the correct APIs:
+
+1. You would need SERP API in order to fetch search results.
+
+2. You would need a web scraping API like FireCrawl.
+
+3. You would then need an embeddings API.
+
+You should cache the result of these tool calls because we are for sure going to be slamming them with evals.
+
+You can introduce a query rewriter.
