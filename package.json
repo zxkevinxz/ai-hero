@@ -38,7 +38,8 @@
     "get-token": "tsx internal/get-ai-hero-token.ts",
     "gitkeep": "tsx internal/add-gitkeeps.ts",
     "log": "tsx --env-file=.env internal/run-input-log.ts",
-    "update-shortlinks": "tsx internal/update-shortlinks.ts"
+    "update-shortlinks": "tsx internal/update-shortlinks.ts",
+    "prepare": "husky"
   },
   "type": "module",
   "devDependencies": {
@@ -53,7 +54,8 @@
     "typescript": "^5.7.2",
     "typescript-eslint": "^8.19.0",
     "vite": "^6.0.11",
-    "chokidar": "^4.0.3"
+    "chokidar": "^4.0.3",
+    "husky": "^9.1.7"
   },
   "prettier": {
     "printWidth": 55
