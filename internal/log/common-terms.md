@@ -25,3 +25,8 @@ Evalite
 Zod
 quickstart
 CLI
+Agentic RAG
+GraphRAG
+Naive RAG
+Advanced RAG
+Modular RAG

@@ -489,3 +489,95 @@ The first steps for making Perplexity would be to hook up the correct APIs:
 You should cache the result of these tool calls because we are for sure going to be slamming them with evals.
 
 You can introduce a query rewriter.
+
+---
+
+In the Agentic RAG paper, it says traditional RAG systems are constrained by static workflows and lack the adaptability required for multistep reasoning and complex task management.
+
+---
+
+Agentic RAG transcends these limitations by embedding autonomous AI systems into the RAG pipeline.
+
+---
+
+Agentic RAG leverages agentic design patterns, reflection planning tools, and multi-agent collaboration. This can adapt to workflows to meet complex task requirements. This means Agentic RAG systems are extremely flexible, scalable, and useful across diverse applications.
+
+---
+
+So non-Agentic RAG is essentially RAG without a feedback loop. With a feedback loop, an agent can reason about the information it's received.
+
+---
+
+I should do a paper breakdown on Agentic RAG.
+
+Very useful as a survey of the current iteration of Agentic RAG programmes.
+
+https://arxiv.org/pdf/2501.09136
+
+---
+
+Agent Survey, 15th December 2024
+
+https://arxiv.org/pdf/2308.11432
+
+---
+
+The Agentic RAG paper delineates a difference between naive RAG, modular RAG, and graph RAG.
+
+---
+
+Investigate simple keyword-based retrieval techniques such as TF-IDF and BM25.
+
+---
+
+The downsides with naive RAG is that the chunks have a lack of contextual awareness because there isn't any advanced preprocessing of the chunks. It often leads to disjointed or overly generic responses.
+
+Keyword-based retrieval techniques also struggle with large data sets, often failing to identify the most relevant information.
+
+Despite these limitations, naive RAG systems provide a proof of concept for integrating retrieval with generation. This lays the foundation for more sophisticated paradigms.
+
+https://arxiv.org/pdf/2501.09136
+
+---
+
+The Agentic RAG (Retrieval-Augmented Generation) paper characterizes advanced RAG as using reranker LLMs to retrieve documents, prioritizing the most contextually relevant information.
+
+https://arxiv.org/pdf/2501.09136
+
+---
+
+The Agentic RAG paper describes a modular RAG system as one which is broken down into several modular parts.
+
+It describes several patterns such as:
+
+- Retrieve then read
+- Rewrite, retrieve, re-rank, read
+- Retrieve, read, retrieve, read in a loop
+
+There is also one called "demonstrate, search, predict" which I'm not sure what it is.
+
+https://arxiv.org/pdf/2501.09136
+
+---
+
+Graph RAG is really useful for capturing relationships between entities. It can handle structured and unstructured data through graph-based hierarchies, and it can enrich the context by pulling in information along these graph-based pathways.
+
+https://arxiv.org/pdf/2501.09136
+
+---
+
+Graph RAG is less effective when your data is unstructured or poorly annotated.
+
+https://arxiv.org/pdf/2501.09136
+
+---
+
+GraphRAG is really useful for domains where reasoning over structured relationships is crucial, such as healthcare diagnostics and legal research.
+
+https://arxiv.org/pdf/2501.09136
+
+---
+
+Agentic RAG incorporates iterative refinement. It builds in feedback loops to improve the retrieval accuracy and response relevance. It also orchestrates tasks, meaning it's quite efficient for real-time applications.
+
+https://arxiv.org/pdf/2501.09136
