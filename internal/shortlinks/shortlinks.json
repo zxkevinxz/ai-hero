@@ -2,7 +2,7 @@
   "ai-sdk-generate-text": "examples/vercel-ai-sdk/01-generate-text/main.ts",
   "projects-typescript-question-answerer": "examples/projects/01-typescript-question-answerer/main.ts",
   "projects-personal-agent": "examples/projects/02-personal-agent/main.ts",
-  "tools-serper": "examples/tools/01-serper/main.ts",
+  "tools-serper": "examples/tools/04-serper/main.ts",
   "ai-sdk-streaming-text": "examples/vercel-ai-sdk/02-streaming-text/main.ts",
   "ai-sdk-system-prompt": "examples/vercel-ai-sdk/03-system-prompt/main.ts",
   "ai-sdk-dynamic-models": "examples/vercel-ai-sdk/04-dynamic-models/main.ts",
