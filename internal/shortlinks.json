@@ -1,4 +1,0 @@
-{
-  "ai-sdk-generate-text": "examples/vercel-ai-sdk/01-generate-text/main.ts",
-  "what-is-rag": "examples/rag/01-what-is-rag/article.md"
-}

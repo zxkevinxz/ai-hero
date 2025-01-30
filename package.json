@@ -38,7 +38,9 @@
     "get-token": "tsx internal/get-ai-hero-token.ts",
     "gitkeep": "tsx internal/add-gitkeeps.ts",
     "log": "tsx --env-file=.env internal/run-input-log.ts",
-    "update-shortlinks": "tsx internal/update-shortlinks.ts",
+    "shortlinks:update": "tsx internal/shortlinks/update.ts",
+    "shortlinks:lint": "tsx internal/shortlinks/lint.ts",
+    "shortlinks:generate": "tsx --env-file=.env internal/shortlinks/generate.ts",
     "prepare": "husky"
   },
   "type": "module",

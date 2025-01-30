@@ -18,7 +18,7 @@ const getRenamedFiles = (): Map<string, string> => {
   // create mode 100644 examples/vercel-ai-sdk/20-deepseek-reasoning-tokens-TODO/main.ts
   // delete mode 100644 examples/vercel-ai-sdk/20-deepseek-reasoning-tokens/main.ts
   // create mode 100644 internal/shortlinks.json
-  // create mode 100644 internal/update-shortlinks.ts
+  // create mode 100644 internal/shortlinks:update.ts
   const diff = execSync(
     `git diff --summary --cached`,
   ).toString();
