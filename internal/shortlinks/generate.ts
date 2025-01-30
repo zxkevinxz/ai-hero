@@ -1,14 +1,12 @@
+import { anthropic } from "@ai-sdk/anthropic";
 import { generateText } from "ai";
+import dedent from "dedent";
 import {
-  existsSync,
   readdirSync,
   readFileSync,
   writeFileSync,
 } from "fs";
 import path from "path";
-import { localModel } from "../../examples/_shared/models.ts";
-import dedent from "dedent";
-import { anthropic } from "@ai-sdk/anthropic";
 
 const shortlinks: Record<string, string> = JSON.parse(
   readFileSync(
@@ -78,6 +76,9 @@ for (const filePath of examplesOnDiskWithoutShortlinks) {
     );
     process.exitCode = 1;
   } else {
+    console.log(
+      `Adding shortlink: ${shortlink} -> ${filePath}`,
+    );
     newShortlinks[shortlink] = filePath;
   }
 }
