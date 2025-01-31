@@ -12,40 +12,23 @@ const embedContent = async (contentDir: string) => {
       relativePath.endsWith(".md"),
     )
     .map((filePath) => path.join(contentDir, filePath))
-    .flatMap((absoluteFilePath) => {
+    .map((absoluteFilePath) => {
       const rawContent = readFileSync(
         absoluteFilePath,
         "utf-8",
       );
 
-      const lines = rawContent.split("\n");
-
-      lines.shift(); // Remove the title
-
-      const [questions, answer] = lines
-        .join("\n")
-        .split("# Answer")
-        .map((section) => section.trim());
-
-      return questions!.split("\n").map((question) => {
-        return {
-          question: question.trim(),
-          answer: answer!,
-        };
-      });
+      return rawContent;
     });
 
   const { embeddings } = await embedMany({
     model: embeddingModel,
-    values: contentFiles.map(
-      ({ question }) => question,
-    ),
+    values: contentFiles,
   });
 
   const vectorDatabase = contentFiles.map(
-    ({ answer, question }, index) => ({
-      answer,
-      question,
+    (content, index) => ({
+      content,
       vector: embeddings[index]!,
     }),
   );
@@ -54,23 +37,15 @@ const embedContent = async (contentDir: string) => {
 };
 
 const datasetBase = path.join(
-  import.meta.dirname,
-  "../datasets",
+  process.cwd(),
+  "../secret-datasets/datasets/total-typescript-content/chunks",
 );
 
-const datasets = await readdir(datasetBase);
+const vectorDatabase = await embedContent(
+  path.join(datasetBase),
+);
 
-for (const dataset of datasets) {
-  const vectorDatabase = await embedContent(
-    path.join(datasetBase, dataset),
-  );
-
-  writeFileSync(
-    path.join(datasetBase, dataset, `embeddings.json`),
-    JSON.stringify(vectorDatabase, null, 2),
-  );
-
-  console.log(
-    `Vector database for ${dataset} has been created`,
-  );
-}
+writeFileSync(
+  path.join(datasetBase, `embeddings.json`),
+  JSON.stringify(vectorDatabase, null, 2),
+);

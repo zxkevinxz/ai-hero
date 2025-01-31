@@ -1,38 +1,37 @@
 import { anthropic } from "@ai-sdk/anthropic";
-import * as p from "@clack/prompts";
 import {
   cosineSimilarity,
   embed,
   streamText,
-  type CoreMessage,
 } from "ai";
-import vectorDatabase from "../../../datasets/typescript-q-and-a/embeddings.json" with { type: "json" };
-import { lmstudio } from "../../_shared/models.ts";
+import vectorDatabase from "../../../../secret-datasets/datasets/total-typescript-content/chunks/embeddings.json" with { type: "json" };
 import { cliChat } from "../../_shared/cli-chat.ts";
+import { lmstudio } from "../../_shared/models.ts";
+import dedent from "dedent";
 
 const SIMILARITY_THRESHOLD = 0.6;
 
 const embeddingModel = lmstudio.textEmbeddingModel("");
 
 const takeFirstUnique =
-  (num: number) => (arr: { answer: string }[]) => {
-    const answerSet = new Set<string>();
+  (num: number) => (arr: { content: string }[]) => {
+    const contentSet = new Set<string>();
 
     for (const entry of arr) {
-      if (answerSet.size === num) {
+      if (contentSet.size === num) {
         break;
       }
 
-      answerSet.add(entry.answer);
+      contentSet.add(entry.content);
     }
 
-    return Array.from(answerSet);
+    return Array.from(contentSet);
   };
 
-await cliChat({
+cliChat({
   intro: "Welcome to MattGPT!",
-  answerQuestion: async (question, prevMessages) => {
-    const userMessages = prevMessages
+  answerQuestion: async (messages) => {
+    const userMessages = messages
       .filter((message) => message.role === "user")
       .map((message) => message.content)
       .filter(
@@ -40,14 +39,13 @@ await cliChat({
       );
 
     const embeddedQuestion = await embed({
-      value: [question, ...userMessages].join("\n"),
+      value: userMessages.join("\n"),
       model: embeddingModel,
     });
 
     const dbEntries = vectorDatabase
       .map((entry) => ({
-        answer: entry.answer,
-        question: entry.question,
+        content: entry.content,
         similarity: cosineSimilarity(
           entry.vector,
           embeddedQuestion.embedding,
@@ -60,29 +58,33 @@ await cliChat({
       .sort((a, b) => b.similarity - a.similarity);
 
     const contentToInclude =
-      takeFirstUnique(6)(dbEntries);
+      takeFirstUnique(20)(dbEntries);
 
-    prevMessages.push({
+    const message = messages.pop();
+
+    messages.push({
       role: "user",
-      content: `
+      content: dedent`
         <dataset>
           ${contentToInclude.join("\n\n")}
         </dataset>
     
         <question>
-          ${question}
+          ${message?.content}
         </question>
       `,
     });
 
     const result = streamText({
       model: anthropic("claude-3-5-haiku-latest"),
-      messages: prevMessages,
-      system: `
+      messages: messages,
+      system: dedent`
         You are Matt Pocock, a helpful TypeScript expert
         from Oxford, UK.
         Answer only using the information in
         the <dataset> tags.
+        Act as if you are the author of the dataset.
+        The dataset is composed of articles from totaltypescript.com.
         Answer only the question asked. Do not elaborate.
         Use code samples.
         Answer the question in the <question> tags.
@@ -95,4 +97,7 @@ await cliChat({
 
     return result;
   },
+}).catch((e) => {
+  console.error(e);
+  process.exit(1);
 });

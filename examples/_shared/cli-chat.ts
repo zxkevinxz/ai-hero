@@ -98,6 +98,14 @@ export const cliChat = async <
 
     const result = await opts.answerQuestion(messages);
 
+    p.log.message("");
+
+    for await (const chunk of result.textStream) {
+      process.stdout.write(chunk);
+    }
+
+    p.log.message("");
+
     const finalMessages = (await result.response)
       .messages;
 
