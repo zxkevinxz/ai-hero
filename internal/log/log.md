@@ -585,3 +585,76 @@ https://arxiv.org/pdf/2501.09136
 ---
 
 https://github.com/dqbd/tiktoken
+
+---
+
+Many AI companies now employ data labelers, dataset creators, and data quality engineers either integrated into or working alongside their core engineering teams.
+
+---
+
+When you're thinking about data curation, you need to address questions like:
+- What data do you need?
+- How much of it do you need?
+- What does high quality or low quality data mean for you?
+
+And then you need to think about techniques for data synthesis and processing. Curation, generation, and processing don't follow a linear path.
+
+---
+
+Data will mostly be blood, sweat, and tears. Working with data is really hard.
+
+---
+
+The right data can make a model more capable and safer. Poor data can cause the model to increase its biases and hallucinations. Mistakes in data can harm the model and waste resources.
+
+---
+
+Curating data is not just about creating new data; it's all about removing existing data to help a model unlearn bad behaviors.
+
+---
+
+At a high level, data creation follows three criteria: data quality, data coverage, and data quantity.
+
+---
+
+Data quality is like the quality of the ingredients in a meal: you can't have good food if your ingredients are spoiled. Data coverage is equivalent to having the right mix of ingredients, i.e., shouldn't have too much or too little sugar, and data quantity is about how many of these ingredients you should have.
+
+---
+
+A small amount of high-quality data can outperform a large amount of noisy data. 10,000 carefully crafted instructions are superior to hundreds of thousands of noisy instructions.
+
+https://arxiv.org/abs/2403.04652
+
+---
+
+You can think of data as being high quality if it has any of the following six characteristics:
+
+1. Relevance: The training example should be relevant to the task you're training the model to do. If the task is to answer legal questions, then a legal data set from the 19th century might not be relevant.
+
+2. Alignment: The data has to be aligned with the requirements of the task. For example, if the task requires factual consistency, the annotation should be factually correct.
+
+3. Consistency: The data should be consistent with itself. For instance, if you ask two annotators to annotate the same example, their annotation shouldn't be too different. In a corpus of essays, a good essay should look like other good essays. Inconsistent annotations can confuse the model, making it harder for the model to learn.
+
+4. Formatting: Data should be correctly formatted. Nothing extraneous should be in the data, like HTML tags.
+
+5. Uniqueness: The data should be sufficiently unique. Too many duplications can introduce biases and cause data contamination.
+
+6. Compliance: The data should be legal to use. You shouldn't use any PII (Personally Identifiable Information) data if you're not allowed to.
+
+---
+
+Data coverage means the model's data should cover the range of problems you expect it to solve. Real-world users will have a wide range of problems, and the way they express those problems can be very different.
+
+In the Llama 3 paper, meta researchers basically said that all of their gains were due to improving data quality and data coverage, not necessarily gains in their model architecture.
+
+---
+
+There's a common belief that high-quality code in math data is more effective than natural language text in boosting the model's reasoning capabilities.
+
+---
+
+In the vast majority of cases, you should see improvements after fine-tuning with 50 to 100 high-quality examples.
+
+---
+
+The data you create needs to be thoroughly inspected and validated. Your data is the knowledge base of your application.
