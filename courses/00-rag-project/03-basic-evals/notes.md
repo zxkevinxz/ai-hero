@@ -1,8 +1,0 @@
-- Evalite
-- Your First Dataset
-- TRY Exact Match
-- TRY Lexical Similarity
-- TRY Semantic Similarity
-- Factuality Eval (LLMs are bad at numeric scales)
-- TRY messing about with model choice
-- TRY Braintrust instead of Evalite

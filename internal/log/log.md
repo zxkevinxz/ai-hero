@@ -15,14 +15,6 @@ How do you evaluate your embedding model?
 
 ---
 
-https://www.pinecone.io/learn/chunking-strategies/
-
----
-
-https://research.trychroma.com/evaluating-chunking
-
----
-
 https://platform.openai.com/docs/guides/prompt-engineering
 
 ---
@@ -77,20 +69,6 @@ https://www.youtube.com/watch?v=vRTcE19M-KE
 
 ---
 
-The origins of in-context learning are Radford et al. 2019, the GPT-2 paper.
-
-We demonstrate language models can perform downstream tasks in a zero-shot setting without any parameter or architecture modification.
-
-https://cdn.openai.com/better-language-models/language_models_are_unsupervised_multitask_learners.pdf
-
----
-
-The GPT-3 paper is also a remarkable example of in-context learning. They went from GPT-2, which was less than 2 billion parameters, to GPT-3, which was around 175 billion.
-
-It contained some of the first examples of few-shot prompting.
-
----
-
 Quantifying Language Models' Sensitivity to Spurious Features in Prompt Design, or: How I Learned to Start Worrying About Prompt Formatting
 
 Shows several dramatic examples where a tiny choice in the prompt can lead to enormous differences in outcomes.
@@ -109,23 +87,9 @@ https://medium.com/@raphael.mansuy/quantalogic-create-production-ready-documenta
 
 ---
 
-The famous "let's think step by step" prompt is not necessarily even the best version of the chain of thought prompt. In echo prompt, instructing the model to rephrase queries for improved in-context learning, they showed there is a wide variation depending on how you frame the chain of thought prompt.
-
-In other words, you can ask "let's repeat the question and also think step by step" or "let's reiterate the question and also think step by step," and this will have a wide variation in outcomes.
-
-https://arxiv.org/abs/2309.10687
-
----
-
 Prompts are really like compiled binaries. Even though they're written in natural language, they are meant to be paired with the system they operate in.
 
 https://www.youtube.com/watch?v=vRTcE19M-KE
-
----
-
-77% of enterprise AI usage are using models that are small models less than 13 billion parameters.
-
-https://tomtunguz.com/small-but-mighty-ai/
 
 ---
 
@@ -141,23 +105,6 @@ This way, we create a system that is robust to changing the model.
 
 ---
 
-Let's say you're building an evaluator which is evaluating some marketing copy based on metrics. You want to grade the marketing copy for emotional appeal and clarity. One way to do this is to say to the LLM just rank this out of 1 to 10, so a 7 for emotional appeal and a 6 for clarity.
-
-It turns out that LLMs are really bad at this. LLMs can't create effective grades for things because they don't really know what the numbers mean in those contexts. This comes up all the time in evaluations.
-
-The best thing to do is to use a natural language-based scale. So:
-
-- Extremely unclear
-- Partially unclear
-- Somewhat unclear
-- Clear
-- Very clear
-- Extremely clear
-
-Then you can map those descriptors into numbers.
-
----
-
 Thoughtbench is an interesting project to compare different models side by side, including their chain of thought reasoning.
 
 https://github.com/disler/benchy?tab=readme-ov-file
@@ -165,37 +112,7 @@ https://www.youtube.com/watch?v=UgSGtBZnwEo
 
 ---
 
-I wonder which properties returned from each API allow you to view the chain of thought. I also wonder whether the AI SDK lets you view those. Maybe on experimental provider metadata?
-
----
-
-Agentic RAG
-
-https://arxiv.org/pdf/2501.09136
-
----
-
-How do you allow users to use their own API keys in a secure way? For instance, putting in their OpenAI API key?
-
----
-
-Need to think about error handling during streaming. How to fail gracefully.
-
----
-
-Need to think about caching LLM responses, and making that caching feel natural.
-
----
-
 When are LLMs overkill? When should you have a small and more focused neural network defined and trained with Tensorflow or PyTorch?
-
----
-
-I think models versus systems is an extremely good way to think about it. It defines the role of the AI engineer really well. The AI engineer does not really focus on the model. The engineer focuses on the environment where the model operates.
-
-This means that the AI engineer can squeeze a lot of juice out of a small model by placing it in a part of a smart system.
-
-Which would you consider more powerful: a smart model in a simple system or a simple model in a smart system?
 
 ---
 
@@ -210,14 +127,6 @@ Chip Huyen's book draws a distinction between reflection and planning. Other res
 Active Prompting with Chain of Thought
 
 https://arxiv.org/pdf/2302.12246
-
----
-
-Tree of Thoughts papers:
-
-https://arxiv.org/abs/2305.10601
-
-https://arxiv.org/abs/2305.08291
 
 ---
 
@@ -340,10 +249,6 @@ CrewAI allows for code execution simply by passing `allow_code_execution` to the
 
 ---
 
-Web search - it is extremely complex.
-
----
-
 https://www.firecrawl.dev/
 
 ---
@@ -370,16 +275,6 @@ https://github.com/stanfordnlp/dspy
 
 ---
 
-If there's additional comments on the downvote, raise them.
-
----
-
-How do you handle feedback as it scales?
-
-Karpathy spent most of his time at OpenAI working on evals.
-
----
-
 With DSPy, you're still prompt engineering.
 
 ---
@@ -395,16 +290,6 @@ Prompt optimizers work off some internal dataset, with a lot of work being put i
 ---
 
 Multi-modal behavior is impossible to secure. Text is inherently easier to police.
-
----
-
-Groq 3 coming out in two weeks
-
----
-
-Aider is an awesome example of Reflexion
-
-https://github.com/Aider-AI/aider
 
 ---
 
@@ -446,117 +331,13 @@ So with DsPY versus normal prompting or manual prompting, there is a lot to cons
 
 ---
 
-Collapsing Multi-Step Calls into a Single Prompt. There's a really good exercise here where we create an entire chain with potentially smaller models which adds a lot of latency. But what about if we just instead use different XML tags in Claude, let's say, to put this all into one output? You essentially run the entire sequential chain through a single prompt.
-
----
-
-There's a really great UI idea here where you get the application to create some plans, allow the user to edit those plans, and then take actions based on that. You could even allow it to generate concise thoughts which it feeds to the user. The user can then edit those thoughts, feed them back into the process. You can get some extremely good data off this because you not only have the initial prompt, but also how the user goes and edits that. The user could potentially cancel that as well. The "Human in the loop" stuff is absolutely fascinating.
-
----
-
-I should introduce the `<thinking>` tag when talking about Anthropic's models, especially since Anthropic's models are optimized for handling XML tags. The `<thinking>` tag allows you to pass reasoning tokens to the user, just like o1 and R1 do, allowing the user to potentially edit those reasoning tags. Also sounds pretty cool.
-
----
-
-Another question is how do you handle feedback as it scales? You probably want to handle different down votes differently. You may want to score a down vote higher if it belongs to a power user as opposed to a new user. You may even want to preferentially handle certain pieces of feedback if they're from your enterprise customers. You may want to add an extra weight to the down vote if there's additional comments associated with it. Building these systems is extremely important.
-
----
-
-There's no declarative system for creating prompts right now. We're all just "jQuery-ing" our prompts—we are creating imperative prompts which are resistant to change. Eventually, someone will create the React for prompts and a declarative framework for building prompts. This could be dspy.
-
----
-
-Every AI product sucks to start with because you haven't put enough data through the system in order to make it better. The fact that these products suck can actually impact whether managers and companies decide to put it out there. Figma AI is a great example.
-
----
-
-One fascinating project we could build is essentially building Perplexity. You need to use Serpa in order to grab the web results, but then you also need to go into each page. Going to each page can be parallelized, but then you probably also need to chunk the related information.
-
-Feed that into a RAG system and then retrieve only the relevant chunks related to the user query. You could then also have a query rewriter that rewrites the query to be more specific to the user's actual needs and gives you more information.
-
-How do you perform the RAG? How do you perform the embeddings? Do you use contextual embeddings like Anthropic suggest? How large are your chunks? What should the UI be while all this is happening?
-
----
-
-The first steps for making Perplexity would be to hook up the correct APIs:
-
-1. You would need SERP API in order to fetch search results.
-
-2. You would need a web scraping API like FireCrawl.
-
-3. You would then need an embeddings API.
-
-You should cache the result of these tool calls because we are for sure going to be slamming them with evals.
-
-You can introduce a query rewriter.
-
----
-
-In the Agentic RAG paper, it says traditional RAG systems are constrained by static workflows and lack the adaptability required for multistep reasoning and complex task management.
-
----
-
-Agentic RAG transcends these limitations by embedding autonomous AI systems into the RAG pipeline.
-
----
-
-Agentic RAG leverages agentic design patterns, reflection planning tools, and multi-agent collaboration. This can adapt to workflows to meet complex task requirements. This means Agentic RAG systems are extremely flexible, scalable, and useful across diverse applications.
-
----
-
-So non-Agentic RAG is essentially RAG without a feedback loop. With a feedback loop, an agent can reason about the information it's received.
-
----
-
-I should do a paper breakdown on Agentic RAG.
-
-Very useful as a survey of the current iteration of Agentic RAG programmes.
-
-https://arxiv.org/pdf/2501.09136
-
----
-
 Agent Survey, 15th December 2024
 
 https://arxiv.org/pdf/2308.11432
 
 ---
 
-The Agentic RAG paper delineates a difference between naive RAG, modular RAG, and graph RAG.
-
----
-
 Investigate simple keyword-based retrieval techniques such as TF-IDF and BM25.
-
----
-
-The downsides with naive RAG is that the chunks have a lack of contextual awareness because there isn't any advanced preprocessing of the chunks. It often leads to disjointed or overly generic responses.
-
-Keyword-based retrieval techniques also struggle with large data sets, often failing to identify the most relevant information.
-
-Despite these limitations, naive RAG systems provide a proof of concept for integrating retrieval with generation. This lays the foundation for more sophisticated paradigms.
-
-https://arxiv.org/pdf/2501.09136
-
----
-
-The Agentic RAG (Retrieval-Augmented Generation) paper characterizes advanced RAG as using reranker LLMs to retrieve documents, prioritizing the most contextually relevant information.
-
-https://arxiv.org/pdf/2501.09136
-
----
-
-The Agentic RAG paper describes a modular RAG system as one which is broken down into several modular parts.
-
-It describes several patterns such as:
-
-- Retrieve then read
-- Rewrite, retrieve, re-rank, read
-- Retrieve, read, retrieve, read in a loop
-
-There is also one called "demonstrate, search, predict" which I'm not sure what it is.
-
-https://arxiv.org/pdf/2501.09136
 
 ---
 
@@ -578,12 +359,6 @@ https://arxiv.org/pdf/2501.09136
 
 ---
 
-Agentic RAG incorporates iterative refinement. It builds in feedback loops to improve the retrieval accuracy and response relevance. It also orchestrates tasks, meaning it's quite efficient for real-time applications.
-
-https://arxiv.org/pdf/2501.09136
-
----
-
 https://github.com/dqbd/tiktoken
 
 ---
@@ -592,61 +367,13 @@ Many AI companies now employ data labelers, dataset creators, and data quality e
 
 ---
 
-When you're thinking about data curation, you need to address questions like:
-
-- What data do you need?
-- How much of it do you need?
-- What does high quality or low quality data mean for you?
-
-And then you need to think about techniques for data synthesis and processing. Curation, generation, and processing don't follow a linear path.
-
----
-
-Data will mostly be blood, sweat, and tears. Working with data is really hard.
-
----
-
-The right data can make a model more capable and safer. Poor data can cause the model to increase its biases and hallucinations. Mistakes in data can harm the model and waste resources.
-
----
-
 Curating data is not just about creating new data; it's all about removing existing data to help a model unlearn bad behaviors.
-
----
-
-At a high level, data creation follows three criteria: data quality, data coverage, and data quantity.
-
----
-
-Data quality is like the quality of the ingredients in a meal: you can't have good food if your ingredients are spoiled. Data coverage is equivalent to having the right mix of ingredients, i.e., shouldn't have too much or too little sugar, and data quantity is about how many of these ingredients you should have.
 
 ---
 
 A small amount of high-quality data can outperform a large amount of noisy data. 10,000 carefully crafted instructions are superior to hundreds of thousands of noisy instructions.
 
 https://arxiv.org/abs/2403.04652
-
----
-
-You can think of data as being high quality if it has any of the following six characteristics:
-
-1. Relevance: The training example should be relevant to the task you're training the model to do. If the task is to answer legal questions, then a legal data set from the 19th century might not be relevant.
-
-2. Alignment: The data has to be aligned with the requirements of the task. For example, if the task requires factual consistency, the annotation should be factually correct.
-
-3. Consistency: The data should be consistent with itself. For instance, if you ask two annotators to annotate the same example, their annotation shouldn't be too different. In a corpus of essays, a good essay should look like other good essays. Inconsistent annotations can confuse the model, making it harder for the model to learn.
-
-4. Formatting: Data should be correctly formatted. Nothing extraneous should be in the data, like HTML tags.
-
-5. Uniqueness: The data should be sufficiently unique. Too many duplications can introduce biases and cause data contamination.
-
-6. Compliance: The data should be legal to use. You shouldn't use any PII (Personally Identifiable Information) data if you're not allowed to.
-
----
-
-Data coverage means the model's data should cover the range of problems you expect it to solve. Real-world users will have a wide range of problems, and the way they express those problems can be very different.
-
-In the Llama 3 paper, meta researchers basically said that all of their gains were due to improving data quality and data coverage, not necessarily gains in their model architecture.
 
 ---
 
@@ -686,56 +413,4 @@ https://arxiv.org/abs/2305.11171
 
 ---
 
-Need to consider different types of latency for foundation models:
-- Time to first token
-- Time per token
-- Time per query
-- Time between tokens, etc.
-
-Understand what latency metrics matter to you.
-
----
-
-To make the most out of the machines, most people choose the largest models that can fit in their machines. Most GPUs come with 16 GB, 24 GB, 48 GB, and 80 GB memory.
-
-So it's not a coincidence that many models today have 7 billion or 65 billion parameters - these models fit neatly into the memory of the most common GPUs.
-
----
-
-"During the application development process, as you progress through different adaptation techniques, you'll have to do model selection over and over again. Prompt engineering might start with the strongest model overall and then work backward to see if smaller models would work." - Chip Huyen
-
----
-
-Model selection is extremely complex. It's highly dependent on not only the prompt but the chain used. Decomposing a task into two steps can radically alter the outcome. Then again, some models are just not suited for some tasks, and no matter what chain you use, the outcome won't be good enough.
-
----
-
-Choosing a model is basically a 4-step process:
-
-1. Figure out the models whose hard attributes don't work for you. This depends on your commercial policies, whether you want to use commercial APIs or host your own models.
-
-2. Use publicly available information like benchmark performance leaderboard rankings. This will help you narrow down the most promising models to experiment with. At this point, you're balancing different objectives such as model quality, latency, and cost.
-
-3. Run experiments with your own evaluation pipeline to find the best model balancing all your objectives.
-
-4. Continually monitor your model in production to detect failures and collect feedback.
-
----
-
-There's a difference in terms between "open weight" versus "open model". Open weight refers to models that don't come with open data, whereas open model is used for models that do come with open data.
-
----
-
-Commercial models often use guardrails such as blocking requests to tell racist jokes or generate photos of real people. Proprietary models are more likely to err on the side of over-censoring. These guardrails are good for the vast majority of use cases but can be a limiting factor for certain ones. For instance, if your application requires generating real faces, a model that refuses to generate real faces won't work. In this case, open-source models will be better.
-
----
-
 Open models are more likely to expose log probabilities (logprobs), which are helpful for classification tasks, evaluation, and interpretability.
-
----
-
-The Open LLM leaderboard is a great place to look at the leaderboard for open LLMs.
-
-It measures against various benchmarks and is a great place to see how open AI models stack up against each other.
-
-https://huggingface.co/spaces/open-llm-leaderboard/open_llm_leaderboard#/
