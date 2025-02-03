@@ -1,3 +1,24 @@
+# Day 1: Get Set Up
+
+- **Choose your AI provider**
+
+- **Connect to your AI Provider** via Vercel AI SDK
+
+- **Model Selection Basics**: Understand the basics of model selection, like model size and open models vs open weight vs closed source
+
+https://lmarena.ai/ is a great place to look at the leaderboard for various models.
+
+The [Open LLM leaderboard](https://huggingface.co/spaces/open-llm-leaderboard/open_llm_leaderboard#/) is a great place to look at the leaderboard for open LLMs. It measures against various benchmarks and is a great place to see how open AI models stack up against each other.
+
+- **Latency vs Accuracy**: Understand the tradeoffs between latency and accuracy, and how large or small models fit into that
+
+- **API Selection Basics**: Understand the difference between model providers and api providers, like Groq
+
+## Optional
+
+- Set up any local models if you want to
+- Connect to local models using ollama and the ollama sdk
+
 ## Create A POC
 
 Goals:
