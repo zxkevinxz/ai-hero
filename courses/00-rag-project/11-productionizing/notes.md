@@ -1,0 +1,5 @@
+- TRY adding rate limits
+- TRY adding guard rails & security layers
+- TRY writing evals for your guard rails
+- TRY: adding OTEL for observability
+- TRY: hooking up OTEL to Datadog

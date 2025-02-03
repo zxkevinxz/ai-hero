@@ -1,0 +1,5 @@
+- Data Quality, Coverage and Quantity
+- Making datasets easy to author
+- TRY: Documenting annotation guidelines
+- TRY: Integrating evals into the CI
+- TODO: more here

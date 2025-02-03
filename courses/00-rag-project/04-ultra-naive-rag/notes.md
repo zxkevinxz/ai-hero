@@ -1,0 +1,7 @@
+- Serper Search API
+- Web scraping with Firecrawl
+- File-system caching on external services
+- TRY tracking sources used in frontend
+- Write evals with modern information requested
+- TRY playing with Top-K for best eval results
+- TRY adding OCR for PDF's
