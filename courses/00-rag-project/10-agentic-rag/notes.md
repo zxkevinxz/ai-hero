@@ -9,6 +9,8 @@
 - TRY allowing <thinking> tags to integrate the chain into a single prompt
 - TRY integrating ReAct
 - TRY using a reasoning model like o1/o3-mini, discuss trade-offs and latency
+- TRY API for sending message updates for telling the user what the LLM is doing
+- TRY getting the agent to ask the user for more information - dynamic preconditions?
 
 ---
 

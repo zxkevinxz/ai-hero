@@ -8,6 +8,7 @@
 - Top-K chunks
 - TRY messing about with Top-K
 - TRY tracing the chunks used in Evalite
+- Implement related queries
 
 ---
 

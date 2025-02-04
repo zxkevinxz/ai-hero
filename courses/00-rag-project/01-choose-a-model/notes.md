@@ -3,12 +3,15 @@ Day 1: How To Choose A Model
 - Choose your AI Provider
 - Connect to the AI Provider
 - Model selection basics: open/closed, leaderboards
+- Reasoning vs non-reasoning models
+- Data concerns
 - Latency vs Accuracy
 - Model Providers vs API providers
 - TRY Local Models
 - TRY Ollama
 - TRY AI SDK Ollama Provider
 - Models vs systems
+- Context window size
 
 ---
 

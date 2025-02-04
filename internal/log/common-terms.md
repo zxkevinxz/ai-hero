@@ -30,3 +30,5 @@ GraphRAG
 Naive RAG
 Advanced RAG
 Modular RAG
+STORM
+Sentence-BERT
