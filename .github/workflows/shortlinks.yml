@@ -1,9 +1,9 @@
-name: CI Checks
+name: Shortlink Sync
 on: push
 
 jobs:
-  ci:
-    name: CI
+  shortlink-sync:
+    name: Shortlink Sync
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
