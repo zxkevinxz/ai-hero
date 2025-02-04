@@ -41,6 +41,7 @@
     "shortlinks:update": "tsx internal/shortlinks/update.ts",
     "shortlinks:lint": "tsx internal/shortlinks/lint.ts",
     "shortlinks:generate": "tsx --env-file=.env internal/shortlinks/generate.ts",
+    "shortlinks:sync": "tsx --env-file=.env internal/shortlinks/sync-with-ai-hero.ts",
     "prepare": "husky"
   },
   "type": "module",
