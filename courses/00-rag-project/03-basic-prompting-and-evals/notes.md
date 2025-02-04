@@ -1,4 +1,5 @@
 - Evalite
+- Improving the prompt
 - Your First Dataset
 - Factuality Eval (LLMs are bad at numeric scales)
 - TRY messing about with model choice

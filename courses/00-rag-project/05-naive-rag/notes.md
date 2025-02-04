@@ -18,3 +18,7 @@ Keyword-based retrieval techniques also struggle with large data sets, often fai
 Despite these limitations, naive RAG systems provide a proof of concept for integrating retrieval with generation. This lays the foundation for more sophisticated paradigms.
 
 https://arxiv.org/pdf/2501.09136
+
+---
+
+A model that can process long context doesn't necessarily use that context well. The longer the contacts the more likely the model is to focus on the wrong part of the context. Every extra context token incurs extra cost and has the potential to add extra latency.
