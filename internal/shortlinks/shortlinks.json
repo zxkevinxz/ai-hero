@@ -15,5 +15,6 @@
   "ai-sdk-analyze-pdfs": "examples/vercel-ai-sdk/12-analyze-pdfs/main.ts",
   "ai-sdk-embeddings": "examples/vercel-ai-sdk/13-embeddings/main.ts",
   "ai-sdk-simple-tool-calling": "examples/vercel-ai-sdk/14-simple-tool-calling/main.ts",
-  "ai-sdk-react-to-tool-results": "examples/vercel-ai-sdk/15-react-to-tool-results/main.ts"
+  "ai-sdk-react-to-tool-results": "examples/vercel-ai-sdk/15-react-to-tool-results/main.ts",
+  "projects-typescript-agent": "examples/projects/01.5-typescript-agent/main.ts"
 }
