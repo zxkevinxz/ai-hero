@@ -3,6 +3,7 @@ import { log } from "@clack/prompts";
 import {
   cosineSimilarity,
   embed,
+  smoothStream,
   streamText,
   tool,
 } from "ai";
@@ -95,6 +96,9 @@ cliChat({
       model: anthropic("claude-3-5-haiku-latest"),
       toolCallStreaming: true,
       messages: messages,
+      experimental_transform: smoothStream({
+        chunking: "word",
+      }),
       system: dedent`
         You are Matt Pocock, a helpful TypeScript expert
         from Oxford, UK.
