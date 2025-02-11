@@ -8,4 +8,3 @@ Day 2: Scaffolding The App
 - Docker
 - TRY deploying to Supabase
 - TRY deploying to Vercel
-- TRY implementing Stripe and billing

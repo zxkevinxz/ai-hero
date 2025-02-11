@@ -12,6 +12,7 @@
 - TRY: how do you charge per token?
 - TRY: how do you let the user choose the model?
 - TRY: how do you switch between models without the user knowing?
+- TRY implementing Stripe and billing
 
 ---
 

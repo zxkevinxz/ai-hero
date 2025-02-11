@@ -1,3 +1,5 @@
+- Use a non-agentic workflow first. Call an LLM to turn the user query into a search query, then use that to generate the response.
+- Show statuses on the frontend using `data`
 - Serper Search API
 - Web scraping with Firecrawl
 - File-system caching on external services
