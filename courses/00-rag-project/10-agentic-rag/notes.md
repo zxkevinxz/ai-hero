@@ -1,4 +1,4 @@
-- What questions would be challenging for our current system to answer? Currently, the system can only make one search query.
+- Questions which require comparative thinking are currently hard for our system to answer.
 - Write evals to cover those challenging cases
 - Allow the agent to call the API's as tools
 - Discuss differences between reasoning models and

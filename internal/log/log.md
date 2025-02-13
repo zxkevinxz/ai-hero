@@ -460,6 +460,7 @@ The sections are generated in parallel. So after that's done, you prompt the LLM
 ---
 
 Prometheus is a 13B open-source evaluative LLM that can assess long-form text based on a 1-5 scale rubric. It creates an article on aspects of:
+
 - Interest level
 - Coherence
 - Organization
@@ -470,3 +471,51 @@ Prometheus is a 13B open-source evaluative LLM that can assess long-form text ba
 Prometheus ratings correlate pretty well with human preferences, according to this paper:
 
 https://arxiv.org/pdf/2310.08491
+
+---
+
+Upcoming changes to useChat?
+
+---
+
+Autograding
+
+Take the heuristics that you put into the system prompt, and then use those to grade the system by scoring the outputs.
+
+---
+
+Query rewriting - I think I understand it
+
+---
+
+BM25 in JavaScript
+
+---
+
+Handling long conversations
+
+Ongoing research area
+
+At a certain point, summarize. Persist the summary?
+
+How does AIDER track its conversation history?
+
+Discover factoids as you go
+
+---
+
+How do you handle a conversation that has a rapid change in topic?
+
+Could you ask the user to start a new chat?
+
+Could you get the model to work out if it's finished the task?
+
+---
+
+Not a good idea to use web search as a tool call?
+
+Don't do it through tool calls - too slow. ALWAYS do web search and ALWAYS crawl.
+
+---
+
+Cline

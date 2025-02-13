@@ -7,6 +7,32 @@
 
 ---
 
+What are we talking about in terms of numbers? How many evals do we need?
+
+---
+
+Evals are the way you express your taste.
+
+How do you express your scope?
+
+Evals are E2E tests.
+
+What's a good amount of evals? What's a good amount of tests?
+
+Evals cost money to run.
+
+Running subsets of a test.
+
+---
+
+Evals - you need to know what users are NOT using it for
+
+---
+
+Evals are private - no risk of contamination
+
+---
+
 The origins of in-context learning are Radford et al. 2019, the GPT-2 paper.
 
 We demonstrate language models can perform downstream tasks in a zero-shot setting without any parameter or architecture modification.

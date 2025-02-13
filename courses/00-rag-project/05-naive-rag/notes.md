@@ -12,6 +12,10 @@
 
 ---
 
+Grab page, parse with JSDOM -> pass to Gemini -> pass to LLM
+
+---
+
 The downsides with naive RAG is that the chunks have a lack of contextual awareness because there isn't any advanced preprocessing of the chunks. It often leads to disjointed or overly generic responses.
 
 Keyword-based retrieval techniques also struggle with large data sets, often failing to identify the most relevant information.

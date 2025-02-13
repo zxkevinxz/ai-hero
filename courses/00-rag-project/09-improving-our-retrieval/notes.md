@@ -1,12 +1,20 @@
 - Now our chunks are looking better, how do we improve
   the way we retrieve them?
-- BM25 with Embeddings
+- Hybrid Search: BM25 with Embeddings
 - LLM re-ranker (rank fusion techniques) to re-rank the BM25 results with the embeddings results
 - TRY [summary-based indexing](https://www.llamaindex.ai/blog/a-new-document-summary-index-for-llm-powered-qa-systems-9a32ece2f9ec)
 - TRY query rewriting
 - TRY eval-ing the query rewriter on its own
 - TRY HyDe
 - TRY experimenting with different embedding models
+
+---
+
+Query rewriting lets you bring the users query closer to the embedded chunks.
+
+---
+
+One thing you may want to use query rewriting for is when you have a long chain of messages And you want to summarise the user's intent Before going and fetching the chunks.
 
 ---
 
