@@ -9,7 +9,7 @@ const model = smallModel;
 export const answerMyQuestion = async (
   prompt: string,
 ) => {
-  const { textStream } = await streamText({
+  const { textStream } = streamText({
     model,
     prompt,
   });

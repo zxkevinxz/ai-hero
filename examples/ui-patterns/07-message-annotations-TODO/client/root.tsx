@@ -20,30 +20,35 @@ const App = () => {
         id: "1",
         role: "user",
         content: "Hello, world!",
-        annotations: [
-          {
-            type: "working-memory",
-            content:
-              "This is a working memory annotation",
-          },
-        ],
       },
     ],
   });
 
-  console.dir(messages, { depth: null });
-
   return (
     <Wrapper>
-      {messages.map((message) => (
-        <>
-          <Message
-            key={message.id}
-            role={message.role}
-            content={message.content}
-          />
-        </>
-      ))}
+      {messages.map((message) => {
+        const latestAnnotation =
+          message.annotations?.[
+            message.annotations.length - 1
+          ];
+        return (
+          <div key={message.id}>
+            <Message
+              role={message.role}
+              content={message.content}
+            />
+            {latestAnnotation && (
+              <pre>
+                {JSON.stringify(
+                  latestAnnotation,
+                  null,
+                  2,
+                )}
+              </pre>
+            )}
+          </div>
+        );
+      })}
 
       <ChatInput
         input={input}

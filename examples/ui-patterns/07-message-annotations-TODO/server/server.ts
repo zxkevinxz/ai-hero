@@ -19,7 +19,7 @@ honoApp.post("/api/chat", async (ctx) => {
     execute: async (dataStream) => {
       const interval = setInterval(() => {
         dataStream.writeMessageAnnotation({
-          eyo: true,
+          hello: "world",
         });
       }, 100);
       const result = streamText({
