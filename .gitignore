@@ -5,3 +5,5 @@ dist
 .vscode/*.code-snippets
 .env
 *.local.*
+.next
+next-env.d.ts
