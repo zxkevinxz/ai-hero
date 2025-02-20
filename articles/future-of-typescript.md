@@ -82,7 +82,6 @@ Well enums don't exist in javascript. They are a typescript only feature.
 
 - Many folks are adopting a style of TypeScript that Bloomberg calls "Modern TypeScript"
 - This gets rid of enums, namespaces and parameter properties. You get to write JavaScript plus types. That's it.
-- One benefit of this is that creating source maps is much simpler.
 
 - With "modern typescript", writing source maps is trivial. You remove the types, leave spaces where the types were, and you have your source maps.
 - Bloomberg's project `ts-blank-space` (not Taylor Swift related) does this for you.
@@ -90,7 +89,10 @@ Well enums don't exist in javascript. They are a typescript only feature.
 - With enums, writing source maps is much trickier because the TypeScript code doesn't map directly to the JavaScript code. Enums, namespaces and parameter properties are not erasable.
 
 - The Node.js team recently added the ability to run TypeScript code. And they chose to support erasable syntax only.
-- Why? (quote from Marco Ippolito)
+- "[By] supporting syntax that requires code generation we would lose the ability to replace with blank space and therefore not need sourcemaps."
+- "Not to mention Node.js does not like codegen and magic behind the scenes so the goal was have a real experience of js + types."
+- "Finally I believe by making this decision we push the ecosystem to standardize those features in the js language."
+
 - This is a pretty massive deal. Node is probably the only JavaScript project that's bigger than TypeScript itself, except perhaps React.
 - And how did the TypeScript team react? Did they kick up a fuss? Did they say "ugh, I wish they supported enums"?
 - No. In TypeScript 5.8 there's a new flag coming: `erasableSyntaxOnly`. This will error if you use enums, namespaces or parameter properties.
@@ -125,7 +127,7 @@ Well enums don't exist in javascript. They are a typescript only feature.
 - Not only that, but it would de-fork TypeScript from JavaScript completely. There would be no need for source maps, since the source is being run at runtime.
 
 - Why isn't types as comments in JavaScript yet?
-- Quote from Gil Tayer
+- Quote from Gil Tayer: "It's dead in the water"
 - I think this is where JavaScript and TypeScript are going.
 
 - The current situation is fine. We could continue with a slightly forked TypeScript forever.
