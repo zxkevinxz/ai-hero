@@ -1,7 +1,7 @@
 {
   "ai-sdk-generate-text": "examples/vercel-ai-sdk/01-generate-text/main.ts",
   "projects-typescript-question-answerer": "examples/projects/01-typescript-question-answerer/main.ts",
-  "projects-personal-agent": "examples/projects/02-personal-agent/main.ts",
+  "projects-personal-agent": "examples/projects/03-personal-agent/main.ts",
   "ai-sdk-streaming-text": "examples/vercel-ai-sdk/02-streaming-text/main.ts",
   "ai-sdk-system-prompt": "examples/vercel-ai-sdk/03-system-prompt/main.ts",
   "ai-sdk-dynamic-models": "examples/vercel-ai-sdk/04-dynamic-models/main.ts",
@@ -16,5 +16,5 @@
   "ai-sdk-embeddings": "examples/vercel-ai-sdk/13-embeddings/main.ts",
   "ai-sdk-simple-tool-calling": "examples/vercel-ai-sdk/14-simple-tool-calling/main.ts",
   "ai-sdk-react-to-tool-results": "examples/vercel-ai-sdk/15-react-to-tool-results/main.ts",
-  "projects-typescript-agent": "examples/projects/01.5-typescript-agent/main.ts"
+  "projects-typescript-agent": "examples/projects/02-typescript-agent/main.ts"
 }
