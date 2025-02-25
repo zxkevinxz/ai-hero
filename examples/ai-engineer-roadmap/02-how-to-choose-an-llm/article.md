@@ -1,5 +1,54 @@
 ## How To Choose A LLM
 
+```mermaid
+flowchart
+  Choose(Model Selection)
+  O(Open Vs Closed)
+  G(Guardrails)
+  CW(Context Window)
+  P(No of Parameters)
+  L(Latency)
+  F(Fine-Tune)
+  Cost(Cost)
+  Reasoning --> Cost
+  Reasoning --> L
+  Evals --> Choose
+  PR(LLM Providers)
+
+  Tokens --> Cost
+  PR --> O
+  CW --> Cost
+  F --> O
+  Cost --> Choose
+  P --> L
+  L --> Choose
+  O --> Choose
+  P --> Cost
+  G --> Choose
+```
+
+Choosing the right model is crucial to the success of your AI-powered app. It's a tough, many-layered decision that you don't only make once - you'll have to make it over and over again as new models emerge and your app evolves.
+
+### Cost And Latency
+
+```mermaid
+flowchart
+  Tokens --> Cost(Cost)
+  L(Latency)
+  Choose(Model Selection)
+  Cost --> Choose
+  L --> Choose
+```
+
+Let's start by assessing the two main factors that go into choosing a model. They are cost and latency. In other words:
+
+- Cost: How much will I be spending?
+- Latency: How quickly will I get results back?
+
+Cost is relatively simple to forecast. Most LLM providers charge by token.
+
+---
+
 "During the application development process, as you progress through different adaptation techniques, you'll have to do model selection over and over again. Prompt engineering might start with the strongest model overall and then work backward to see if smaller models would work." - Chip Huyen
 
 "Choosing a model is basically a 4-step process:
