@@ -88,11 +88,20 @@ const run = async () => {
       "utf-8",
     );
 
-    const newContents = [
-      outputLogContents.trim(),
-      "---",
-      cleanedContents?.trim(),
-    ].join("\n\n");
+    let trimmedOutputLog = outputLogContents.trim();
+
+    if (trimmedOutputLog.endsWith("---")) {
+      trimmedOutputLog = trimmedOutputLog
+        .slice(0, trimmedOutputLog.lastIndexOf("---"))
+        .trim();
+    }
+
+    const newContents =
+      [
+        trimmedOutputLog,
+        "---",
+        cleanedContents?.trim(),
+      ].join("\n\n") + "\n";
 
     writeFileSync(outputLogLocation, newContents);
   });

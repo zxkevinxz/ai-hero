@@ -519,3 +519,142 @@ Don't do it through tool calls - too slow. ALWAYS do web search and ALWAYS crawl
 ---
 
 Cline
+
+---
+
+One fascinating part of Jina.ai's Deep research implementation is that it hides the loops. Their implementation is elegantly simple at its core: there's a main `while` loop with `switch` case logic directing the next action.
+
+![alt text](image-6.png)
+
+---
+
+The difference between RAG systems and deep search is that deep search performs multiple iterations through the pipeline and requires clear stop conditions. This is a kind of agentic attitude to search.
+
+---
+
+When you're using deep research, whether you carefully prompt your model or just use reasoning models, they all align with the core design principle of Deep Search: a continuous loop of searching, reading, and reasoning.
+
+---
+
+https://jina.ai/news/a-practical-guide-to-implementing-deepsearch-deepresearch/
+
+This article creates a distinction between Deep Search and Deep Research.
+
+Deep Research creates a table of contents for answering the question, then inside each section it uses Deep Search to find the answer.
+
+You can then use an LLM to consolidate the sections together and create the final long report.
+
+This is slightly different from STORM. STORM uses a much more complex setup for generating these long reports, but uses similar techniques of parallelization.
+
+![Deep Research](image-7.png)
+
+---
+
+This technique for conducting deep research probably means you can run several streams at once, generating each section in parallel. This then means that the UI can be streamed very rapidly, with each section being streamed in separately.
+
+You can then do a single coherence pass at the end to ensure that the entire document is coherent.
+
+---
+
+Most RAG systems attempt to answer questions in a single pass, but DeepSearch uses an iterative loop that continuously searches for information.
+
+---
+
+Query deduplication is really important for deep search. You don't want to be wasting time on similar search queries. In the Jina.ai article, they used an embedding model to check the semantic similarity of the search queries.
+
+https://jina.ai/news/a-practical-guide-to-implementing-deepsearch-deepresearch/
+
+---
+
+In the Jina.ai article, they activated a "beast mode" when they needed to signal to the LLM that it needs to be decisive and commit to an answer. The Beast Mode prompt is pretty funny to read.
+
+![Beast Mode Prompt](image-8.png)
+
+https://jina.ai/news/a-practical-guide-to-implementing-deepsearch-deepresearch/
+
+---
+
+One really interesting part of Jina.ai's design is that it makes the agent do some thinking in order to choose the next action and then passes those thoughts to the next step in the process. So it passes its thoughts to the query rewriter, the query rewriter then returns its own thoughts as part of structured output.
+
+---
+
+I suppose what we're seeing in Jina.ai is something I suspected all along, which is that if you control the loop, it gives you a lot more options.
+
+It means you can dynamically break the loop when needed if you need to early return, which of course saves latency.
+
+You can also run async activities while the loop is running.
+
+I do wonder whether this adds complexity in terms of streaming. Though, if you are streaming in message annotations, I imagine probably not.
+
+---
+
+One possible design for this course is that we use a Naive RAG approach. First, we implement all of the tools within the agent and test them out.
+
+We then naturally start to hit token limits, because we have to pile the tool results automatically back into the model.
+
+So at a certain point in the course, we need to switch and take control of the loop ourselves. When we take control of the loop ourselves, we gain a lot of flexibility. We can start using token budgets in order to track how many tokens we've used and make sure we don't go over a specified amount.
+
+---
+
+The question is: When in the course do we do that? Do we have time to implement everything wrong the first time and then write the second time?
+
+I think probably the answer is we need to have a workable agent by day one.
+
+We can also skip over parts of things. I can provide evaluation frameworks for tweaking the query rewriter, for instance.
+
+---
+
+One interesting weakness of the Jina.ai DeepSearch approach is that it always checks for definitiveness. This means that if you ask a question which essentially can't be answered with public information, it will enter a loop.
+
+One way to do this is to actually add an evaluator to check for definitiveness. This is a potential improvement that I could ship.
+
+---
+
+Things to build:
+
+Our First Agent
+
+- Choose the model (I recommend Google)
+- Database & Redis setup
+- Set up Discord Auth
+- Simple Agent With `maxSteps`
+- Search & Crawl Tools
+- OPTIONAL: Caching tool calls in Redis
+- Saving messages in a database
+
+Observability, Evals and Limits Of Current Approach
+
+- Upvotes/downvotes
+- Evals Harness & initial e2e dataset
+- Factuality evals for e2e dataset
+- Deterministic evals for containing references
+- Discuss limits of current approach:
+  - Poor context window management via message history
+  - Long conversations will quickly destroy our context window
+  - Entire system depends on a single prompt
+  - System is unable to get much faster - few opportunities for parallelism
+  - No way to assign a 'token budget'
+
+Taking Control Of The Loop (And Context Window)
+
+- Building our dream system prompt for the agent
+- Next Step Chooser & while loop
+- Move tools from old agent to a while loop, save in context
+- Simple Answer Analyzer (for ending the loop)
+- Vibe-check new approach with evals
+- UI & streaming infra for showing reasoning
+
+Improvements
+
+- Using a FSM-style approach for action selection (disallowing search after search, for example)
+- Tracking token usage and implementing a token budget
+- Beast Mode if we break out of our token budget
+- OPTIONAL: Question metrics extractor (for improving answer analyzer)
+
+More Improvements
+
+- Query rewriter (for improving searching)
+- Query deduplication using semantic similarity search
+- OPTIONAL: Error analyzer (for getting us back on track easier)
+- OPTIONAL: Our own crawler
+- OPTIONAL: Crawler with progressively more complex tools (cURL, JSDom, Firecrawl, Browserbase)

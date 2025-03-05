@@ -32,3 +32,6 @@ Advanced RAG
 Modular RAG
 STORM
 Sentence-BERT
+Jina.ai
+DeepSearch
+DeepResearch
