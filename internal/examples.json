@@ -6,6 +6,7 @@
     "p": "projects",
     "a": "agents",
     "ui": "ui-patterns",
-    "t": "tools"
+    "t": "tools",
+    "mcp": "model-context-protocol"
   }
 }
