@@ -1,4 +1,7 @@
-import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
+import {
+  McpServer,
+  ResourceTemplate,
+} from "@modelcontextprotocol/sdk/server/mcp.js";
 import { SSEServerTransport } from "@modelcontextprotocol/sdk/server/sse.js";
 import express from "express";
 
@@ -7,14 +10,22 @@ const server = new McpServer({
   version: "1.0.0",
 });
 
-server.tool("getWeather", {}, async () => ({
-  content: [
-    {
-      type: "text",
-      text: `The weather today is sunny!`,
-    },
-  ],
-}));
+server.resource(
+  "weather",
+  new ResourceTemplate("weather://{city}", {
+    list: undefined,
+  }),
+  async (uri, { city }) => {
+    return {
+      contents: [
+        {
+          uri: uri.href,
+          text: `The weather in ${city} is sunny!`,
+        },
+      ],
+    };
+  },
+);
 
 let transport: SSEServerTransport | undefined =
   undefined;
