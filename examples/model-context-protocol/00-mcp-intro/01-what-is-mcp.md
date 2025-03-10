@@ -2,7 +2,7 @@ If you want to get your LLM to do useful things in the world, you will quickly h
 
 All the useful things in the world, like Slack, GitHub, or even your local filesystem, provide their own unique API to access them.
 
-![alt text](image.png)
+![Diagram with a single client contacting many unique API's](http://res.cloudinary.com/total-typescript/image/upload/v1741365059/posts/post_hmxpo/ig9sx9vzc5oxzaywlff0.png)
 
 So, you end up writing a ton of code to glue your LLM and those APIs together.
 
@@ -12,7 +12,7 @@ Want to add a new tool? That's more glue code. Grim.
 
 The [Model Context Protocol](https://github.com/modelcontextprotocol/docs) acts as a layer between your LLM and those APIs. It's an [open standard](https://www.anthropic.com/news/model-context-protocol) that enables developers to build secure, two-way connections between their data sources and AI-powered tools.
 
-![alt text](image-1.png)
+![Diagram with a client contacting a MCP server, with many API's being called from it](http://res.cloudinary.com/total-typescript/image/upload/v1741365059/posts/post_hmxpo/k36sjzjwkv1bimytecqe.png)
 
 It can specify a bunch of 'tools' which the LLM can call. For GitHub, that might be 'fetch repository', or 'comment on PR'.
 
@@ -45,3 +45,36 @@ When I was posting about this online, a common comment was "aren't LLMs smart en
 In theory, the answer could be yes. Most publicly available APIs provide some sort of documentation for how to use them. In theory, you could feed that into an LLM, and it would work out how to achieve its goals using the documentation.
 
 But in practice, this approach is slow. As user-centric developers, we want to provide the fastest experience we can. And having the tools available to the LLM in a format that's easily consumable makes the process a lot faster.
+
+## Isn't This The Same As Tool Calling?
+
+Another comment I got when I posted this article online was "how similar is this to tool calling?"
+
+Tool calling is a way for LLMs to invoke functions to do things in the real world. The LLM is paired with a tool executor of some kind, which calls the tool and returns the result to the LLM:
+
+```mermaid
+flowchart
+  LLM -- "Describe Tool To Be Called" --> TC("Tool Executor")
+  TC("Tool Executor") -- "Send Result" --> LLM
+```
+
+However this pairing usually happens from within the same process. In other words, within the same server, or the same desktop application.
+
+MCP is a way to provide tools to the LLM which it can call _from a seperate process_. This can be running locally, or on a remote server:
+
+```mermaid
+flowchart
+  subgraph "MCP Client"
+    A("LLM")
+  end
+    B("MCP Protocol")
+  subgraph MCP Server
+    C("Tool Executor")
+  end
+  A -- "Describe Tool To Be Called" --> B
+  B -- "Call Tool" --> C
+  C -- "Send Result" --> B
+  B -- "Return Result" --> A
+```
+
+The key difference is that the MCP server is completely decoupled from the client.
