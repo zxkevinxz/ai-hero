@@ -1,6 +1,6 @@
-I'm going to show you the simplest way you can set up an MCP server.
+I'm going to show you the simplest way you can set up an [MCP server](https://modelcontextprotocol.io/introduction).
 
-We're going to create an MCP server, connect it to Claude Code, and then use it to run any script we want.
+We're going to create an MCP server, connect it to [Claude Code](https://docs.anthropic.com/en/docs/agents-and-tools/claude-code/overview), and then use it to run any script we want.
 
 And we're going to do this all with a single TypeScript file and no build step.
 
@@ -21,7 +21,7 @@ const server = new McpServer({
 });
 ```
 
-We're getting this MCP server from the `@modelcontextprotocol/sdk` package.
+We're getting this MCP server from the [`@modelcontextprotocol/sdk`](https://github.com/modelcontextprotocol/typescript-sdk) package.
 
 <Scrollycoding>
 
@@ -85,9 +85,11 @@ const transport = new StdioServerTransport();
 await server.connect(transport);
 ```
 
+This [stdio transport](https://modelcontextprotocol.io/docs/concepts/transports#standard-input%2Foutput-stdio) enables communication through standard input and output streams, which is ideal for local integrations and command-line tools.
+
 ## Connecting to Claude Code
 
-Now in Claude Code, we can run `claude mcp add`. This starts an interactive dialogue where you can choose the server you want to connect to.
+Now in Claude Code, we can run [`claude mcp add`](https://docs.anthropic.com/en/docs/agents-and-tools/claude-code/tutorials). This starts an interactive dialogue where you can choose the server you want to connect to.
 
 Right now Claude Code only supports `stdio` transport - which is what we're using.
 
@@ -99,7 +101,7 @@ claude mcp add "weather-example" npx tsx "/path-to-the-file.ts"
 
 This tells Claude that in order to run the file, it should call `npx tsx /path-to-the-file.ts`.
 
-`npx` lets us run any script from `npm`. `tsx` is a fabulous way to run TypeScript files without a build step. And then we pass in the path to our file.
+`npx` lets us run any script from `npm`. [`tsx`](https://github.com/privatenumber/tsx) is a fabulous way to run TypeScript files without a build step. And then we pass in the path to our file.
 
 And just like that we should be able to run `claude` and have it communicate with our MCP server. Check out the video above for a demonstration.
 

@@ -8,7 +8,7 @@ import {
 } from "../../_shared/cli-chat.ts";
 import { flagshipAnthropicModel } from "../../_shared/models.ts";
 
-const fetchFromAiHero = async (
+export const fetchFromAiHero = async (
   path: string,
   init?: Omit<RequestInit, "headers">,
 ) => {
@@ -25,7 +25,7 @@ const fetchFromAiHero = async (
   return await result.json();
 };
 
-const viewPosts = async () => {
+export const viewAIHeroPosts = async () => {
   const posts = (await fetchFromAiHero(
     "/posts",
   )) as any[];
@@ -92,7 +92,7 @@ const viewPostsTool = tool({
   description:
     "View all posts on AI Hero. The body of each post is not included.",
   execute: async () => {
-    return viewPosts();
+    return viewAIHeroPosts();
   },
 });
 
@@ -181,34 +181,4 @@ const createPostTool = tool({
 
     return result;
   },
-});
-
-await cliChat({
-  intro: "Welcome to the AI Hero Agent!",
-  answerQuestion: async (question, messages) => {
-    messages.push({
-      role: "user",
-      content: question,
-    });
-    const result = streamText({
-      model: flagshipAnthropicModel,
-      messages: messages,
-      system:
-        `You have the responsibility for updating the site AI Hero. ` +
-        `It is a blog teaching AI engineering. ` +
-        `When mentioning resources (like posts), provide URLs. ` +
-        `If a tool call fails, show the raw JSON error to the user.`,
-
-      tools: {
-        viewPostBody: viewPostBodyTool,
-        viewPosts: viewPostsTool,
-        createPost: createPostTool,
-        updatePost: updatePostTool,
-      },
-      maxSteps: 5,
-    });
-
-    return result;
-  },
-  dollarsPerMillionTokens: 3,
 });
