@@ -1,26 +1,23 @@
-import {
-  McpServer,
-  ResourceTemplate,
-} from "@modelcontextprotocol/sdk/server/mcp.js";
+import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { SSEServerTransport } from "@modelcontextprotocol/sdk/server/sse.js";
-import { ListToolsRequestSchema } from "@modelcontextprotocol/sdk/types.js";
 import express from "express";
+import { z } from "zod";
 
 const server = new McpServer({
   name: "Weather Service",
   version: "1.0.0",
 });
 
-server.resource(
-  "weather",
-  new ResourceTemplate("weather://{city}", {
-    list: undefined,
-  }),
-  async (uri, { city }) => {
+server.tool(
+  "getWeather",
+  {
+    city: z.string(),
+  },
+  async ({ city }) => {
     return {
-      contents: [
+      content: [
         {
-          uri: uri.href,
+          type: "text",
           text: `The weather in ${city} is sunny!`,
         },
       ],

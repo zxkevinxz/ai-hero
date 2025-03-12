@@ -8,14 +8,14 @@ An MCP server is really just a standard Node application. The client runs the MC
 
 ```mermaid
 flowchart
-  Client <-- MCP Protocol --> stdio <-- MCP Protocol --> Server
+  Server <-- MCP Protocol --> stdio <-- MCP Protocol --> Client
 ```
 
 However, Node apps use stdio for another purpose: logging. When you log to the console, you're writing to the same stream that the MCP server is using to communicate with the client.
 
 ```mermaid
 flowchart
-  Client <-- MCP Protocol --> stdio <-- MCP Protocol --> Server
+  Server <-- MCP Protocol --> stdio <-- MCP Protocol --> Client
   stdio <-- Logging --> Server
 ```
 
@@ -27,8 +27,8 @@ The `sse` transport doesn't have this problem because it doesn't use `stdio` for
 
 ```mermaid
 flowchart
-  Client <-- MCP Protocol --> sse <-- MCP Protocol --> Server
-  Server <-- Logging --> stdout
+  Server <-- MCP Protocol --> sse <-- MCP Protocol --> Client
+  Server -- Logging --> stdout
 ```
 
 This means that it's free to use `stdout` for logging.
