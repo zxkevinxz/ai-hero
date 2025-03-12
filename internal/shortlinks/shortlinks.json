@@ -17,9 +17,10 @@
   "ai-sdk-simple-tool-calling": "examples/vercel-ai-sdk/14-simple-tool-calling/main.ts",
   "ai-sdk-react-to-tool-results": "examples/vercel-ai-sdk/15-react-to-tool-results/main.ts",
   "projects-typescript-agent": "examples/projects/02-typescript-agent/main.ts",
-  "mcp-basic-express-server-with-sdk": "examples/model-context-protocol/03.2-sse-transport/main.ts",
+  "mcp-sse-transport": "examples/model-context-protocol/03.2-sse-transport/main.ts",
   "mcp-stdio-transport": "examples/model-context-protocol/03-stdio-transport/main.ts",
   "mcp-mcp-prompts": "examples/model-context-protocol/04-mcp-prompts/main.ts",
   "mcp-my-mcp": "examples/model-context-protocol/05-my-mcp/main.ts",
-  "mcp-my-mcp-on-http": "examples/model-context-protocol/06-my-mcp-on-http/main.ts"
+  "mcp-my-mcp-on-http": "examples/model-context-protocol/06-my-mcp-on-http/main.ts",
+  "mcp-logging-with-stdio-transport": "examples/model-context-protocol/03.5-logging-with-stdio-transport/main.ts"
 }
