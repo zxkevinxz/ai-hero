@@ -83,3 +83,10 @@ export const logger = {
 4. We export a logger object with a `log` method that writes to the log file. You can export other methods like `error`, `warn`, etc.
 
 This way, you can log to a file without interfering with the MCP protocol.
+
+## Conclusion
+
+You've got two choices when you're considering logging in an MCP server:
+
+- Use a transport that doesn't interfere with `stdout`, like `sse`.
+- Write to a `.log` file.
