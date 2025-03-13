@@ -48,6 +48,8 @@
     "get-token": "tsx internal/get-ai-hero-token.ts",
     "gitkeep": "tsx internal/add-gitkeeps.ts",
     "log": "tsx --env-file=.env internal/run-input-log.ts",
+    "concatenate-articles": "tsx internal/concatenate-articles.ts",
+    "give-course-feedback": "tsx --env-file=.env internal/read-articles.ts",
     "shortlinks:update": "tsx internal/shortlinks/update.ts",
     "shortlinks:lint": "tsx internal/shortlinks/lint.ts",
     "shortlinks:generate": "tsx --env-file=.env internal/shortlinks/generate.ts",

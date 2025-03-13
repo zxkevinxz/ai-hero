@@ -34,7 +34,7 @@ export const answerMyQuestion = async (
   prompt: string,
 ) => {
   const { textStream } = await streamText({
-    model,
+    model, // The same model we used in the previous example
     prompt,
   });
   return textStream;

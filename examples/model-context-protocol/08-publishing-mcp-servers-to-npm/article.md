@@ -1,5 +1,3 @@
-# Publishing MCP Servers to NPM
-
 A huge benefit of MCP's design is that you can very easily distribute MCP servers using freely available tools.
 
 In this example, we're going to take [our simple MCP server](https://www.aihero.dev/mcp-server-from-a-single-typescript-file) and publish it to NPM.
