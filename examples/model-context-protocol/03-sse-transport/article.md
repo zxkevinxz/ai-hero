@@ -82,7 +82,25 @@ When we get a new connection, we'll create a new SSE transport from it and save 
 
 This approach is pretty limited - it only allows for one connection at a time. We'll explore a better approach later.
 
-We add `/messages` as the path for the transport - we'll implement that later.
+```ts ! example.ts
+import express from "express";
+import { SSEServerTransport } from "@modelcontextprotocol/sdk/server/sse.js";
+
+const app = express();
+
+let transport: SSEServerTransport | undefined =
+  undefined;
+
+app.get("/sse", async (req, res) => {
+  transport = new SSEServerTransport();
+});
+```
+
+# !!steps
+
+We add `/messages` as the path for the transport. We'll implement the `/messages` endpoint in a minute.
+
+We also pass the response object (`res`) to the transport. This is used to send messages back to the client.
 
 ```ts ! example.ts
 import express from "express";

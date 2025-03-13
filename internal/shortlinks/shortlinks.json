@@ -19,7 +19,7 @@
   "projects-typescript-agent": "examples/projects/02-typescript-agent/main.ts",
   "mcp-sse-transport": "examples/model-context-protocol/03-sse-transport/main.ts",
   "mcp-stdio-transport": "examples/model-context-protocol/02-stdio-transport/main.ts",
-  "mcp-mcp-prompts": "examples/model-context-protocol/05-mcp-prompts/main.ts",
+  "mcp-prompts": "examples/model-context-protocol/05-mcp-prompts/main.ts",
   "mcp-my-mcp": "examples/model-context-protocol/06-my-mcp/main.ts",
   "mcp-my-mcp-on-http": "examples/model-context-protocol/07-my-mcp-on-http/main.ts",
   "mcp-logging-with-stdio-transport": "examples/model-context-protocol/04-logging-with-stdio-transport/main.ts",
