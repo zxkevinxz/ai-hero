@@ -1,12 +1,8 @@
 import { confirm, log, text } from "@clack/prompts";
-import { streamText, tool } from "ai";
+import { tool } from "ai";
 import { inspect } from "node:util";
 import { z } from "zod";
-import {
-  cliChat,
-  exitProcessIfCancel,
-} from "../../_shared/cli-chat.ts";
-import { flagshipAnthropicModel } from "../../_shared/models.ts";
+import { exitProcessIfCancel } from "../../_shared/cli-chat.ts";
 
 export const fetchFromAiHero = async (
   path: string,
