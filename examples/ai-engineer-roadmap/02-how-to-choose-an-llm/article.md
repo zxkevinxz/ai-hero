@@ -20,10 +20,10 @@ flowchart
   CW --> Cost
   F --> O
   Cost --> Choose
+  P --> Cost
   P --> L
   L --> Choose
   O --> Choose
-  P --> Cost
   G --> Choose
 ```
 
@@ -97,3 +97,9 @@ Need to consider different types of latency for foundation models:
 - Time between tokens, etc.
 
 Understand what latency metrics matter to you.
+
+<!-- How do we calculate and estimate token costs for different providers? -->
+
+<!-- Are there best practices for managing context window limitations in real applications? -->
+
+<!-- How do we calculate and estimate token costs for different providers? -->

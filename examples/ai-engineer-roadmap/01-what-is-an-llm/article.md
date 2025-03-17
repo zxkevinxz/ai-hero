@@ -122,3 +122,5 @@ flowchart
 ```
 
 It's possible (though very difficult) to dive into the parameters of a model to work out which ones correspond to which real-world concepts. For instance, Anthropic found the parameters in their model which correspond to the ["Golden Gate Bridge"](https://www.anthropic.com/news/golden-gate-claude). For 24 hours, they released a version of Claude which only talked about the Golden Gate Bridge.
+
+<!-- What are the hardware requirements for running inference on our local machines? -->

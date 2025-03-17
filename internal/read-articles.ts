@@ -11,7 +11,13 @@ const rl = createInterface({
   output: process.stdout,
 });
 
-const [articlesGlob] = process.argv.slice(2);
+const [seriesName, articlesGlob] =
+  process.argv.slice(2);
+
+if (!seriesName) {
+  console.error("No series name provided.");
+  process.exit(1);
+}
 
 if (!articlesGlob) {
   console.error("No articles glob provided.");
@@ -81,7 +87,7 @@ class SystemPrompt {
 
   render() {
     return dedent`
-      You are a learner studying the "Model Context Protocol" course.
+      You are a learner studying the "${seriesName}" course.
       ${this.unansweredQuestionsSection()}
       ${this.answeredQuestionsSection()}
       Read the lesson, then figure out what unanswered questions you have.
@@ -96,7 +102,7 @@ const systemPrompt = new SystemPrompt();
 const initialQuestionsResult = await generateObject({
   model: anthropic("claude-3-5-sonnet-latest"),
   system: dedent`
-    You are a learner studying the "Model Context Protocol" course.
+    You are a learner studying the "${seriesName}" course.
   `,
   schema: z.object({
     reasoning: z
@@ -119,11 +125,11 @@ initialQuestionsResult.object.unansweredQuestions.forEach(
   },
 );
 
-console.log(initialQuestionsResult.object.reasoning);
 console.dir(
   initialQuestionsResult.object.unansweredQuestions,
   { depth: null },
 );
+console.log(initialQuestionsResult.object.reasoning);
 
 for (const article of articles) {
   console.log(article.dirname, article.filename);
@@ -178,7 +184,6 @@ for (const article of articles) {
 
   systemPrompt.lesson += 1;
 
-  console.log(result.object.reasoning);
   console.dir(
     {
       answeredQuestions:
@@ -188,6 +193,7 @@ for (const article of articles) {
     },
     { depth: null },
   );
+  console.log(result.object.reasoning);
 
   await rl.question("Press enter to continue.");
 }
