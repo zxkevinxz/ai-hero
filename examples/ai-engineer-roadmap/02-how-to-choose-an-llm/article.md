@@ -1,44 +1,10 @@
-## How To Choose A LLM
+---
+slug: how-to-choose-an-llm
+---
 
-```mermaid
-flowchart
-  Choose(Model Selection)
-  O(Open Vs Closed)
-  G(Guardrails)
-  CW(Context Window)
-  P(No of Parameters)
-  L(Latency)
-  F(Fine-Tune)
-  Cost(Cost)
-  Reasoning --> Cost
-  Reasoning --> L
-  Evals --> Choose
-  PR(LLM Providers)
-
-  Tokens --> Cost
-  PR --> O
-  CW --> Cost
-  F --> O
-  Cost --> Choose
-  P --> Cost
-  P --> L
-  L --> Choose
-  O --> Choose
-  G --> Choose
-```
-
-Choosing the right model is crucial to the success of your AI-powered app. It's a tough, many-layered decision that you don't only make once - you'll have to make it over and over again as new models emerge and your app evolves.
+Choosing the right model is crucial to the success of your AI-powered app. But it's not a easy call. It's a tough, many-layered decision that you don't only make once. You'll have to make it over and over again as new models emerge and your app evolves.
 
 ### Cost And Latency
-
-```mermaid
-flowchart
-  Tokens --> Cost(Cost)
-  L(Latency)
-  Choose(Model Selection)
-  Cost --> Choose
-  L --> Choose
-```
 
 Let's start by assessing the two main factors that go into choosing a model. They are cost and latency. In other words:
 
@@ -46,8 +12,6 @@ Let's start by assessing the two main factors that go into choosing a model. The
 - Latency: How quickly will I get results back?
 
 Cost is relatively simple to forecast. Most LLM providers charge by token.
-
----
 
 "During the application development process, as you progress through different adaptation techniques, you'll have to do model selection over and over again. Prompt engineering might start with the strongest model overall and then work backward to see if smaller models would work." - Chip Huyen
 
@@ -97,9 +61,3 @@ Need to consider different types of latency for foundation models:
 - Time between tokens, etc.
 
 Understand what latency metrics matter to you.
-
-<!-- How do we calculate and estimate token costs for different providers? -->
-
-<!-- Are there best practices for managing context window limitations in real applications? -->
-
-<!-- How do we calculate and estimate token costs for different providers? -->

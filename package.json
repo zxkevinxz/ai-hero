@@ -40,6 +40,7 @@
     "zod": "^3.24.1"
   },
   "scripts": {
+    "article:dev": "tsx --env-file=.env internal/article-dev.ts",
     "lint": "tsc --project ./examples/tsconfig.json && eslint",
     "reorder": "tsx internal/reorder-examples.ts && pnpm run lint",
     "all-examples": "evalite watch examples",
@@ -68,6 +69,7 @@
     "chokidar": "^4.0.3",
     "commander": "^13.0.0",
     "eslint": "^9.17.0",
+    "front-matter": "^4.0.2",
     "husky": "^9.1.7",
     "next": "15.1.7",
     "postcss": "^8",

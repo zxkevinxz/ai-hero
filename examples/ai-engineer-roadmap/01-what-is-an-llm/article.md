@@ -1,25 +1,6 @@
-```mermaid
-flowchart
-  D(Pre-Training Data)
-  M(Model)
-  P(Parameters)
-  IN(Interpretability)
-  I(Inference Engine)
-  PR(Pre-Training)
-  T(Completion Tokens)
-  TEXT(Text Input)
-  TOK(Tokenizer)
-  INP(Input Tokens) -- Passed To --> I
-
-  TEXT -- Fed Into --> TOK
-  TOK -- Produces --> INP
-  IN -- Used To Introspect --> M
-  D -- Fed Into --> PR
-  PR -- Used to acquire --> P
-  P -- Forms the 'brain' of --> M
-  I -- Generates --> T
-  M -- Used To Run --> I
-```
+---
+slug: what-is-an-llm
+---
 
 In this article, we'll cover the basics of large language models. We'll talk about what they are, how they work, and touch on the process of creating them.
 
@@ -29,45 +10,72 @@ Most of the resources out there go really deep into how LLM's work - we're not g
 
 ```mermaid
 flowchart
+  PR(Pre-Training)
   P(Parameters)
   M(Model)
 
-  P -- Forms the 'brain' of --> M
+  P -- "Forms the 'brain' of" --> M
+  PR -- "Used to acquire" --> P
 ```
 
-A large language model is a single massive file. This file contains a bunch of numbers, encoded as 16-bit floats. These numbers are the _parameters_ of the model.
+A large language **model** is a single massive file. This file contains a bunch of numbers, encoded as 16-bit floats. These numbers are the **parameters** of the model.
 
 ```txt
-0.123978487123876123
-0.1515689756890123123
+0.1239784871238176123 // Parameter 1
+0.1515689756890123123 // Parameter 2
 ```
 
-These numbers represent the 'brain' of the model. They are the result of the model's pre-training: a process that takes a huge amount of text data and 'compresses' it (to use Andrej Karpathy's analogy) into these numbers.
+These parameters represent the 'brain' of the model. They are the result of the model's **pre-training**: a process that takes a huge amount of text data and 'compresses' it (to use Andrej Karpathy's analogy) into these numbers. They represent the model's understanding of the world, and give it the ability to remember facts and make decisions.
 
-The number of these parameters represents the size of the model's brain. In general, models with larger brains perform better, but run slower. A model with 70B parameters will run ~10x slower than a model with 7B parameters.
+The number of these parameters represents the size of the model's brain. In general, models with larger brains perform better, but run slower. A model with **70B parameters will run ~10x slower than a model with 7B parameters**.
+
+Already, we're looking at a size vs speed tradeoff - a common theme when choosing large language models.
 
 ## How Do You Run A Large Language Model?
 
 ```mermaid
 flowchart
   M(Model)
-  I(Inference Engine)
+  I(Inference Function)
   T(Completion Tokens)
-  INP(Input Tokens) -- Passed To --> I
+  INP(Input Tokens) -- Passed to --> I
+  S(Sampling Strategy)
 
-  M -- Used To Run --> I
-  I -- Generates --> T
+  M -- "Forms the Brain of" --> I
+  I -- Using a --> S
+  S -- To Generate --> T
 ```
 
-In order to get the model to do anything useful, you need to perform _inference_ on the model.
+In order to get the model to do anything useful, you need to perform **inference** on the model.
 
-Inference is the process of sending text to the model and getting a response back. This is done using an _inference engine_ - a piece of software that takes the parameters of the model and runs an algorithm on them to find the next word. This is far cheaper than pre-training the model, and can be done on your laptop.
+Inference is the process of sending text to the model and getting a response back. This is done using an **inference function** - a piece of software that takes the parameters of the model and runs an algorithm on them to find the next word. This is far cheaper than pre-training the model, and can be done on your laptop.
 
-The text is not sent to the model as is. It is first _tokenized_ into a series of numbers. These numbers are then sent to the model as _input tokens_. We'll talk about that more in a minute.
+### Sampling Strategy
 
-Explaining how inference works is outside the scope of this article. But in general, you send input tokens to the model, and it returns 'completion tokens' back to you. Startups like [Groq](https://groq.com/) promise fast inference on existing models.
+To find the next word, the model looks at all the possible tokens it could choose, and picks one.
 
-## What Are Input And Completion Tokens?
+```mermaid
+flowchart
+  I(My favourite colour is...)
+  R(Red)
+  G(Green)
+  T(Trevor)
+
+  I -- 30% --> R
+  I -- 30% --> G
+  I -- 0.2% --> T
+```
+
+To do so, it uses a **sampling strategy** picked by the developer. This strategy determines how the model chooses the next word. The most common strategies are:
+
+- **Greedy Sampling**: The model always picks the most likely word.
+- **Top-K Sampling**: The model picks from the top K most likely words.
+- **Top-P Sampling**: The model picks from the words that make up P% of the probability mass.
+- **Temperature Sampling**: The model introduces randomness into the selection process, allowing for more diverse outputs.
+
+It's beyond the scope of this article to go into the details of these strategies. Usually, as an AI Engineer, you don't have the ability to change the sampling strategy of the model you're using. However, you can tweak variables, like the temperature, to get different results.
+
+## What Are Input Tokens?
 
 ```mermaid
 flowchart
@@ -79,7 +87,7 @@ flowchart
   TOK -- Produces --> INP
 ```
 
-When you send text to the model, it first needs to be tokenized. This is the process of breaking the text up into individual words, and then converting those words into numbers. These numbers are the input tokens, which are passed to the inference engine.
+When you send text to the model, it first needs to be **tokenized**. This is the process of breaking the text up into individual words, and then converting those words into numbers. These numbers are the input tokens, which are passed to the inference engine.
 
 Each model has its own tokenizer. [Tiktokenizer](https://tiktokenizer.vercel.app/) is a great playground for exploring different tokenizers.
 
@@ -122,5 +130,3 @@ flowchart
 ```
 
 It's possible (though very difficult) to dive into the parameters of a model to work out which ones correspond to which real-world concepts. For instance, Anthropic found the parameters in their model which correspond to the ["Golden Gate Bridge"](https://www.anthropic.com/news/golden-gate-claude). For 24 hours, they released a version of Claude which only talked about the Golden Gate Bridge.
-
-<!-- What are the hardware requirements for running inference on our local machines? -->
