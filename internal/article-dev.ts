@@ -75,24 +75,19 @@ watcher.on("change", async (filePath) => {
       },
     );
 
-    console.log(fm.body.trim());
-
     const id = post.id;
 
-    const result = await fetchFromAiHero(
-      `/posts?id=${id}`,
-      {
-        method: "PUT",
-        body: JSON.stringify({
-          id,
-          fields: {
-            slug,
-            title: post.fields.title,
-            body: fm.body.trim(),
-          },
-        }),
-      },
-    );
+    await fetchFromAiHero(`/posts?id=${id}`, {
+      method: "PUT",
+      body: JSON.stringify({
+        id,
+        fields: {
+          slug,
+          title: post.fields.title,
+          body: fm.body.trim(),
+        },
+      }),
+    });
 
     console.log(
       `📝 ${slug} Updated: https://aihero.dev/${slug}`,
