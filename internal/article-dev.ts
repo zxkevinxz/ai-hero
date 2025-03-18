@@ -45,7 +45,7 @@ const watcher = watch(files, {
   ignoreInitial: true,
 });
 
-watcher.on("change", async (filePath) => {
+watcher.on("all", async (_eventName, filePath) => {
   const fileContents = await readFile(
     filePath,
     "utf-8",

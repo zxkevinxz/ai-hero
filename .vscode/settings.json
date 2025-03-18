@@ -28,5 +28,6 @@
     "workbench.editor.labelFormat": "undefined",
     "window.autoDetectColorScheme": "undefined",
     "github.copilot.nextEditSuggestions.enabled": "undefined"
-  }
+  },
+  "markdown.validate.enabled": true
 }
