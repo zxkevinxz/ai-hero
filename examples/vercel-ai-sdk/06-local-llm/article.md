@@ -107,7 +107,7 @@ const localLLMResult =
 console.log(localLLMResult);
 ```
 
-And if we run it we get a story about the LLM's grandmother.
+And if we run it we get a story about the LLMs grandmother.
 
 </Scrollycoding>
 

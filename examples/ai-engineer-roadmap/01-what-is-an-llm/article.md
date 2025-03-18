@@ -4,7 +4,7 @@ slug: what-is-an-llm
 
 In this article, we'll cover the basics of large language models. We'll talk about what they are, how they work, and touch on the process of creating them.
 
-Most of the resources out there go really deep into how LLM's work - we're not going to do that. Instead, I'll give you a brief overview of the most common concepts so you can go ahead and get building.
+Most of the resources out there go really deep into how LLMs work - we're not going to do that. Instead, I'll give you a brief overview of the most common concepts so you can go ahead and get building.
 
 ## What Is A Large Language Model?
 

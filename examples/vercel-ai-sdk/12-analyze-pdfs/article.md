@@ -1,4 +1,4 @@
-Extracting structured data out of unstructured data is one of the most powerful use cases for LLM's.
+Extracting structured data out of unstructured data is one of the most powerful use cases for LLMs.
 
 In this example, we're going to be passing an arbitrary file to an LLM and getting it to analyze it for us.
 

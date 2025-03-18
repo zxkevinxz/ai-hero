@@ -8,7 +8,7 @@ What are LLMs actually used for these days? What utility do they have? What can 
 
 In this article, we'll explore the different applications of LLMs. We'll also look at things you shouldn't build with LLMs - things that are better suited to more deterministic tools.
 
-## What To Build
+## Use LLMs For...
 
 ### Unstructured Data -> Structured Data
 
@@ -105,7 +105,7 @@ This is similar to the promise of agents like [Devin](https://devin.ai/).
 
 However, agents have not yet had their breakout moment - certainly not in the way chatbots have. Agents are yet to find their final form in terms of user experience.
 
-## What Not To Build
+## Don't Use LLMs For...
 
 ### Naive Chatbots
 
@@ -153,4 +153,4 @@ Then, there are the tasks that are too complex for deterministic systems:
 
 So any task that falls into one of these buckets is a good candidate for an LLM.
 
-But deterministic systems are not going away. They are infinitely easier to build, test, and maintain. And if you can build a system deterministically, you should.
+But deterministic systems are not going away. They are infinitely easier to build, test, and maintain. In a world where folks are throwing LLMs at every problem, being able to sniff out _when not to use them_ is a valuable skill.

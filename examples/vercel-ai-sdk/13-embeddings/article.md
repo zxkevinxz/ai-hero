@@ -64,7 +64,7 @@ Let's log this out to see what we've created here.
 
 As we can see, it's a bunch of arrays containing a load of numbers. These are vectors and these vectors represent a location in multi-dimensional space.
 
-Depending on the model, these arrays might be thousands of numbers long. And these numbers, i.e., the vector, represent the LLM's understanding of what that word is.
+Depending on the model, these arrays might be thousands of numbers long. And these numbers, i.e., the vector, represent the LLMs understanding of what that word is.
 
 ## Creating a Vector Database
 

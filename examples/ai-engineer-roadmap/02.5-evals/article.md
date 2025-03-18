@@ -2,7 +2,7 @@
 slug: what-are-evals
 ---
 
-As we saw [last time](https://aihero.dev/how-to-choose-an-llm), the only reasonable way to evaluate an LLM's suitability for your application is to test it in situ.
+As we saw [last time](https://aihero.dev/how-to-choose-an-llm), the only reasonable way to evaluate an LLMs suitability for your application is to test it in situ.
 
 How do you know if your AI application is hallucinating? How do you ensure it's outputting what you want it to? How do you ensure it stays secure? How do you test it against different models?
 
@@ -141,9 +141,11 @@ flowchart
   C -- Produces --> E
 ```
 
-This is a great replacement
+An example of this in action can be found on the [Evalite](https://www.evalite.dev/guides/scorers#creating-llm-as-a-judge-scorers) docs.
 
-TODO - talk about cost
+LLM-as-a-judge makes certain evaluations possible - but at a cost. Running LLMs are expensive, so you need to think carefully about what cadence you run them at. Running your evals every time your files change, for example, would be prohibitively expensive.
+
+Common strategies include splitting your evals into two sets - a smaller group for local testing, and a larger group to be run daily.
 
 ## The Full Picture
 
@@ -184,9 +186,32 @@ Finally, we get back a score on how well our function performed (4).
 
 This, at its heart, is what an eval is. This API is loosely inspired by Braintrust's [autoevals library](https://github.com/braintrustdata/autoevals).
 
+## How Do I Improve My Evals Over Time?
+
+Your evals are the method by which you monitor and improve your AI system. This also means that the dataset you use to evaluate your system is crucial.
+
+You need to make sure that your evals are representative of the data your system will see in production. If you're building a classifier, you need to make sure your evals cover all the edge cases your system will see.
+
+This means it's crucial to build in observability and feedback systems into your application. Once your app is deployed, your users will be the judge of whether your system is working or not. Simple feedback buttons, like upvotes and downvotes, can give you extremely valuable insights into how your system is performing.
+
+### The Data Flywheel
+
+Vercel, creators of [v0](https://v0.dev/), have written about the [AI Native Flywheel](https://vercel.com/blog/eval-driven-development-build-better-ai-faster#the-ai-native-flywheel). They describe the importance of evals in the AI development process.
+
+The best data for your evals comes from your users. By carefully monitoring how users are using your app, you can build a feedback loop that will help you improve your system over time. Let's take an example:
+
+- A user asks your app "build me a classy React application"
+- Your app generates a React app. But instead of making the UI look "classy", it uses classes in the code.
+- The user downvotes the response. Perhaps they even leave a comment explaining why.
+- You take the prompt "build me a classy React application", and create a new eval for it. You add it to your eval suite.
+- You improve the system until it passes the eval.
+- You re-deploy. The next time a user hits this prompt, they get a better response.
+
+This is the data flywheel in action. By carefully monitoring your system, and building in feedback loops, you can ensure your system is always improving.
+
 ## How Do I Run Evals?
 
-TODO
+There are many methods for running evals. A large number of startups have entered the space, offering tools to run your evals and view them online.
 
 ## Your App Is Only As Good As Its Evals
 

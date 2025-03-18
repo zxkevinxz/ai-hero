@@ -10,7 +10,7 @@ Many researchers think that foundation models cannot plan at all.
 
 Instead of actually planning they are simply retrieving things from their corpus that look like plans.
 
-However this may be because we don't know how to use LLM's the right way in order to generate plans.
+However this may be because we don't know how to use LLMs the right way in order to generate plans.
 
 Planning is, at its core, a search problem. You search among different paths to the goal, you predict the outcome of each path and you pick the path with the most promising outcome.
 
