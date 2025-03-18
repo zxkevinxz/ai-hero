@@ -45,17 +45,17 @@ flowchart
 
 In AI systems, no change is small. Their attention and transformation mechanisms are inscrutable. Whether the butterfly "flaps" or "Flaps" its wings may change the output. To put it mildly, building robust systems with them requires care.
 
-## "Vibes-only" Is A Killer
+## Manual QA Is Not Enough
 
-It's easy to get an impressive AI demo working quickly. You try a prompt. You add some exemplars of your desired output. You pull in some chain-of-thought. It clicks, and your system starts working. You've produced a tool of genuine value.
+It's easy to get an impressive AI demo working quickly. But getting that AI system to production is not easy.
 
-Time to get it into production. QA takes a hatchet to your system, and finds several bugs. You push a commit to fix the bugs. But the bugfix produces other bugs. Each commit seems to make the system worse.
-
-Perhaps the problem is the model. You switch from GPT-4o to Claude. Your output improves. The vibes are good. But new bugs appear. Perhaps the system makes its way into production. 6 months down the line, the app becomes unusably buggy. The underlying model changed, and you didn't know until your users told you.
+Specifically, it's hard to know whether the things you're changing about your app are getting better or worse. You make a change, try a few favourite prompts and see if it "feels" better. But this is a dangerous way to work.
 
 A "Manual QA-only" approach in deterministic software is usually doable. You say "I added a new page" and the QA team can rigorously test the new page, and smoke test the previous pages.
 
-But in probabilistic systems, it is a killer. When any change can affect the entire system, how do you make progress?
+But in probabilistic systems, it is a killer. When any change can affect the entire system, you need a way to know if your system is getting better or worse.
+
+This is especially true for large changes, like which model you use, or the design of your prompt.
 
 ## Evals
 
@@ -90,7 +90,7 @@ This is what evals do - they give you a score you can use to see how well your A
 
 ## Three Types Of Evals
 
-Evals come in many shapes and sizes.
+There are three main types of evals you can run on your AI system.
 
 ### Deterministic Evals
 
@@ -147,7 +147,40 @@ LLM-as-a-judge makes certain evaluations possible - but at a cost. Running LLMs 
 
 Common strategies include splitting your evals into two sets - a smaller group for local testing, and a larger group to be run daily.
 
-## The Full Picture
+## How Do I Improve My Evals Over Time?
+
+Your evals are the method by which you monitor and improve your AI system. This also means that the dataset you use to evaluate your system is crucial.
+
+You need to make sure that your evals are representative of the data your system will see in production. If you're building a classifier, you need to make sure your evals cover all the edge cases your system will see.
+
+This means it's crucial to build in observability and feedback systems into your application. Once your app is deployed, your users will be the judge of whether your system is working or not. Simple feedback buttons, like upvotes and downvotes, can give you extremely valuable insights into how your system is performing.
+
+### The Data Flywheel
+
+Vercel, creators of [v0](https://v0.dev/), have written about the [AI Native Flywheel](https://vercel.com/blog/eval-driven-development-build-better-ai-faster#the-ai-native-flywheel). They describe the importance of evals in the AI development process.
+
+The best data for your evals comes from your users. By carefully monitoring how users are using your app, you can build a feedback loop that will help you improve your system over time. Let's take an example:
+
+- A **user asks** your app "build me a classy React application"
+- **Your app** generates some React code. But instead of making the UI look "classy", it uses classes in the code.
+- **The user downvotes** the response. Perhaps they even leave a comment explaining why.
+- You take the prompt "build me a classy React application", and **create a new eval** for it. You add it to your eval suite.
+- You **improve the system** until it passes the eval.
+- You **re-deploy**. The next time a user hits this prompt, they get a better response.
+
+This is the data flywheel in action. By carefully monitoring your system, and building in feedback loops, you can ensure your system is always improving.
+
+## How Do I Run Evals?
+
+There are many methods for running evals. A large number of startups have entered the space, offering tools to run your evals and view them online.
+
+[Braintrust](https://braintrust.dev/) is a popular choice. They provide a cloud platform for running evals and sharing the results with your team, along with many other features. You can write your evals in TypeScript using their SDK. However, they use rate limits on your evals - which can be frustrating when you're trying to iterate quickly.
+
+I maintain a library called [Evalite](https://www.evalite.dev/), which is a lightweight eval runner based on the TypeScript test runner [Vitest](https://vitest.dev).
+
+Evalite is designed to allow you to run your evals locally. There's no cloud platform attached, so you can run your evals as often as you like. It's a good choice if you're just starting out.
+
+## How Evals Work In Practice
 
 Imagine an eval kind of like a function:
 
@@ -185,33 +218,6 @@ We pass in a set of prompts (1), then the task to run (2), then the methods we'r
 Finally, we get back a score on how well our function performed (4).
 
 This, at its heart, is what an eval is. This API is loosely inspired by Braintrust's [autoevals library](https://github.com/braintrustdata/autoevals).
-
-## How Do I Improve My Evals Over Time?
-
-Your evals are the method by which you monitor and improve your AI system. This also means that the dataset you use to evaluate your system is crucial.
-
-You need to make sure that your evals are representative of the data your system will see in production. If you're building a classifier, you need to make sure your evals cover all the edge cases your system will see.
-
-This means it's crucial to build in observability and feedback systems into your application. Once your app is deployed, your users will be the judge of whether your system is working or not. Simple feedback buttons, like upvotes and downvotes, can give you extremely valuable insights into how your system is performing.
-
-### The Data Flywheel
-
-Vercel, creators of [v0](https://v0.dev/), have written about the [AI Native Flywheel](https://vercel.com/blog/eval-driven-development-build-better-ai-faster#the-ai-native-flywheel). They describe the importance of evals in the AI development process.
-
-The best data for your evals comes from your users. By carefully monitoring how users are using your app, you can build a feedback loop that will help you improve your system over time. Let's take an example:
-
-- A user asks your app "build me a classy React application"
-- Your app generates a React app. But instead of making the UI look "classy", it uses classes in the code.
-- The user downvotes the response. Perhaps they even leave a comment explaining why.
-- You take the prompt "build me a classy React application", and create a new eval for it. You add it to your eval suite.
-- You improve the system until it passes the eval.
-- You re-deploy. The next time a user hits this prompt, they get a better response.
-
-This is the data flywheel in action. By carefully monitoring your system, and building in feedback loops, you can ensure your system is always improving.
-
-## How Do I Run Evals?
-
-There are many methods for running evals. A large number of startups have entered the space, offering tools to run your evals and view them online.
 
 ## Your App Is Only As Good As Its Evals
 
