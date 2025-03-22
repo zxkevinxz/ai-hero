@@ -1,6 +1,6 @@
 The model context protocol doesn't just work over `stdio`. It can also work over HTTP.
 
-The protocol uses something called [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events) (SSE). This allows bidirectional communication between the server and the client.
+The protocol uses something called [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events) (SSE). This allows the server to push data to the client in real-time over a single HTTP connection.
 
 ```mermaid
 flowchart
