@@ -6,7 +6,7 @@
   "author": "Matt Pocock <team@aihero.dev>",
   "license": "GPL",
   "dependencies": {
-    "@ai-sdk/anthropic": "^1.0.6",
+    "@ai-sdk/anthropic": "^1.2.0",
     "@ai-sdk/deepseek": "^0.1.6",
     "@ai-sdk/openai": "^1.1.0",
     "@ai-sdk/openai-compatible": "^0.0.13",
@@ -20,7 +20,7 @@
     "@types/react": "^19.0.7",
     "@types/react-dom": "^19.0.3",
     "@types/turndown": "^5.0.5",
-    "ai": "^4.1.9",
+    "ai": "^4.2.0",
     "autoevals": "^0.0.111",
     "cheerio": "^1.0.0",
     "dedent": "^1.5.3",
