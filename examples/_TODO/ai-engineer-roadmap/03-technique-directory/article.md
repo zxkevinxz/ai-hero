@@ -207,11 +207,17 @@ There are lots of tricks here. If you want to return JSON, you can prefill the r
 
 ### 5. Structured Outputs
 
-_TODO_
+**Problem**: You want the LLM to return structured data instead of text.
+
+**Solution**: Use structured outputs.
+
+Structured outputs are a way to get the LLM to return data in a structured format, like JSON. Most LLM providers support providing a JSON schema description of the output you want.
+
+The [Vercel AI SDK](https://www.aihero.dev/structured-outputs-with-vercel-ai-sdk?list=vercel-ai-sdk-tutorial) is a particularly good toolset for this.
 
 #### Resources
 
-_TODO_
+- [Anthropic's Docs](https://docs.anthropic.com/en/docs/test-and-evaluate/strengthen-guardrails/increase-consistency) on JSON mode
 
 ### 6. Reasoning
 
