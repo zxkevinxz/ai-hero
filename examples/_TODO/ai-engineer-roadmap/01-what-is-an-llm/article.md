@@ -50,6 +50,8 @@ In order to get the model to do anything useful, you need to perform **inference
 
 Inference is the process of sending text to the model and getting a response back. This is done using an **inference function** - a piece of software that takes the parameters of the model and runs an algorithm on them to find the next word. This is far cheaper than pre-training the model, and can be done on your laptop.
 
+For a deep-dive into how inference works, check out [this incredible interactive walkthrough](https://bbycroft.net/llm).
+
 ### Sampling Strategy
 
 To find the next word, the model looks at all the possible tokens it could choose, and picks one.
