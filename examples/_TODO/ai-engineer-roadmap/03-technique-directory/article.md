@@ -414,10 +414,29 @@ This pattern works well for:
 
 ### 14. Parallelizing LLM Calls
 
+**Problem**: Your LLM-powered system is taking too long because it processes tasks one at a time, creating unnecessary delays.
+
+**Solution**: Run multiple LLM calls in parallel to handle independent tasks simultaneously, dramatically reducing total processing time.
+
+There are only two ways to make a system faster: do less work, or do more work at the same time. When you need to process multiple tasks independently, running LLM calls in parallel can dramatically improve performance.
+
+You can parallelize when tasks are independent and don't rely on each other's results:
+
+- Analyzing multiple documents
+- Generating different variations of content
+- Processing multiple user queries simultaneously
+
+You cannot parallelize when tasks must happen in sequence:
+
+- When each step depends on the previous one's output
+- When maintaining strict order is crucial for the final result
+
+The performance benefits are significant. A system processing 10 documents sequentially might take 10 seconds, while parallel processing could complete in just 2-3 seconds. You should always be looking for opportunities to parallelize - even in systems that seem sequential, there might be independent components that can be processed concurrently.
+
 #### Resources
 
-- [Anthropic's Article](https://www.anthropic.com/engineering/building-effective-agents) on building effective agents mentions parallelizing LLM calls.
-- [OpenAI's docs](https://platform.openai.com/docs/guides/latency-optimization#parallelize) include a section on parallelizing LLM calls.
+- [Anthropic's Article](https://www.anthropic.com/engineering/building-effective-agents) on building effective agents mentions parallelizing LLM calls
+- [OpenAI's docs](https://platform.openai.com/docs/guides/latency-optimization#parallelize) include a section on parallelizing LLM calls
 
 ### 15. Evaluator-Optimizer
 
