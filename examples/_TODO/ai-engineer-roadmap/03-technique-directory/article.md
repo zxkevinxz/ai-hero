@@ -488,14 +488,21 @@ However, adding an LLM router introduces an additional sequential step that incr
 
 ### 17. Fine-Tuning
 
+**Problem**: Your LLM's outputs need to match specific quality requirements that simpler techniques can't achieve.
+
+**Solution**: Fine-tune a base model on your specific data to improve its performance for your use case.
+
+Fine-tuning lets you adapt existing models to your specific needs. You can start with a relatively small dataset of high-quality examples that demonstrate exactly the kind of output you want - whether that's matching your brand voice, handling specialized terminology, or maintaining consistent formatting. A fine-tuned smaller model can often outperform larger, more expensive models on your specific task.
+
+Fine-tuning sits between pre-training and prompt engineering in terms of cost and complexity. While it's an order of magnitude cheaper than training a model from scratch, each fine-tuning run will incur additional costs. There's also a risk of overfitting to specific model versions, which can make it harder to transition to newer, better models in the future.
+
+The best time to consider fine-tuning is when you have a working system that's already using simpler techniques. You've validated your use case, gathered real-world data, and identified specific areas where the model's performance needs improvement. Fine-tuning then becomes an optimization step to push your system's performance even further.
+
 #### Resources
 
 - OpenAI has a [section](https://platform.openai.com/docs/guides/optimizing-llm-accuracy#fine-tuning) in their docs on fine-tuning.
+- Anthropic's [fine-tuning guide](https://docs.anthropic.com/en/docs/fine-tuning) provides detailed requirements and best practices.
 
-### 18. Distillation
-
-_TODO_
-
-### 19. The Next Big Thing
+### 18. The Next Big Thing
 
 _TODO_

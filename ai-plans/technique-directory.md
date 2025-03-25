@@ -264,21 +264,7 @@ Tasks:
 - [ ] Show how to evaluate fine-tuned models
 - [ ] Add cost considerations
 
-### 18. Distillation
-
-**Problem**: The model is too large and expensive to run in production.
-
-**Solution**: Create a smaller, more efficient model that mimics the larger model's behavior.
-
-Tasks:
-
-- [ ] Write complete section from scratch
-- [ ] Explain what distillation is
-- [ ] Add different distillation techniques
-- [ ] Show implementation examples
-- [ ] Include performance comparisons
-
-### 19. The Next Big Thing
+### 18. The Next Big Thing
 
 **Problem**: The field is moving too fast to stay current with all developments.
 
