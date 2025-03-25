@@ -391,9 +391,26 @@ Each approach has its strengths - BM25 excels at exact matches, while embeddings
 
 ### 13. Agentic Loops
 
+**Problem**: LLM call chaining is too rigid for complex tasks. It requires predefined steps and stopping points, making it unsuitable for open-ended problems where the number of steps is unpredictable.
+
+**Solution**: Pass control to an autonomous agent that can plan, execute, and adapt based on environmental feedback.
+
+LLM call chaining uses predefined steps and stopping points, which limits its ability to handle unpredictable tasks. Agentic loops hand more control to the LLM - letting it decide when to stop based on task progress. The agent learns when to stop through real-world feedback.
+
+The resulting system is more powerful because it adapts to unpredictable paths. Instead of following predefined steps, it learns and adjusts based on each interaction. This makes it effective for complex problems where the solution isn't known in advance.
+
+This autonomy comes with a cost - increased latency from decision-making at each step. The LLM must evaluate the current state and choose the best path forward. This makes agentic loops slower than LLM call chaining, but more capable of handling complex tasks.
+
+This pattern works well for:
+
+- Complex code modifications across multiple files
+- Research tasks requiring multiple information sources
+- Customer support scenarios with unpredictable paths
+- Data analysis requiring multiple processing steps
+
 #### Resources
 
-- [Anthropic's Article](https://www.anthropic.com/engineering/building-effective-agents) on building effective agents mentions the agentic loop.
+- [Anthropic's Article](https://www.anthropic.com/engineering/building-effective-agents) on building effective agents
 
 ### 14. Parallelizing LLM Calls
 
