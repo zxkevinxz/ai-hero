@@ -90,7 +90,7 @@ XML tags can help provide delimiters for different parts of the prompt.
 An example from Anthropic's docs is a financial report:
 
 ```
-You’re a financial analyst at AcmeCorp. Generate a Q2 financial report for our investors.
+You're a financial analyst at AcmeCorp. Generate a Q2 financial report for our investors.
 
 Use this data for your report:
 
@@ -221,12 +221,52 @@ The [Vercel AI SDK](https://www.aihero.dev/structured-outputs-with-vercel-ai-sdk
 
 ### 6. Reasoning
 
+**Problem**: The LLM is not doing well enough at complex, multi-step reasoning tasks, like coding or math problems.
+
+**Solution**: Prompt the LLM to reason through the problem using chain-of-thought (CoT) prompting.
+
+Chain-of-thought prompting encourages the LLM to break down problems step-by-step, leading to more accurate and nuanced outputs. This technique is particularly effective for tasks that require complex reasoning, analysis, or problem-solving.
+
+There are three main approaches to chain-of-thought prompting, from simplest to most complex:
+
+1. **Basic CoT**: Simply include "Think step-by-step" in your prompt. While simple, this lacks guidance on how to think.
+2. **Guided CoT**: Outline specific steps for the LLM to follow in its thinking process.
+3. **Structured CoT**: Use XML tags like `<thinking>` and `<answer>` to separate reasoning from the final answer.
+
+Chain-of-thought prompting trades speed for quality. The LLM must process and output its reasoning steps, so the response time gets longer. This matters most in real-time applications - a chatbot needs quick responses, while a code reviewer can take longer for detailed analysis.
+
 #### Resources
 
 - [Anthropic's docs](https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/chain-of-thought) on chain-of-thought prompting
 - [OpenAI's advice](https://platform.openai.com/docs/guides/prompt-engineering#tactic-instruct-the-model-to-work-out-its-own-solution-before-rushing-to-a-conclusion) on giving the model time to think before coming to a conclusion
 
-### 7. Multishot Prompting (Using Examples)
+### 7. Multishot Prompting
+
+**Problem**: The LLM needs to understand a specific pattern or format but isn't getting it from a single example.
+
+**Solution**: Provide multiple examples to help the LLM understand the pattern.
+
+Multishot prompting can achieve results similar to fine-tuning, but without the cost and complexity of training a new model. It works by showing the model examples of what you want it to do.
+
+It's straightforward - provide a few examples of input and output, and the model learns the pattern. No training data or compute resources needed.
+
+Here's a practical example for writing product descriptions:
+
+```
+Write a compelling product description for each item. Focus on benefits and use sensory language.
+
+Example 1:
+Input: Wireless noise-canceling headphones
+Output: Experience crystal-clear sound in perfect silence. These premium wireless headphones wrap you in a cocoon of audio bliss, letting you focus on your music without the world's distractions. Perfect for commuters and remote workers.
+
+Example 2:
+Input: Smart fitness watch
+Output: Your personal health coach on your wrist. Track workouts, monitor sleep, and stay connected with this sleek smartwatch. The long battery life means you never miss a beat, while the water-resistant design keeps up with your active lifestyle.
+```
+
+After seeing these examples, the model learns to write product descriptions with sensory language and focus on benefits. If you then give it "Input: Coffee maker", it will generate a similar style description.
+
+Multishot prompting contrasts with zero-shot prompting, where you just describe what you want without examples.
 
 #### Resources
 
@@ -235,11 +275,21 @@ The [Vercel AI SDK](https://www.aihero.dev/structured-outputs-with-vercel-ai-sdk
 
 ### 8. Temperature
 
-_TODO_
+**Problem**: The LLM's outputs are either too deterministic (boring) or too random (unreliable).
+
+**Solution**: Adjust the temperature parameter to control the randomness of outputs.
+
+You can pass a temperature parameter to the LLM. This controls how random or deterministic the LLM's outputs are.
+
+Think of temperature as your creativity dial. When you're writing code or need precise facts, you'll want to specify 0.0-0.3 - this makes the model stick to the most likely outputs. For general chat or creative writing, a medium setting of 0.4-0.7 gives you a nice balance. And when you're brainstorming or need fresh ideas, bump it up to 0.8-1.2.
+
+Higher temperature means more interesting outputs, but might produce more hallucinations. My general suggestion is to start conservative and dial it up only when you need more variety.
+
+Either way, it's a relatively cheap technique to try.
 
 #### Resources
 
-_TODO_
+- [OpenAI's API Reference](https://platform.openai.com/docs/api-reference/chat/create) explains how temperature affects token sampling
 
 ### 9. Tool Calling
 
