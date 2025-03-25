@@ -266,28 +266,12 @@ Tasks:
 
 ### 18. The Next Big Thing
 
-**Problem**: The field is moving too fast to stay current with all developments.
+Braindump:
 
-**Solution**: Focus on understanding the fundamental patterns and principles that underlie new developments.
+The field is moving astonishingly quickly. It's impossible to keep up with all the developments.
 
-Tasks:
+This list as it stands is nowhere near complete. We've hardly scratched the surfaceof prompt engineering techniques, Subtleties in using rag, and The potential ramifications for tool use and LLM chaining.
 
-- [ ] Write complete section from scratch
-- [ ] Discuss emerging trends
-- [ ] Include speculative future developments
-- [ ] Add resources for staying updated
-- [ ] Include practical preparation steps
+Whatever the next big thing is, Make sure you experiment with it using the same techniques that we've seen before - using your evals.
 
-## Next Steps
-
-1. Begin with technique #6 (Reasoning) as it has the most complete resource list
-2. Work through each section in order
-3. For each section:
-   - [ ] Review existing resources
-   - [ ] Write comprehensive content
-   - [ ] Add practical examples
-   - [ ] Include best practices
-   - [ ] Add implementation guidance
-4. [ ] Ensure consistent formatting throughout
-5. [ ] Add cross-references between related techniques
-6. [ ] Review and revise each section for clarity and completeness
+And make sure you assess the next big thingusing the same axes we've come to understandhow complex is it how much will it cost.And don't forget to try the simple thing first
