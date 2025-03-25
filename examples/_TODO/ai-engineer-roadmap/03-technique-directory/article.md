@@ -293,12 +293,48 @@ Either way, it's a relatively cheap technique to try.
 
 ### 9. Tool Calling
 
+**Problem**: LLMs are limited to text generation and can't directly interact with external systems or perform actions in the world.
+
+**Solution**: Give the LLM access to specific functions or tools it can call to extend its capabilities beyond text generation.
+
+Tool calling bridges the gap between an LLM's internal capabilities and the external world. It allows LLMs to perform actions like making API calls, accessing databases, or manipulating files. The LLM describes what it wants to do, and the system executes the appropriate tool with the specified parameters.
+
+This pattern is particularly useful when you need your LLM to interact with external services, perform system operations, or access data that isn't in its training data. It's a fundamental building block for creating more capable AI applications.
+
+You can learn how to implement this pattern using Vercel's AI SDK in [my tutorial](https://www.aihero.dev/tool-calls-with-vercel-ai-sdk?list=vercel-ai-sdk-tutorial).
+
 #### Resources
 
 - [Anthropic's docs](https://docs.anthropic.com/en/docs/build-with-claude/tool-use/overview) on tool calling
 - [OpenAI's docs](https://platform.openai.com/docs/guides/prompt-engineering#tactic-give-the-model-access-to-specific-functions) on function calling
 
 ### 10. LLM Call Chaining
+
+**Problem**: A single LLM call isn't sufficient to complete a complex task.
+
+**Solution**: Break down the task into multiple LLM calls that build on each other.
+
+When you need to perform multiple specialized operations on the same input, trying to do everything in a single prompt often leads to subpar results. Each operation might need different expertise and focus.
+
+This is where LLM call chaining comes in. Instead of asking one prompt to do everything, you break the task into specialized steps. Each prompt focuses on one aspect of the task, and its output becomes the input for the next prompt in the chain.
+
+Take code analysis and fix generation as an example. The first prompt acts as a code analyzer, identifying and categorizing issues in the code. It provides context for each issue, creating a structured analysis.
+
+```mermaid
+flowchart LR
+    A[Input Code] --> B[Code Analyzer Prompt]
+    B -->|Structured Analysis| C[Fix Generator Prompt]
+    C -->|Targeted Fixes| D[Output]
+```
+
+The second prompt then uses this analysis to generate targeted fixes, building on the first prompt's insights. This separation of concerns allows each prompt to be optimized for its specific task, leading to better results than trying to do both operations in a single prompt.
+
+This pattern can be applied to many other scenarios:
+
+- First analyze a document's structure, then generate a summary
+- First identify key points in a debate, then craft a balanced response
+- First extract facts from research, then write a layperson explanation
+- First identify bugs in code, then generate fixes for each one
 
 #### Resources
 
@@ -307,7 +343,15 @@ Either way, it's a relatively cheap technique to try.
 
 ### 11. RAG
 
-- Retrieval can either be done via a tool call or it can be done in between LLM calls.
+**Problem**: Your LLM is making up facts because it can't access the information it needs.
+
+**Solution**: Give it access to real data through retrieval augmented generation.
+
+RAG is a powerful technique for grounding your LLM's responses in actual data and reducing hallucinations. Every LLM has a cutoff date for its training data - it can't know about events or information after that date. Instead of relying on what it learned during training, it can look up fresh information as needed.
+
+You've got two main ways to feed data to your LLM. Web search gives you access to current information and public knowledge. Company databases and documentation let you tap into private, domain-specific information. This is particularly useful when you need answers about your company's internal processes or want to ensure your LLM's responses are up-to-date.
+
+RAG shouldn't be your first port of call when building an LLM application. It adds significant complexity to your system - you need to manage data sources, handle retrieval, and ensure your context windows stay within limits.
 
 #### Resources
 

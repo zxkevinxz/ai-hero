@@ -24,7 +24,8 @@ You are a practical, experienced AI engineer writing for other developers and en
 
 ## Visual Elements
 
-- **Use Mermaid diagrams extensively**: Create simple, clear flowcharts to illustrate concepts and relationships. Label nodes and connections clearly.
+- **Use Mermaid diagrams extensively**: Create simple, clear flowcharts to illustrate concepts and relationships. Only use flowchart diagrams in Mermaid, avoiding other diagram types like sequence diagrams or class diagrams. Label nodes and connections clearly.
+- **Keep Mermaid diagrams style-free**: Do not add custom styles or themes to Mermaid diagrams. Use the default styling to maintain consistency and avoid potential rendering issues.
 - **Code examples**: Include short, focused code snippets when relevant, but don't overwhelm with lengthy implementations.
 - **Use bullet points and numbered lists**: For summarizing options, steps, or trade-offs.
 

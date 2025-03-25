@@ -118,11 +118,7 @@ Tasks:
 
 Tasks:
 
-- [ ] Expand beyond resources
-- [ ] Add examples of tool calling implementations
-- [ ] Include best practices for tool selection
-- [ ] Show how to structure tool calls effectively
-- [ ] Add error handling considerations
+- [ ] Provide 3 options for the section
 
 ### 10. LLM Call Chaining
 
