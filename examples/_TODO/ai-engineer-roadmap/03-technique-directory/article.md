@@ -440,9 +440,19 @@ The performance benefits are significant. A system processing 10 documents seque
 
 ### 15. Evaluator-Optimizer
 
+**Problem**: Your LLM's responses aren't meeting the quality standards you need, even after multiple attempts.
+
+**Solution**: Create an automated loop where one LLM generates responses while another evaluates and provides feedback for improvement.
+
+The evaluator-optimizer workflow creates a self-improving system where two LLMs work together. The first LLM generates responses, while the second evaluates them against specific criteria. This evaluation feeds back into the generation process, creating a continuous improvement loop.
+
+This pattern is particularly effective when you have clear evaluation criteria and when iterative refinement provides measurable value. You'll know it's a good fit when human feedback demonstrably improves LLM responses, and when an LLM can provide similar quality feedback.
+
+The pattern excels in scenarios like literary translation, where an evaluator LLM can catch nuanced meaning that the translator might miss initially. It's also powerful for complex search tasks requiring multiple rounds of searching and analysis, where the evaluator decides if further searches are needed.
+
 #### Resources
 
-- [Anthropic's Article](https://www.anthropic.com/engineering/building-effective-agents) on building effective agents mentions the Evaluator-Optimizer pattern.
+- [Anthropic's Article](https://www.anthropic.com/engineering/building-effective-agents) on building effective agents mentions the Evaluator-Optimizer pattern
 
 ### 16. LLM Routers
 
