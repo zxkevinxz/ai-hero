@@ -456,10 +456,35 @@ The pattern excels in scenarios like literary translation, where an evaluator LL
 
 ### 16. LLM Routers
 
+**Problem**: Different types of queries need different handling strategies.
+
+**Solution**: Use an LLM to route queries to the most appropriate handler.
+
+LLM routers act as intelligent dispatchers, analyzing each query and sending it to the right specialized handler.
+
+The router first analyzes each query to determine its type and complexity. A customer service system might classify queries into these categories:
+
+```mermaid
+flowchart TD
+    A[Customer Query] --> B[Router]
+    B --> C[Billing]
+    B --> D[Technical Support]
+    B --> E[Account Management]
+    B --> F[General Inquiry]
+```
+
+Based on this classification, the router connects the query to the appropriate handler with its specific set of instructions and capabilities.
+
+This routing approach delivers several key advantages. It improves accuracy by ensuring each query is handled by the most suitable specialized system. And it allows each specialized LLM to focus on its specific domain, similar to how LLM chaining breaks down complex tasks into specialized steps.
+
+It also solves a fundamental limitation of LLMs - most models can only handle a limited number of tools (often 30 or fewer). By routing queries to specialized handlers, you can create a system that effectively handles an unlimited number of tools, as each handler only needs access to its relevant subset.
+
+However, adding an LLM router introduces an additional sequential step that increases latency, as each query must first be analyzed before being routed to the appropriate handler.
+
 #### Resources
 
-- [Anthropic's Article](https://www.anthropic.com/engineering/building-effective-agents) on building effective agents mentions LLM routers.
-- [OpenAI's description of Intent Classification](https://platform.openai.com/docs/guides/prompt-engineering#tactic-use-intent-classification-to-identify-the-most-relevant-instructions-for-a-user-query) is an LLM router in all but name.
+- [Anthropic's Article](https://www.anthropic.com/engineering/building-effective-agents) on building effective agents mentions LLM routers
+- [OpenAI's description of Intent Classification](https://platform.openai.com/docs/guides/prompt-engineering#tactic-use-intent-classification-to-identify-the-most-relevant-instructions-for-a-user-query) is an LLM router in all but name
 
 ### 17. Fine-Tuning
 
