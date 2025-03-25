@@ -359,10 +359,35 @@ RAG shouldn't be your first port of call when building an LLM application. It ad
 
 ### 12. Chunking
 
-- If the data you're retrieving is too large to fit in the context window, you will likely want to chunk it down.
-- You'll then take these chunks, pick the relevant ones, and insert those into the prompt.
-- You may even want an LLM re-ranker to pick the relevant chunks.
-- Not all RAG systems use chunking.
+**Problem**: The information you want to retrieve is too large to fit in the context window.
+
+**Solution**: Break down the information into smaller, manageable chunks.
+
+Chunking is a fundamental technique in RAG systems that breaks down large documents into smaller, more manageable pieces. The goal is to create chunks that are both semantically meaningful and small enough to fit within your model's context window.
+
+The complexity of chunking comes from the many ways you can split content. Here are the main approaches:
+
+- **Token-based**: Splits content based on token count, ensuring you stay within model limits
+- **Character-based**: Splits by character count, useful for raw text processing
+- **Sentence-based**: Preserves natural language boundaries
+- **Paragraph-based**: Maintains larger semantic units
+- **Semantic boundaries**: Uses embeddings to find natural break points
+- **Document-structure**: Respects document formatting (headers, sections, etc.)
+
+After chunking, you'll need to find the most relevant chunks for each query. Here are the main ways to do this:
+
+- **BM25**: A traditional search algorithm that finds exact word matches, great for technical terms and error codes
+- **Embeddings**: Converts text into vectors to find semantically similar chunks
+- **Hybrid Search**: Combines BM25 and embeddings for better results
+- **LLM Reranking**: Uses another LLM to carefully read and rank chunks by relevance
+
+Each approach has its strengths - BM25 excels at exact matches, while embeddings capture meaning. Many systems combine multiple approaches for the best results.
+
+#### Resources
+
+- [Pinecone's guide](https://www.pinecone.io/learn/chunking-strategies/) on chunking strategies
+- [Anthropic's research](https://www.anthropic.com/news/contextual-retrieval) on contextual retrieval
+- [Research paper](https://research.trychroma.com/evaluating-chunking) on evaluating chunking strategies
 
 ### 13. Agentic Loops
 
