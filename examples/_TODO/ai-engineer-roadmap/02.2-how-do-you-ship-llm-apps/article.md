@@ -69,14 +69,12 @@ Every user interaction is a data point you can use to improve your app:
 
 This can feel alien to traditional developers. Most write code, test it, and ship it. But with LLM-powered apps, you'll spend a lot of time staring at spreadsheets and tracking metrics. It's not glamorous work, but it's essential. The best AI engineers embrace this data-driven mindset, even when it means doing the boring stuff.
 
-Start simple. Maybe just a thumbs up/down button for user feedback. As your team learns what metrics matter most for your use case, gradually build more sophisticated data collection. Remember: if you can't measure it, you can't improve it. And in the probabilistic world of LLM-powered apps, measurement isn't just important - it's everything.
-
-I've heard that one of the largest code generation platforms has a dedicated Slack channel that lights up on every downvote. A developer investigates, verifies the issue, and logs it as a bug. This kind of constant vigilance - treating every negative interaction as an opportunity to learn - is exactly the kind of data-driven culture you need to build successful LLM-powered apps.
+Start with simple feedback mechanisms like thumbs up/down buttons, then gradually build more sophisticated data collection as you learn what metrics matter most. I've heard that one of the largest code generation platforms has a dedicated Slack channel that alerts developers to investigate every downvote. Every negative interaction becomes a learning opportunity. If you can't measure it, you can't improve it.
 
 ## Conclusion
 
 Building LLM-powered apps requires a fundamental shift in mindset. You're moving from deterministic systems to probabilistic ones that need constant evaluation. Here's an uncomfortable truth: the first version of your app won't be great - you simply don't have enough data yet. But that's okay. The real magic happens when you build a culture of continuous improvement based on real user data.
 
-Success comes from defining clear, measurable criteria and treating every user interaction as a learning opportunity. While this might feel foreign to traditional developers, it's essential to AI engineering. The key isn't to eliminate uncertainty (that's impossible with LLMs), but to understand and manage it through systematic evaluation.
+The key isn't to eliminate uncertainty (that's impossible with LLMs), but to understand and manage it through systematic evaluation. Success comes from defining clear, measurable criteria and treating every user interaction as a learning opportunity. While this might feel foreign to traditional developers, it's essential to AI engineering.
 
 In our next article, we'll dive deep into how to build evaluation systems - what we call "evals" - that help you understand and manage the probabilistic nature of your app. We'll explore how to create systematic ways to measure performance, track improvements, and make data-driven decisions about your app's development.
