@@ -8,15 +8,7 @@ Building with LLMs requires a fundamental shift in how you think about software 
 
 It's relatively simple to get a demo up and running. But productionizing an LLM-powered app is a different story:
 
-```mermaid
-flowchart TD
-    A[Initial Launch] --> B[Vibes-Only Trough]
-    B --> C[Data-Driven Slope]
-    C --> D[Production Ready]
-
-    style B fill:#ff9999
-    style C fill:#99ff99
-```
+<ThemeImage urls={{dark: "https://res.cloudinary.com/total-typescript/image/upload/v1742898012/aihero.dev/ai-roadmap/what-are-llms-useful-for/dark/How_Good_AI_Apps_Get_Built_wbdrhf.svg", light: "https://res.cloudinary.com/total-typescript/image/upload/v1742898035/aihero.dev/ai-roadmap/what-are-llms-useful-for/light/How_Good_AI_Apps_Get_Built_xhw24q.svg"}} width={811} height={501} alt="Line chart titled 'How Good AI Apps Get Built' showing initial performance decline after launch, then steady improvement as feedback and evals are added. Left side labeled 'The Vibes-Only Trough', right side labeled 'The Eval Slope'." />
 
 The journey starts in what I call the "Vibes-Only Trough." You've got your app working with the LLM, tested it with a few examples, and it seems to be doing what you want. But when you put it in front of real users, they'll interact with it in ways you never imagined. The flexibility of natural language means users can push your system far beyond its intended use cases, exposing edge cases and failure modes you couldn't have predicted.
 
@@ -24,19 +16,7 @@ This is where systematic evaluation comes in. As you move up the "Data-Driven Sl
 
 But the journey won't be straightforward. Your app's quality will swing wildly as you experiment. Some changes will make things better, others worse.
 
-```mermaid
-flowchart TD
-    A[Quality] --> B[Time]
-    B --> C[Experiments]
-    C --> D[Improvements]
-    C --> E[Setbacks]
-    D --> A
-    E --> A
-
-    style A fill:#99ff99
-    style D fill:#99ff99
-    style E fill:#ff9999
-```
+<ThemeImage urls={{dark: "https://res.cloudinary.com/total-typescript/image/upload/v1742900549/aihero.dev/ai-roadmap/what-are-llms-useful-for/dark/AI_Engineering_Is_Experimental_ygyths.svg", light: "https://res.cloudinary.com/total-typescript/image/upload/v1742900613/aihero.dev/ai-roadmap/what-are-llms-useful-for/light/AI_Engineering_Is_Experimental_h0tdax.svg"}} width={755} height={519} alt="Line chart titled 'AI Engineering Is Experimental' showing quality over time with high variability. Several red X marks indicate failed experiments. Overall trend is upward despite frequent drops, illustrating trial-and-error progress in AI engineering." />
 
 Don't panic - this volatility is built into the game. The trick is tracking these changes systematically and learning from each iteration. This is why we need a new approach to development, one that embraces the probabilistic nature of LLMs while maintaining rigorous evaluation practices.
 
