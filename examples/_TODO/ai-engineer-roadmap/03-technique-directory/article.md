@@ -21,7 +21,7 @@ Techniques for improving a system range from simple and cheap to complex and exp
 
 I call this the Staircase Of Complexity Hell:
 
-_Image Placeholder_
+<ThemeImage urls={{dark: "https://res.cloudinary.com/total-typescript/image/upload/v1742913151/aihero.dev/ai-roadmap/what-are-llms-useful-for/dark/The_Staircase_To_Optimization_Hell_wyqa9o.svg", light: "https://res.cloudinary.com/total-typescript/image/upload/v1742913291/aihero.dev/ai-roadmap/what-are-llms-useful-for/light/The_Staircase_To_Optimization_Hell_miqhxk.svg"}} width={738} height={427} alt="Diagram titled 'The Staircase to Optimization Hell' showing a descending staircase with increasing complexity and cost. Steps from top to bottom: Zero-Shot, Few-Shot, Chain of Thought, Temperature, Workflows, Evaluators, Agentic Loops, LLM Routers, Fine-Tuning, Sampling. Gradient background from teal to red indicates rising expense." />
 
 The key is to start at the top of the staircase, and work your way down only when you've exhausted all the simpler options. Simple techniques can provide a huge improvement for a small amount of effort.
 
@@ -318,14 +318,9 @@ When you need to perform multiple specialized operations on the same input, tryi
 
 This is where LLM call chaining comes in. Instead of asking one prompt to do everything, you break the task into specialized steps. Each prompt focuses on one aspect of the task, and its output becomes the input for the next prompt in the chain.
 
-Take code analysis and fix generation as an example. The first prompt acts as a code analyzer, identifying and categorizing issues in the code. It provides context for each issue, creating a structured analysis.
+<ThemeImage urls={{dark: "https://res.cloudinary.com/total-typescript/image/upload/v1742909848/aihero.dev/ai-roadmap/what-are-llms-useful-for/dark/Workflows_mf982s.svg", light: "https://res.cloudinary.com/total-typescript/image/upload/v1742909864/aihero.dev/ai-roadmap/what-are-llms-useful-for/light/Workflows_fsublh.svg"}} width={798} height={168} alt="Diagram showing sequential LLM calls where output from one step is passed into the next, ending in a fixed stopping point." />
 
-```mermaid
-flowchart LR
-    A[Input Code] --> B[Code Analyzer Prompt]
-    B -->|Structured Analysis| C[Fix Generator Prompt]
-    C -->|Targeted Fixes| D[Output]
-```
+Take code analysis and fix generation as an example. The first prompt acts as a code analyzer, identifying and categorizing issues in the code. It provides context for each issue, creating a structured analysis.
 
 The second prompt then uses this analysis to generate targeted fixes, building on the first prompt's insights. This separation of concerns allows each prompt to be optimized for its specific task, leading to better results than trying to do both operations in a single prompt.
 
@@ -348,6 +343,8 @@ This pattern can be applied to many other scenarios:
 **Solution**: Give it access to real data through retrieval augmented generation.
 
 RAG is a powerful technique for grounding your LLM's responses in actual data and reducing hallucinations. Every LLM has a cutoff date for its training data - it can't know about events or information after that date. Instead of relying on what it learned during training, it can look up fresh information as needed.
+
+<ThemeImage urls={{dark: "https://res.cloudinary.com/total-typescript/image/upload/v1742909849/aihero.dev/ai-roadmap/what-are-llms-useful-for/dark/RAG_qpsuew.svg", light: "https://res.cloudinary.com/total-typescript/image/upload/v1742909869/aihero.dev/ai-roadmap/what-are-llms-useful-for/light/RAG_rnyqtx.svg"}} width={841} height={206} alt="Diagram showing a database feeding external information into an LLM prompt to enrich its output." />
 
 You've got two main ways to feed data to your LLM. Web search gives you access to current information and public knowledge. Company databases and documentation let you tap into private, domain-specific information. This is particularly useful when you need answers about your company's internal processes or want to ensure your LLM's responses are up-to-date.
 
@@ -396,6 +393,8 @@ Each approach has its strengths - BM25 excels at exact matches, while embeddings
 **Solution**: Pass control to an autonomous agent that can plan, execute, and adapt based on environmental feedback.
 
 LLM call chaining uses predefined steps and stopping points, which limits its ability to handle unpredictable tasks. Agentic loops hand more control to the LLM - letting it decide when to stop based on task progress. The agent learns when to stop through real-world feedback.
+
+<ThemeImage urls={{dark: "https://res.cloudinary.com/total-typescript/image/upload/v1742909843/aihero.dev/ai-roadmap/what-are-llms-useful-for/dark/Agentic_Loop_hzdnou.svg", light: "https://res.cloudinary.com/total-typescript/image/upload/v1742909863/aihero.dev/ai-roadmap/what-are-llms-useful-for/light/Agentic_Loop_qsdugl.svg"}} width={783} height={278} alt="Diagram showing LLM interacting with APIs in a loop, feeding results back into prompts until it decides to stop." />
 
 The resulting system is more powerful because it adapts to unpredictable paths. Instead of following predefined steps, it learns and adjusts based on each interaction. This makes it effective for complex problems where the solution isn't known in advance.
 

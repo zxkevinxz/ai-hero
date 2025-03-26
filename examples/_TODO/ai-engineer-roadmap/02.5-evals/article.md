@@ -211,13 +211,12 @@ Finally, we get back a score on how well our function performed (4).
 
 This, at its heart, is what an eval is. This API is loosely inspired by Braintrust's [autoevals library](https://github.com/braintrustdata/autoevals).
 
-## Your App Is Only As Good As Its Evals
+## It's The Evals, Stupid
 
-So, to summarize:
+This image, based on Vercel's AI Native Flywheel, captures the impact evals have on your application.
 
-- AI programs are highly sensitive to small changes.
-- Continuous monitoring is required to know whether your app is getting better or worse.
-- To run an eval, you take a `task`, pass it some `data`, and check the outputs using `scorers`. This generates a score between 0 and 100.
-- You can run these evals after every change, or to evaluate new models, to get a qualitative metric on your system.
+<ThemeImage urls={{dark: "https://res.cloudinary.com/total-typescript/image/upload/v1742902084/aihero.dev/ai-roadmap/what-are-llms-useful-for/dark/It_s_The_Evals_Stupid_otd3h5.svg", light: "https://res.cloudinary.com/total-typescript/image/upload/v1742902000/aihero.dev/ai-roadmap/what-are-llms-useful-for/light/It_s_The_Evals_Stupid_vukpmx.svg"}} width={808} height={545} alt="Circular flowchart titled 'It's The Evals, Stupid' showing how evals connect system design, models, product, distribution, usage, and data in a feedback loop. Arrows link stages: New Prompting/System Design Techniques → Evals → Product → Distribution → Usage → Data → back to Evals. A New Model Appears also connects into Evals." />
 
-They are the essential tool of any AI developer. Without this continuous feedback loop, your AI app will become impossible to change.
+They should be the center of your feedback loop. As more users use your app (distribution), they'll give you more data (usage). You can use this data to improve your app (data), and then run your evals again (evals).
+
+These evals let you respond to new techniques and models, and put you on a constant path of improvement.
