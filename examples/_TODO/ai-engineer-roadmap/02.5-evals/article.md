@@ -2,19 +2,15 @@
 slug: what-are-evals
 ---
 
-As we saw [last time](https://aihero.dev/how-to-choose-an-llm), the only reasonable way to evaluate an LLMs suitability for your application is to test it in situ.
+As we discussed in our [previous article](https://aihero.dev/the-ai-engineer-mindset), building with LLMs requires a fundamental shift in how you think about software development. You're no longer designing deterministic systems where inputs map to predictable outputs. Instead, you're working with probabilistic systems which are inherently unpredictable.
 
-How do you know if your AI application is hallucinating? How do you ensure it's outputting what you want it to? How do you ensure it stays secure? How do you test it against different models?
-
-The answer is evals. Evals are the AI engineer's unit tests. They are how you wrangle predictability from a probabilistic system. They are an indispensable part of productionizing any AI app.
+The key tool for managing this uncertainty is evals. Evals are the AI engineer's unit tests. They are how you wrangle predictability from a probabilistic system. They are an indispensable part of productionizing any AI app.
 
 Let's break down what evals are, and why AI apps need them so badly.
 
-## In AI Apps, No Change Is Small
+## Why Traditional Testing Isn't Enough
 
-All AI systems are subject to the butterfly effect. Tiny changes in a prompt, user input or the underlying model can result in enormous deltas in output.
-
-Normal software is deterministic. The relationship between the inputs (the code) and the outputs (the behavior of the software) is often straightforward. Each part of the codebase has its own domain of responsibility.
+Traditional software testing relies on deterministic relationships between inputs and outputs. Each component has a clear domain of responsibility:
 
 ```mermaid
 flowchart
@@ -23,11 +19,7 @@ flowchart
   C("Password Checker Code") --> CC("Password Checker")
 ```
 
-Let's say you capitalize a single word in an app menu. You can be fairly confident in the outcome of that change. The dependencies between your code and its output are clear.
-
-But capitalizing a single word in a prompt can create massive ripple effects.
-
-The dependencies in an AI system are totally inscrutable. Every input is fed into a black box, which only then produces an output.
+But LLM-powered systems are different. Every input goes through a complex transformation process that's hard to predict:
 
 ```mermaid
 flowchart
