@@ -1,23 +1,19 @@
-## Course Outline
+Ready to build AI-powered applications but don't know where to start?
 
-Do you want to build AI-powered applications, but don't know where to start?
+This tutorial gives you a clear map of the AI Engineer's toolkit. By the end, you'll understand the key components that power modern AI applications.
 
-This course will give you an overview of the field. You'll understand all of the different tools in the AI Engineer's toolbox.
+We'll keep it practical and accessible. No deep dives into linear algebra - we'll focus on understanding what each tool does and how it fits into real-world applications. The hands-on experience will come later.
 
-We won't get bogged down in the details. No linear algebra. We'll stay at a high level, understanding what each tool does and how it fits into the bigger picture. We can get hands-on later.
+This is a quick, focused overview - you can complete it in about an hour. By the end, you'll be equipped to engage in meaningful discussions about AI engineering. When the next breakthrough hits the news, you'll understand exactly where it fits in the broader AI ecosystem.
 
-We won't be spending long on this - you'll be able to rattle through this tutorial in an hour.
+We'll learn about:
 
-By the end of this course you'll be able to participate in real conversations about AI engineering. When the next big thing breaks, you'll be able to understand how it fits into the AI landscape.
+- How AI Models Work
+- Choosing the right model for your app
+- The mindset of an AI Engineer
+- How to choose a technique to improve your app
+- How to productionize and improve your app
 
-And you'll be ready to start diving into the practical side of the field, with my Vercel AI SDK free tutorial. That'll give you a hands-on introduction to building AI-powered applications.
+Then you'll be ready to get your hands dirty with my [Vercel AI SDK](https://www.aihero.dev/vercel-ai-sdk-tutorial) tutorial, where you'll build your first AI-powered application from scratch.
 
-Let's start your AI Engineering journey!
-
-## Prerequisites
-
-In this section I outline the prerequisites for the course.
-
-- Basic understanding of TypeScript
-- Node.js installed
-- IDE: VSCode, Cursor or Windsurf recommended
+Let's dive into the world of AI Engineering!
