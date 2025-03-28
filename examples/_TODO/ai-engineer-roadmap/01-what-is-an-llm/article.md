@@ -18,14 +18,14 @@ flowchart
   PR -- "Used to acquire" --> P
 ```
 
-A large language **model** is a single massive file. This file contains a bunch of numbers, encoded as 16-bit floats. These numbers are the **parameters** of the model.
+A large language **model** is essentially a massive compressed file - think of it like a 1TB zip file. This file contains a bunch of numbers, encoded as 16-bit floats. These numbers are the **parameters** of the model.
 
 ```txt
 0.1239784871238176123 // Parameter 1
 0.1515689756890123123 // Parameter 2
 ```
 
-These parameters represent the 'brain' of the model. They are the result of the model's **pre-training**: a process that takes a huge amount of text data and 'compresses' it (to use Andrej Karpathy's analogy) into these numbers. They represent the model's understanding of the world, and give it the ability to remember facts and make decisions.
+These parameters represent the 'brain' of the model. They are the result of the model's **pre-training**: a process that takes a huge amount of text data and 'compresses' it into these numbers. They represent the model's understanding of the world, and give it the ability to remember facts and make decisions.
 
 The number of these parameters represents the size of the model's brain. In general, models with larger brains perform better, but run slower. A model with **70B parameters will run ~10x slower than a model with 7B parameters**.
 
@@ -100,9 +100,11 @@ flowchart
   D(Pre-Training Data)
   P(Parameters)
   PR(Pre-Training)
+  PT(Post-Training)
 
   D -- Fed Into --> PR
   PR -- Used to acquire --> P
+  PT -- Shapes behavior --> P
 ```
 
 In order to acquire the parameters, you need to train the model. Training large language models is an extremely involved process that requires a lot of time, expertise, and money. Learning how to do it is outside the scope of this article.
@@ -119,7 +121,17 @@ flowchart
   PR -- Used to acquire --> P
 ```
 
-You end up with a huge file of parameters - a kind of 'compressed' version of all of the data the model was trained on.
+The training process has two main phases:
+
+1. **Pre-training**: This gives the model its knowledge by compressing vast amounts of internet data into parameters
+2. **Post-training**: This shapes the model's personality and behavior through careful instruction and example.
+
+You end up with a huge file of parameters - a kind of 'compressed' version of all of the data the model was trained on, with its personality shaped by post-training. Without post-training, the model would just be an inert blob of knowledge - it wouldn't know how to behave like a helpful assistant.
+
+#### Resources
+
+- [Intro To Large Language Models](https://www.youtube.com/watch?v=zjkBMFhNj_g) by Andrej Karpathy
+- [How I Use LLM's](https://www.youtube.com/watch?v=EWvNQjAaOHw) by Andrej Karpathy
 
 ## How Do You Introspect A Model?
 
