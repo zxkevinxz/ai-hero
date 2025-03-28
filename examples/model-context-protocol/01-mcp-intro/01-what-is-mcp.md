@@ -1,3 +1,7 @@
+---
+slug: what-problem-does-model-context-protocol-solve
+---
+
 If you want to get your LLM to do useful things in the world, you will quickly hit a problem.
 
 All the useful things in the world, like Slack, GitHub, or even your local filesystem, provide their own unique API to access them.
@@ -45,6 +49,10 @@ When I was posting about this online, a common comment was "aren't LLMs smart en
 In theory, the answer could be yes. Most publicly available APIs provide some sort of documentation for how to use them. In theory, you could feed that into an LLM, and it would work out how to achieve its goals using the documentation.
 
 But in practice, this approach is slow. As user-centric developers, we want to provide the fastest experience we can. And having the tools available to the LLM in a format that's easily consumable makes the process a lot faster.
+
+## OpenAI's Support
+
+The Model Context Protocol has gained significant industry backing. [Sam Altman announced](https://x.com/sama/status/1904957253456941061) that OpenAI will be supporting MCP across its products, starting with the Agents SDK and expanding to ChatGPT Desktop and the Responses API. This endorsement from OpenAI signals MCP's growing importance in the AI development ecosystem.
 
 ## Isn't This The Same As Tool Calling?
 
