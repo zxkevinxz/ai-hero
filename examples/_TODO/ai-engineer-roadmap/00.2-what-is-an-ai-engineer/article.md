@@ -63,6 +63,15 @@ This is a common misconception. AI Engineers face complex challenges that go far
 
 The real challenge isn't writing prompts - it's building reliable, scalable applications that effectively leverage AI capabilities while adhering to software engineering best practices.
 
+## AI Engineers vs AI-assisted Developers
+
+Let's clear up a common confusion:
+
+- An **AI Engineer** builds applications that use AI (like ChatGPT wrappers or RAG systems).
+- An **AI-assisted Developer** uses AI tools (like Cursor or GitHub Copilot) to write code faster.
+
+While both roles use AI, they serve different purposes: AI Engineers create AI-powered apps, while AI-assisted Developers use AI to enhance their development workflow.
+
 ## Can A Web Developer Become An AI Engineer?
 
 Yes! Web developers are well-suited to become AI Engineers. The best web developers share a laser focus on practical delivery and user needs - qualities that are just as crucial in AI engineering.
