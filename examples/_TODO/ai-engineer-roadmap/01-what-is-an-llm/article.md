@@ -143,7 +143,19 @@ flowchart
   IN -- Used To Introspect --> M
 ```
 
-It's possible (though very difficult) to dive into the parameters of a model to work out which ones correspond to which real-world concepts. For instance, Anthropic found the parameters in their model which correspond to the ["Golden Gate Bridge"](https://www.anthropic.com/news/golden-gate-claude). For 24 hours, they released a version of Claude which only talked about the Golden Gate Bridge.
+It's possible (though very difficult) to dive into the parameters of a model to work out which ones correspond to which real-world concepts. For instance, Anthropic found that models can:
+
+- Share concepts across languages, suggesting a kind of universal "language of thought"
+- Plan ahead when writing (like planning rhymes in poetry)
+- Use multiple parallel pathways for tasks (like mental math)
+- Sometimes fabricate plausible-sounding reasoning rather than showing their true thought process
+
+By understanding how models think, we can better anticipate their behavior and potentially remove some of the "magic" that makes them hard to trust. This could lead to more controlled, deterministic AI systems in the future - but the research is still in its early stages.
+
+#### Resources
+
+- [Tracing the thoughts of a large language model](https://www.anthropic.com/research/tracing-thoughts-language-model) by Anthropic
+- [Golden Gate Claude](https://www.anthropic.com/news/golden-gate-claude) by Anthropic
 
 ## Conclusion
 
