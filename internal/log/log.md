@@ -607,3 +607,25 @@ We can also skip over parts of things. I can provide evaluation frameworks for t
 One interesting weakness of the Jina.ai DeepSearch approach is that it always checks for definitiveness. This means that if you ask a question which essentially can't be answered with public information, it will enter a loop.
 
 One way to do this is to actually add an evaluator to check for definitiveness. This is a potential improvement that I could ship.
+
+---
+
+Models are a 1TB zip file.
+
+"Hi, I am ChatGPT.
+
+"I am a 1 terabyte zip file.
+
+"My knowledge comes from the internet, which I read ~6 months ago and remember only vaguely.
+
+"My winning personality was programmed, by example, by labellers at OpenAI."
+
+Pre-training gives the model its knowledge.
+
+Post-training gives the model its personality.
+
+https://www.youtube.com/watch?v=EWvNQjAaOHw
+
+---
+
+Should dive into the special tokens that tokenizer uses to delineate messages.

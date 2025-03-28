@@ -63,6 +63,14 @@ This is a common misconception. AI Engineers face complex challenges that go far
 
 The real challenge isn't writing prompts - it's building reliable, scalable applications that effectively leverage AI capabilities while adhering to software engineering best practices.
 
+## Can A Web Developer Become An AI Engineer?
+
+Yes! Web developers are well-suited to become AI Engineers. The best web developers share a laser focus on practical delivery and user needs - qualities that are just as crucial in AI engineering.
+
+Your existing instincts for creating applications translate directly to building effective AI systems. UX is just as important in AI engineering as it is in web development.
+
+While knowing some Python is useful, the TypeScript ecosystem is growing fast and makes for a great fit for AI engineering.
+
 ## What's Next
 
 In this roadmap, we'll walk through the skills and tools you'll need to become an AI Engineer.
