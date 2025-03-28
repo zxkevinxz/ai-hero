@@ -135,4 +135,4 @@ These five factors are important for choosing your model:
 - Performance
 - Context Window
 
-Leaderboards and benchmarks are a good place to start. However, the only way to truly assess a model's suitability is to test it in your application via evals. So, let's discuss that next.
+Leaderboards and benchmarks are a good place to start. However, the only way to truly assess a model's suitability is to test it in your application via experimentation with your own evals.
