@@ -30,14 +30,13 @@ export const fetchFromAiHero = async (
   return await result.json();
 };
 
-const filesLocation = path.join(
-  process.cwd(),
-  "examples",
-  "**/*.md",
-);
+const fileLocations = [
+  path.join(process.cwd(), "examples", "**/*.md"),
+  path.join(process.cwd(), "courses", "**/*.md"),
+];
 
 const files = await Array.fromAsync(
-  await glob(filesLocation),
+  glob(fileLocations),
 );
 
 const watcher = watch(files, {
