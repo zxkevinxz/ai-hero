@@ -1,5 +1,5 @@
 ---
-slug: the-ai-engineer-mindset
+id: post_jz4cs
 ---
 
 Building with LLMs requires a fundamental shift in how you think about software development. You're no longer designing deterministic systems where inputs map to predictable outputs. Instead, you're working with probabilistic systems which are inherently unpredictable. To ship a great application, you need to clearly define your success criteria and build a culture of continuous improvement based on real user data.

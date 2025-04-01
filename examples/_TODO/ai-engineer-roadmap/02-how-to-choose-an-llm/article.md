@@ -1,5 +1,5 @@
 ---
-slug: how-to-choose-an-llm
+id: post_mvs9f
 ---
 
 Choosing the right model is crucial to the success of your AI-powered app. But it's not an easy call.

@@ -1,5 +1,5 @@
 ---
-slug: what-are-llms-used-for
+id: post_6i95p
 ---
 
 Before we dive into the world of LLMs, and how they work, we first need to know where we're going.

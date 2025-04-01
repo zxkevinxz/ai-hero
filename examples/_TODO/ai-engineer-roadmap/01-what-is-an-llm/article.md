@@ -1,5 +1,5 @@
 ---
-slug: what-is-an-llm
+id: post_h36mw
 ---
 
 In this article, we'll cover the basics of large language models. We'll talk about what they are, how they work, and touch on the process of creating them.

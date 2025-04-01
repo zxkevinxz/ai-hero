@@ -1,5 +1,5 @@
 ---
-slug: how-to-improve-your-llm-powered-app
+id: post_lo2sb
 ---
 
 Once you clearly understand your success criteria, have picked your model, and written some basic evals, it's time to start improving your system.
