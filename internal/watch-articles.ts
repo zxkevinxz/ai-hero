@@ -93,6 +93,67 @@ const convertSlugToId = async (
   }
 };
 
+const updateContent = async (
+  id: string,
+  body: string,
+) => {
+  if (id.startsWith("post_")) {
+    const post = await fetchFromAiHero(
+      `/posts?slugOrId=${id}`,
+      {
+        method: "GET",
+      },
+    );
+
+    console.log(`📝 ${post.fields.slug} changed`);
+
+    await fetchFromAiHero(`/posts?id=${id}`, {
+      method: "PUT",
+      body: JSON.stringify({
+        id: id,
+        fields: {
+          slug: post.fields.slug,
+          title: post.fields.title,
+          body: body.trim(),
+        },
+      }),
+    });
+
+    console.log(
+      `📝 Updated post: https://aihero.dev/${post.fields.slug}`,
+    );
+  } else if (id.startsWith("lesson-")) {
+    const lesson = await fetchFromAiHero(
+      `/lessons?slugOrId=${id}`,
+      {
+        method: "GET",
+      },
+    );
+
+    console.log(
+      `📚 Lesson ${lesson.fields.slug} changed`,
+    );
+
+    await fetchFromAiHero(`/lessons?id=${id}`, {
+      method: "PUT",
+      body: JSON.stringify({
+        id: id,
+        fields: {
+          slug: lesson.fields.slug,
+          title: lesson.fields.title,
+          body: body.trim(),
+        },
+      }),
+    });
+
+    console.log(
+      `📚 Updated lesson: ${lesson.fields.slug}`,
+    );
+  } else {
+    console.log(`⚠️  Unknown ID format: ${id}`);
+  }
+};
+
 const watcher = watch(files, {
   ignoreInitial: true,
 });
@@ -135,33 +196,7 @@ watcher.on("all", async (eventName, filePath) => {
   }
 
   try {
-    const post: {
-      id: string;
-      fields: { title: string; slug: string };
-    } = await fetchFromAiHero(
-      `/posts?slugOrId=${id}`,
-      {
-        method: "GET",
-      },
-    );
-
-    console.log(`📝 ${post.fields.slug} changed`);
-
-    await fetchFromAiHero(`/posts?id=${id}`, {
-      method: "PUT",
-      body: JSON.stringify({
-        id: id,
-        fields: {
-          slug: post.fields.slug,
-          title: post.fields.title,
-          body: fm.body.trim(),
-        },
-      }),
-    });
-
-    console.log(
-      `📝 Updated: https://aihero.dev/${post.fields.slug}`,
-    );
+    await updateContent(id, fm.body);
   } catch (error) {
     console.error(error);
   }
