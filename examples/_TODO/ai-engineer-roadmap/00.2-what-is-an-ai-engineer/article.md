@@ -1,5 +1,5 @@
 ---
-slug: what-is-an-ai-engineer
+id: post_m8cq7
 ---
 
 The software engineering landscape is changing. With the availability of AI APIs and open-source models, a new role has emerged: the **AI Engineer**. These developers focus on building applications that leverage AI capabilities.

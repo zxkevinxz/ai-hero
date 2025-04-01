@@ -1,5 +1,5 @@
 ---
-slug: what-are-evals
+id: post_2x9pp
 ---
 
 As we discussed in our [previous article](https://aihero.dev/the-ai-engineer-mindset), building with LLMs requires a fundamental shift in how you think about software development. You're no longer designing deterministic systems where inputs map to predictable outputs. Instead, you're working with probabilistic systems which are inherently unpredictable.
