@@ -166,6 +166,9 @@ watcher.on("all", async (eventName, filePath) => {
     case "error":
     case "unlinkDir":
       return;
+    case "add":
+      watcher.add(filePath);
+      return;
   }
 
   const fileContents = await readFile(

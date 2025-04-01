@@ -55,7 +55,8 @@
     "shortlinks:lint": "tsx internal/shortlinks/lint.ts",
     "shortlinks:generate": "tsx --env-file=.env internal/shortlinks/generate.ts",
     "shortlinks:sync": "tsx internal/shortlinks/sync-with-ai-hero.ts",
-    "prepare": "husky"
+    "prepare": "husky",
+    "add-lesson": "tsx internal/add-lesson.ts"
   },
   "type": "module",
   "devDependencies": {
