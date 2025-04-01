@@ -24,5 +24,5 @@
   "mcp-my-mcp-on-http": "examples/model-context-protocol/07-my-mcp-on-http/main.ts",
   "mcp-logging-with-stdio-transport": "examples/model-context-protocol/04-logging-with-stdio-transport/main.ts",
   "mcp-publishing-mcp-servers-to-npm": "examples/model-context-protocol/08-publishing-mcp-servers-to-npm/main.ts",
-  "anthropic-think-tool": "examples/general/anthropic-think-tool/main.ts"
+  "anthropic-think-tool": "examples/misc/anthropic-think-tool/main.ts"
 }
