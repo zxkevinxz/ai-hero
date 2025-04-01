@@ -1,8 +1,7 @@
 import { watch } from "chokidar";
-import { readFileSync } from "fs";
+import frontMatter from "front-matter";
 import { glob, readFile } from "fs/promises";
 import path from "path";
-import frontMatter from "front-matter";
 
 if (!process.env.AI_HERO_TOKEN) {
   throw new Error("AI_HERO_TOKEN is required");

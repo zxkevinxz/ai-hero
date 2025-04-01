@@ -40,7 +40,7 @@
     "zod": "^3.24.1"
   },
   "scripts": {
-    "articles:dev": "tsx --env-file=.env internal/article-dev.ts",
+    "articles:dev": "tsx --env-file=.env internal/watch-articles.ts",
     "articles:feedback": "tsx --env-file=.env internal/read-articles.ts",
     "lint": "tsc --project ./examples/tsconfig.json && eslint",
     "reorder": "tsx internal/reorder-examples.ts && pnpm run lint",
