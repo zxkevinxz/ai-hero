@@ -1,19 +1,27 @@
-Ready to build AI-powered applications but don't know where to start?
+Ready to build AI-powered apps but **don't know where to start**?
 
-This tutorial gives you a clear map of the AI Engineer's toolkit. By the end, you'll understand the key components that power modern AI applications.
+This tutorial is your roadmap to becoming an AI Engineer. We'll cover all the core concepts you need to know to build AI-powered apps.
 
-We'll keep it practical and accessible. No deep dives into linear algebra - we'll focus on understanding what each tool does and how it fits into real-world applications. The hands-on experience will come later.
+Here's what we'll cover:
 
-This is a quick, focused overview - you can complete it in about an hour. By the end, you'll be equipped to engage in meaningful discussions about AI engineering. When the next breakthrough hits the news, you'll understand exactly where it fits in the broader AI ecosystem.
+- **Core AI Concepts**: How AI models work under the hood
+- **Model Selection**: Choosing the right model for your specific use case
+- **AI Engineering Mindset**: The key principles that guide successful AI projects
+- **AI Engineering Techniques**: A directory of techniques for improving your app
 
-We'll learn about:
+When you're done, you'll be able to:
 
-- How AI Models Work
-- Choosing the right model for your app
-- The mindset of an AI Engineer
-- How to choose a technique to improve your app
-- How to productionize and improve your app
+- Engage in meaningful technical discussions about AI engineering
+- Understand where new AI breakthroughs fit in the broader ecosystem
 
-Then you'll be ready to get your hands dirty with my [Vercel AI SDK](https://www.aihero.dev/vercel-ai-sdk-tutorial) tutorial, where you'll build your first AI-powered application from scratch.
+Then you'll be ready to get your hands dirty with my [Vercel AI SDK](https://www.aihero.dev/vercel-ai-sdk-tutorial) tutorial, where you'll put your newfound knowledge to work.
 
 Let's dive into the world of AI Engineering!
+
+## Diagram Pack
+
+Want to remember what we've covered? Here's a PDF of all the diagrams in the series.
+
+<Link href="https://res.cloudinary.com/total-typescript/image/upload/v1743077873/aihero.dev/ai-roadmap/ai-engineer-roadmap_qeny18.pdf" title="AI Engineer Roadmap Diagrams PDF" target="_blank">
+<ThemeImage urls={{dark: "https://res.cloudinary.com/total-typescript/image/upload/v1743078925/aihero.dev/ai-roadmap/what-are-llms-useful-for/dark/ai-engineer-diagram-pack-cta_2x_pd3c8w.png", light: "https://res.cloudinary.com/total-typescript/image/upload/v1743079065/aihero.dev/ai-roadmap/what-are-llms-useful-for/light/ai-engineer-diagram-pack-cta_2x_gssvkp.png"}} width={584} height={222} alt="Download the Full Diagram Pack in PDF for free" />
+</Link>
