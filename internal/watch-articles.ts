@@ -43,7 +43,16 @@ const watcher = watch(files, {
   ignoreInitial: true,
 });
 
-watcher.on("all", async (_eventName, filePath) => {
+watcher.on("all", async (eventName, filePath) => {
+  // Ignore unlink events and directory events
+  switch (eventName) {
+    case "unlink":
+    case "addDir":
+    case "error":
+    case "unlinkDir":
+      return;
+  }
+
   const fileContents = await readFile(
     filePath,
     "utf-8",
@@ -53,34 +62,39 @@ watcher.on("all", async (_eventName, filePath) => {
     frontMatter as unknown as typeof frontMatter.default
   )(fileContents);
 
-  const slug = (fm.attributes as { slug?: string })
-    ?.slug;
+  const attributes = fm.attributes as {
+    id?: string;
+    slug?: string;
+  };
+  const id = attributes?.id;
 
-  if (!slug) {
+  if (!id) {
+    if (attributes.slug) {
+      console.log(
+        `⚠️  No 'id' found in frontmatter. https://aihero.dev/${attributes.slug}/edit`,
+      );
+    }
     return;
   }
 
-  console.log(`📝 ${slug} changed`);
-
   try {
     const post: {
-      id: string;
-      fields: { title: string };
+      fields: { title: string; slug: string };
     } = await fetchFromAiHero(
-      `/posts?slugOrId=${slug}`,
+      `/posts?slugOrId=${id}`,
       {
         method: "GET",
       },
     );
 
-    const id = post.id;
+    console.log(`📝 ${post.fields.slug} changed`);
 
     await fetchFromAiHero(`/posts?id=${id}`, {
       method: "PUT",
       body: JSON.stringify({
-        id,
+        id: id,
         fields: {
-          slug,
+          slug: post.fields.slug,
           title: post.fields.title,
           body: fm.body.trim(),
         },
@@ -88,7 +102,7 @@ watcher.on("all", async (_eventName, filePath) => {
     });
 
     console.log(
-      `📝 ${slug} Updated: https://aihero.dev/${slug}`,
+      `📝 Updated: https://aihero.dev/${post.fields.slug}`,
     );
   } catch (error) {
     console.error(error);
