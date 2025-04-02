@@ -39,7 +39,6 @@ export const users = createTable("user", {
 
 export const usersRelations = relations(users, ({ many }) => ({
   accounts: many(accounts),
-  requests: many(requests),
 }));
 
 export const accounts = createTable(
@@ -113,90 +112,6 @@ export const verificationTokens = createTable(
   }),
 );
 
-export const chats = createTable(
-  "chat",
-  {
-    id: varchar("id", { length: 255 })
-      .notNull()
-      .primaryKey()
-      .$defaultFn(() => crypto.randomUUID()),
-    title: varchar("title", { length: 255 }).notNull(),
-    userId: varchar("user_id", { length: 255 })
-      .notNull()
-      .references(() => users.id),
-    createdAt: timestamp("created_at", { withTimezone: true })
-      .default(sql`CURRENT_TIMESTAMP`)
-      .notNull(),
-    updatedAt: timestamp("updated_at", { withTimezone: true })
-      .default(sql`CURRENT_TIMESTAMP`)
-      .$onUpdate(() => new Date()),
-  },
-  (chat) => ({
-    userIdIdx: index("chat_user_id_idx").on(chat.userId),
-  }),
-);
-
-export const messages = createTable(
-  "message",
-  {
-    id: varchar("id", { length: 255 })
-      .notNull()
-      .primaryKey()
-      .$defaultFn(() => crypto.randomUUID()),
-    order: serial("order").notNull(),
-    chatId: varchar("chat_id", { length: 255 })
-      .notNull()
-      .references(() => chats.id),
-    content: json("content").notNull(),
-    parts: json("parts"),
-    role: varchar("role", { length: 50 }).notNull(),
-    createdAt: timestamp("created_at", { withTimezone: true })
-      .default(sql`CURRENT_TIMESTAMP`)
-      .notNull(),
-  },
-  (message) => ({
-    chatIdIdx: index("message_chat_id_idx").on(message.chatId),
-  }),
-);
-
-export const chatsRelations = relations(chats, ({ one, many }) => ({
-  user: one(users, { fields: [chats.userId], references: [users.id] }),
-  messages: many(messages),
-}));
-
-export const messagesRelations = relations(messages, ({ one }) => ({
-  chat: one(chats, { fields: [messages.chatId], references: [chats.id] }),
-}));
-
-export const requests = createTable(
-  "request",
-  {
-    id: varchar("id", { length: 255 })
-      .notNull()
-      .primaryKey()
-      .$defaultFn(() => crypto.randomUUID()),
-    userId: varchar("user_id", { length: 255 })
-      .notNull()
-      .references(() => users.id),
-    promptTokens: integer("prompt_tokens").notNull(),
-    completionTokens: integer("completion_tokens").notNull(),
-    createdAt: timestamp("created_at", { withTimezone: true })
-      .default(sql`CURRENT_TIMESTAMP`)
-      .notNull(),
-  },
-  (request) => ({
-    userIdIdx: index("request_user_id_idx").on(request.userId),
-    userTimeIdx: index("request_user_time_idx").on(
-      request.userId,
-      request.createdAt,
-    ),
-  }),
-);
-
-export const requestsRelations = relations(requests, ({ one }) => ({
-  user: one(users, { fields: [requests.userId], references: [users.id] }),
-}));
-
 export declare namespace DB {
   export type User = InferSelectModel<typeof users>;
   export type NewUser = InferInsertModel<typeof users>;
@@ -211,13 +126,4 @@ export declare namespace DB {
   export type NewVerificationToken = InferInsertModel<
     typeof verificationTokens
   >;
-
-  export type Chat = InferSelectModel<typeof chats>;
-  export type NewChat = InferInsertModel<typeof chats>;
-
-  export type Message = InferSelectModel<typeof messages>;
-  export type NewMessage = InferInsertModel<typeof messages>;
-
-  export type Request = InferSelectModel<typeof requests>;
-  export type NewRequest = InferInsertModel<typeof requests>;
 }

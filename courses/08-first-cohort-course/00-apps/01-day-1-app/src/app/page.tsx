@@ -1,42 +1,23 @@
 import { PlusIcon } from "lucide-react";
 import Link from "next/link";
-import { notFound } from "next/navigation";
 import { auth } from "~/server/auth/index.ts";
-import { getChatsByUserId, getFullChat } from "~/server/db/chat.ts";
 import { ChatPage } from "./chat.tsx";
-import { AuthButton } from "./components/auth-button.tsx";
-import { DeleteChatButton } from "./components/delete-chat-button.tsx";
+import { AuthButton } from "../components/auth-button.tsx";
+import { DeleteChatButton } from "../components/delete-chat-button.tsx";
 
-export default async function HomePage({
-  searchParams,
-}: {
-  searchParams: Promise<{ chatId?: string }>;
-}) {
+const chats = [
+  {
+    id: "1",
+    title: "My First Chat",
+  },
+];
+
+const activeChatId = "1";
+
+export default async function HomePage() {
   const session = await auth();
   const userName = session?.user?.name ?? "Guest";
   const isAuthenticated = !!session?.user;
-
-  const paramsResult = await searchParams;
-
-  const chatIdFromSearchParams = paramsResult.chatId;
-
-  // Fetch user's chats if authenticated
-  const chats =
-    isAuthenticated && session.user.id
-      ? await getChatsByUserId(session.user.id)
-      : [];
-
-  // Fetch current chat if there's a chatId
-  const currentChat = chatIdFromSearchParams
-    ? await getFullChat(chatIdFromSearchParams, session?.user?.id ?? "")
-    : null;
-
-  // Show 404 if chatId is provided but chat is not found
-  if (chatIdFromSearchParams && !currentChat) {
-    notFound();
-  }
-
-  const finalChatId = chatIdFromSearchParams ?? crypto.randomUUID();
 
   return (
     <div className="flex h-screen bg-gray-950">
@@ -63,14 +44,14 @@ export default async function HomePage({
                 <Link
                   href={`/?chatId=${chat.id}`}
                   className={`flex-1 rounded-lg p-3 text-left text-sm text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 ${
-                    chat.id === chatIdFromSearchParams
+                    chat.id === activeChatId
                       ? "bg-gray-700"
                       : "hover:bg-gray-750 bg-gray-800"
                   }`}
                 >
                   {chat.title}
                 </Link>
-                <DeleteChatButton chatId={chat.id} />
+                <DeleteChatButton />
               </div>
             ))
           ) : (
@@ -89,14 +70,7 @@ export default async function HomePage({
         </div>
       </div>
 
-      <ChatPage
-        key={finalChatId}
-        isNewChat={!chatIdFromSearchParams}
-        userName={userName}
-        isAuthenticated={isAuthenticated}
-        chatId={finalChatId}
-        initialMessages={currentChat?.messages ?? []}
-      />
+      <ChatPage userName={userName} />
     </div>
   );
 }
