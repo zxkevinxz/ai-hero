@@ -3,7 +3,6 @@ import Link from "next/link";
 import { auth } from "~/server/auth/index.ts";
 import { ChatPage } from "./chat.tsx";
 import { AuthButton } from "../components/auth-button.tsx";
-import { DeleteChatButton } from "../components/delete-chat-button.tsx";
 
 const chats = [
   {
@@ -51,7 +50,6 @@ export default async function HomePage() {
                 >
                   {chat.title}
                 </Link>
-                <DeleteChatButton />
               </div>
             ))
           ) : (
