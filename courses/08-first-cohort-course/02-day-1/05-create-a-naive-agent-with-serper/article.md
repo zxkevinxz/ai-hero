@@ -33,6 +33,13 @@ tools: {
 ```
 
 - Modify the system prompt passed to `streamText` to make the LLM aware that it can call the search web tool
+
+```ts
+streamText({
+  system: ``, // system prompt goes here
+});
+```
+
 - Modify the system prompt so that it attempts to always use the search web tool
 - Modify the system prompt so that it attempts to always cite its sources with inline links
 - Add `maxSteps: 10` to the `streamText` so that it behaves like an agent

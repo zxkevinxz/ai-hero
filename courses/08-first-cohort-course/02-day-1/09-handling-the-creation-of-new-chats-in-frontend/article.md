@@ -21,12 +21,17 @@ const { data } = useChat();
 - In `/api/chat`, if there is no `chatId`, write some data to the `dataStream` to indicate that a new chat has been created.
 
 ```ts
-if (!chatId) {
-  dataStream.writeData({
-    type: "NEW_CHAT_CREATED",
-    chatId: currentChatId,
-  });
-}
+createDataStreamResponse({
+  async execute(dataStream) {
+    if (!chatId) {
+      dataStream.writeData({
+        type: "NEW_CHAT_CREATED",
+        chatId: currentChatId,
+      });
+    }
+    // ... reset of code
+  },
+});
 ```
 
 - Make a `isNewChatCreated` util to check if something is an object with a `type` property equal to `"NEW_CHAT_CREATED"`, and a `chatId` property:

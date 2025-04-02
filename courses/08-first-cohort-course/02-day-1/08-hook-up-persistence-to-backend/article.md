@@ -6,6 +6,11 @@ The `appendResponseMessages` function is a utility that helps manage message his
 
 ### Basic Usage
 
+It accepts an object with two properties:
+
+- `messages`: An array of messages
+- `responseMessages`: An array of response messages
+
 ```ts
 import { appendResponseMessages } from "ai";
 
@@ -45,12 +50,12 @@ import { appendResponseMessages } from "ai";
 streamText({
   // ...other properties
   onFinish({ text, finishReason, usage, response }) {
-    const newMessages = response.messages; // messages that were generated
+    const responseMessages = response.messages; // messages that were generated
 
-    const updatedMessages = appendResponseMessages(
-      existingMessages, // from the POST body
-      newMessages,
-    );
+    const updatedMessages = appendResponseMessages({
+      messages, // from the POST body
+      responseMessages,
+    });
 
     // save the updated messages to the database,
     // by saving over the ENTIRE chat, deleting all

@@ -15,7 +15,6 @@ Create the database resources:
 Create helper functions:
 
 - `upsertChat`: Create a chat, with all the messages. Should fail if the chat does not belong to the logged in user. If the chat already exists, it should delete all existing messages and replace them with the new ones.
-- `appendMessages`: Append messages to a chat, with the `order` correctly calculated.
 - `getChat`: Get a chat by id with its messages
 - `getChats`: Get all chats for a user, without the messages
 

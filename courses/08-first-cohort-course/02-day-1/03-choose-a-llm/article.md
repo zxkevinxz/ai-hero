@@ -21,7 +21,7 @@ Steps to complete:
 ```ts
 import { google } from "@ai-sdk/google";
 
-export const model = google("gemini-1.5-flash");
+export const model = google("gemini-2.0-flash-001");
 ```
 
 - Encourage the user to try messing about with the strings passed to the model function.
@@ -31,6 +31,7 @@ This exercise is complete when:
 - You have an API key for your preferred LLM in your .env file.
 - You have downloaded the correct AI SDK package to your repo.
 - You have declared the model in the codebase.
+- You have added the environment variable to `env.js`.
 
 Here are a commonly-used list of models, and their providers:
 

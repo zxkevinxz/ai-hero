@@ -43,7 +43,7 @@ export async function POST(request: Request) {
 }
 ```
 
-- Add a useChat call in the codebase with the following contents:
+- Add a useChat call to the existing chat page in the codebase with the following contents:
 
 ```ts
 import { useChat } from "@ai-sdk/react";
@@ -70,3 +70,4 @@ Not required yet:
 - There's no need to be able to save the messages or save the chats either
 - Every chat will be temporary held in memory until the User closes the window
 - No need for any tool calls or searching - The model will simply use its pre training to answer any questions
+- Do not add `stop` functionality to the chat page.
