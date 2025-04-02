@@ -1,3 +1,7 @@
+---
+id: lesson-yex6y
+---
+
 Steps to complete:
 
 - Use the `getChats` helper function to fetch the chats from the database to display in the sidebar.

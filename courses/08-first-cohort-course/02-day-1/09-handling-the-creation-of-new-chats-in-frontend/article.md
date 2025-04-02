@@ -1,3 +1,7 @@
+---
+id: lesson-a56bv
+---
+
 ### Supporting Information:
 
 <AISummary title="`data` in the `useChat` hook" href="https://sdk.vercel.ai/docs/reference/ai-sdk-ui/use-chat#data">

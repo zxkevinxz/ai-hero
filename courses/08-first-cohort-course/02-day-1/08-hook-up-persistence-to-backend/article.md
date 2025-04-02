@@ -1,6 +1,8 @@
-<AISummary href="https://sdk.vercel.ai/docs/reference/ai-sdk-ui/append-response-messages">
+---
+id: lesson-pq2af
+---
 
-## Understanding appendResponseMessages
+<AISummary title="Understanding `appendResponseMessages`" href="https://sdk.vercel.ai/docs/reference/ai-sdk-ui/append-response-messages">
 
 The `appendResponseMessages` function is a utility that helps manage message history in AI chat applications. It handles the merging of new AI responses with existing messages, particularly focusing on tool call results.
 

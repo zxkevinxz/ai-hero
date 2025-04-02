@@ -2,9 +2,7 @@
 id: lesson-c3344
 ---
 
-<AISummary href="https://sdk.vercel.ai/docs/reference/ai-sdk-ui/use-chat#messages.ui-message.parts">
-
-# Understanding Message Parts
+<AISummary title="Understanding Message Parts" href="https://sdk.vercel.ai/docs/reference/ai-sdk-ui/use-chat#messages.ui-message.parts">
 
 The `MessagePart` type represents different types of content that can appear in a message. Here's a comprehensive overview of all possible message parts:
 
@@ -126,6 +124,8 @@ Marks the beginning of a new step in the conversation.
 - The `step` property is optional and helps map assistant UI messages with multiple tool invocations back to LLM assistant/tool result message pairs
 
 </AISummary>
+
+`Message['parts']` is the most recent attempt by the AI SDK team to express all the different bits a message can contain. It supercedes things like `toolInvocations` and `reasoning`.
 
 Steps to complete:
 
