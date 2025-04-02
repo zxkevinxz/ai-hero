@@ -123,7 +123,18 @@ const updateContent = async (
       `📝 Updated post: https://aihero.dev/${post.fields.slug}`,
     );
   } else if (id.startsWith("lesson-")) {
-    const lesson = await fetchFromAiHero(
+    const lesson: {
+      fields: {
+        slug: string;
+        title: string;
+      };
+      parentResources: {
+        type: string;
+        fields: {
+          slug: string;
+        };
+      }[];
+    } = await fetchFromAiHero(
       `/lessons?slugOrId=${id}`,
       {
         method: "GET",
@@ -146,9 +157,19 @@ const updateContent = async (
       }),
     });
 
-    console.log(
-      `📚 Updated lesson: ${lesson.fields.slug}`,
-    );
+    const workshopSlug = lesson.parentResources.find(
+      (resource) => resource.type === "workshop",
+    )?.fields.slug;
+
+    if (workshopSlug) {
+      console.log(
+        `📚 Updated lesson: https://aihero.dev/workshops/${workshopSlug}/${lesson.fields.slug}/edit`,
+      );
+    } else {
+      console.log(
+        `📚 Updated lesson: ${lesson.fields.slug}`,
+      );
+    }
   } else {
     console.log(`⚠️  Unknown ID format: ${id}`);
   }
