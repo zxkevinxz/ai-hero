@@ -5,32 +5,8 @@ id: lesson-ynhp4
 The exercise is finished when:
 
 - The user understands the message shape expected by the AI SDK
-- The user understands what `parts` is in the message shape
 - The user understands the parts of the AI SDK shape that are legacy (like `toolInvocations`)
 - The user understands that it's better to treat the `chat` as a single unity, to allow for editing of the chat history later
-
-Steps to complete:
-
-- Create required types
-
-```ts
-type DBChat = {
-  id: string;
-  userId: string;
-  createdAt: Date;
-};
-
-type DBMessage = {
-  id: string;
-  chatId: string;
-  content: string;
-  role: "user" | "assistant";
-  /**
-   * The parts of the message.
-   */
-  parts: unknown;
-};
-```
 
 Not Required Yet:
 
