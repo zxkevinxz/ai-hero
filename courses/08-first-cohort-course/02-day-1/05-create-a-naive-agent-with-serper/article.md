@@ -4,7 +4,6 @@ id: lesson-f31ta
 
 Steps to complete:
 
-- Find the file that we have declared our `streamText` implementation in
 - Add a search web tool which can search the web using the search tools we have declared in the repo
 - Make sure you format the result of the search tool nicely so that the prompt isn't overloaded
 - Modify the system prompt passed to `streamText` to make the LLM aware that it can call the search web tool
