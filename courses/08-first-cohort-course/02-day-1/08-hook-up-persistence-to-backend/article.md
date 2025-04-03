@@ -68,3 +68,7 @@ streamText({
 ```
 
 - Ignore the `content` property of the `updatedMessages` array - only `parts` matters.
+
+Not required yet:
+
+- Don't worry about fetching the chat messages and displaying them in the frontend. We'll do that in a bit.

@@ -4,7 +4,7 @@ id: lesson-c3344
 
 <AISummary title="Understanding Message Parts" href="https://sdk.vercel.ai/docs/reference/ai-sdk-ui/use-chat#messages.ui-message.parts">
 
-The `MessagePart` type represents different types of content that can appear in a message. Here's a comprehensive overview of all possible message parts:
+The `MessagePart` type from `ai` represents different types of content that can appear in a message. Here's a comprehensive overview of all possible message parts:
 
 ## Basic Structure
 
@@ -18,7 +18,28 @@ type MessagePart =
   | StepStartUIPart;
 ```
 
-## Individual Part Types
+You can import each element of the `MessagePart` type from the `ai` package:
+
+```ts
+import type {
+  TextUIPart,
+  ReasoningUIPart,
+  ToolInvocationUIPart,
+  SourceUIPart,
+  FileUIPart,
+  StepStartUIPart,
+} from "ai";
+```
+
+Though, frustratingly, the `MessagePart` type is not exported from the `ai` package. You can construct it via:
+
+```ts
+import { Message } from "ai";
+
+type MessagePart = NonNullable<
+  Message["parts"]
+>[number];
+```
 
 ### Text Part
 
@@ -79,6 +100,52 @@ type ToolInvocation =
       any,
       any
     >);
+```
+
+A tool call is:
+
+```ts
+interface ToolCall<NAME extends string, ARGS> {
+  /**
+  ID of the tool call. This ID is used to match the tool call with the tool result.
+   */
+  toolCallId: string;
+  /**
+  Name of the tool that is being called.
+   */
+  toolName: NAME;
+  /**
+  Arguments of the tool call. This is a JSON-serializable object that matches the tool's input schema.
+     */
+  args: ARGS;
+}
+```
+
+A tool result is:
+
+```ts
+interface ToolResult<
+  NAME extends string,
+  ARGS,
+  RESULT,
+> {
+  /**
+  ID of the tool call. This ID is used to match the tool call with the tool result.
+     */
+  toolCallId: string;
+  /**
+  Name of the tool that was called.
+     */
+  toolName: NAME;
+  /**
+  Arguments of the tool call. This is a JSON-serializable object that matches the tool's input schema.
+       */
+  args: ARGS;
+  /**
+  Result of the tool call. This is the result of the tool's execution.
+       */
+  result: RESULT;
+}
 ```
 
 ### Source Part
