@@ -16,6 +16,7 @@ export const env = createEnv({
     AUTH_DISCORD_SECRET: z.string(),
     DATABASE_URL: z.string().url(),
     FIRECRAWL_API_KEY: z.string(),
+    GOOGLE_GENERATIVE_AI_API_KEY: z.string(),
     NODE_ENV: z
       .enum(["development", "test", "production"])
       .default("development"),
@@ -41,6 +42,7 @@ export const env = createEnv({
     DATABASE_URL: process.env.DATABASE_URL,
     NODE_ENV: process.env.NODE_ENV,
     FIRECRAWL_API_KEY: process.env.FIRECRAWL_API_KEY,
+    GOOGLE_GENERATIVE_AI_API_KEY: process.env.GOOGLE_GENERATIVE_AI_API_KEY,
     REDIS_URL: process.env.REDIS_URL,
   },
   /**
