@@ -28,6 +28,7 @@ Here are the important files in the repo.
 **src/server/auth/index.ts** is where the authentication functions like `signIn`, `signOut` and `auth` live. These are powered by `next-auth`.
 
 **.env** is where environment variables for the user should be provided.
+**src/env.js** is where environment variables are checked using type-safe methods. Changes to the .env file should be reflected there.
 
 ## Scripts
 
