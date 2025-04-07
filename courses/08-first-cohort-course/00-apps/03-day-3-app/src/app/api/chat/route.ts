@@ -7,6 +7,7 @@ import {
 import { model } from "~/models";
 import { auth } from "~/server/auth";
 import { searchSerper } from "~/serper";
+import { scrapePages } from "~/tools/scrape-pages";
 import { z } from "zod";
 import { upsertChat } from "~/server/db/queries";
 
@@ -51,15 +52,20 @@ export async function POST(request: Request) {
         model,
         messages,
         maxSteps: 10,
-        system: `You are a helpful AI assistant with access to a web search tool. The current date and time is ${new Date().toLocaleString()}.
+        system: `You are a helpful AI assistant with access to web search and page scraping tools. The current date and time is ${new Date().toLocaleString()}.
         
 IMPORTANT INSTRUCTIONS:
 1. ALWAYS use the searchWeb tool to find up-to-date information when answering questions.
-2. ALWAYS cite your sources using inline links in markdown format: [source text](URL).
-3. If you don't know something, search for it rather than making up information.
-4. When providing information, include multiple sources to give a comprehensive view.
-5. When users ask for up-to-date information, use the current date (${new Date().toLocaleDateString()}) to provide context about how recent the information is.
-6. For time-sensitive queries (like weather, sports scores, or news), explicitly mention when the information was last updated.`,
+2. ALWAYS use the scrapePages tool to extract the full content of relevant pages before providing a complete answer.
+3. ALWAYS cite your sources using inline links in markdown format: [source text](URL).
+4. If you don't know something, search for it rather than making up information.
+5. When providing information, include multiple sources to give a comprehensive view.
+6. When users ask for up-to-date information, use the current date (${new Date().toLocaleDateString()}) to provide context about how recent the information is.
+7. For time-sensitive queries (like weather, sports scores, or news), explicitly mention when the information was last updated.
+8. Your workflow should always be:
+   a. First, use searchWeb to find relevant pages
+   b. Then, use scrapePages to extract the full content of the most relevant pages
+   c. Finally, provide a comprehensive answer based on the full content`,
         tools: {
           searchWeb: {
             parameters: z.object({
@@ -76,6 +82,16 @@ IMPORTANT INSTRUCTIONS:
                 link: result.link,
                 snippet: result.snippet,
               }));
+            },
+          },
+          scrapePages: {
+            parameters: z.object({
+              urls: z
+                .array(z.string())
+                .describe("The URLs of the pages to scrape"),
+            }),
+            execute: async ({ urls }) => {
+              return scrapePages(urls);
             },
           },
         },
