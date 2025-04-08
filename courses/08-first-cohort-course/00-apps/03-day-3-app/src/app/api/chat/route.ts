@@ -10,6 +10,7 @@ import { searchSerper } from "~/serper";
 import { scrapePages } from "~/tools/scrape-pages";
 import { z } from "zod";
 import { upsertChat } from "~/server/db/queries";
+import { env } from "~/env";
 
 export const maxDuration = 60;
 
@@ -118,7 +119,7 @@ Steps:
             }),
             execute: async ({ query }, { abortSignal }) => {
               const results = await searchSerper(
-                { q: query, num: 10 },
+                { q: query, num: env.SEARCH_RESULTS_COUNT },
                 abortSignal,
               );
 

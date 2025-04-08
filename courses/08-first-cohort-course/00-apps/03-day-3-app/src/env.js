@@ -21,6 +21,7 @@ export const env = createEnv({
       .enum(["development", "test", "production"])
       .default("development"),
     REDIS_URL: z.string(),
+    SEARCH_RESULTS_COUNT: z.coerce.number().default(10),
   },
 
   /**
@@ -44,6 +45,7 @@ export const env = createEnv({
     FIRECRAWL_API_KEY: process.env.FIRECRAWL_API_KEY,
     GOOGLE_GENERATIVE_AI_API_KEY: process.env.GOOGLE_GENERATIVE_AI_API_KEY,
     REDIS_URL: process.env.REDIS_URL,
+    SEARCH_RESULTS_COUNT: process.env.SEARCH_RESULTS_COUNT,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially
