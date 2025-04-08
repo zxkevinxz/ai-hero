@@ -42,13 +42,20 @@ export const ChatPage = ({
     content: "",
   }));
 
-  const { messages, input, handleInputChange, handleSubmit, isLoading, data } =
-    useChat({
-      body: {
-        chatId,
-      },
-      initialMessages: mappedInitialMessages,
-    });
+  const {
+    messages,
+    input,
+    handleInputChange,
+    handleSubmit,
+    isLoading,
+    data,
+    error,
+  } = useChat({
+    body: {
+      chatId,
+    },
+    initialMessages: mappedInitialMessages,
+  });
 
   // Check if the latest data item is a NEW_CHAT_CREATED object
   useEffect(() => {
@@ -100,6 +107,11 @@ export const ChatPage = ({
                 <Send className="size-4" />
               </button>
             </div>
+            {error && (
+              <div className="mt-2 rounded bg-red-900/50 p-2 text-sm text-red-200">
+                Error: {error.message || "An error occurred during the chat"}
+              </div>
+            )}
           </form>
         </div>
       </div>
