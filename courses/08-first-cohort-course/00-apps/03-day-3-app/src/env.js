@@ -21,7 +21,7 @@ export const env = createEnv({
       .enum(["development", "test", "production"])
       .default("development"),
     REDIS_URL: z.string(),
-    SEARCH_RESULTS_COUNT: z.coerce.number().default(10),
+    SEARCH_RESULTS_COUNT: z.coerce.number().default(3),
   },
 
   /**
