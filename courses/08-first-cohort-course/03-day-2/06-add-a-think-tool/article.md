@@ -9,7 +9,7 @@ Background Information:
 This is how a `think` tool could be declared.
 
 ```ts
-import { tool, streamText } from "ai";
+import { streamText } from "ai";
 import { z } from "zod";
 
 const description = `
