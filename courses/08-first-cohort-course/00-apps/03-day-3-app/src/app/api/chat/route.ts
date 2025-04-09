@@ -2,6 +2,7 @@ import {
   appendResponseMessages,
   createDataStreamResponse,
   streamText,
+  type Message,
 } from "ai";
 import { z } from "zod";
 import { model } from "~/models";
@@ -19,15 +20,17 @@ export async function POST(request: Request) {
   }
 
   const json = await request.json();
-  const { messages, chatId: currentChatId } = json;
+  const { messages, chatId }: { messages: Message[]; chatId?: string } = json;
+
+  const backupChatId = crypto.randomUUID();
 
   return createDataStreamResponse({
     execute: async (dataStream) => {
       // If there is no chatId, write data to indicate that a new chat has been created
-      if (!currentChatId) {
+      if (!chatId) {
         dataStream.writeData({
-          type: "chat_created",
-          chatId: "new",
+          type: "NEW_CHAT_CREATED",
+          chatId: backupChatId,
         });
       }
 
@@ -101,13 +104,19 @@ Steps:
             responseMessages,
           });
 
-          // Update the chat with all messages
-          await upsertChat({
-            userId: session.user.id,
-            chatId: currentChatId,
-            title: messages[0]?.content ?? "New Chat",
-            messages: updatedMessages,
-          });
+          try {
+            // Update the chat with all messages
+            await upsertChat({
+              userId: session.user.id,
+              chatId: chatId ?? backupChatId,
+              title: messages[0]?.content ?? "New Chat",
+              messages: updatedMessages,
+            });
+          } catch (error) {
+            console.error("Error upserting chat");
+            console.error(error);
+            throw error;
+          }
         },
       });
 
