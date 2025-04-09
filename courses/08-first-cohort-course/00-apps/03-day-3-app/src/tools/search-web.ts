@@ -2,6 +2,7 @@ import { cacheWithRedis } from "~/server/redis/redis";
 import { searchSerper } from "~/serper";
 import { scrapePages } from "./scrape-pages";
 import { env } from "~/env";
+import { summarizePages } from "./summarize-pages";
 
 export type SearchWebResult = {
   title: string;
@@ -28,7 +29,7 @@ export const searchWeb = cacheWithRedis(
     const crawledPages = await scrapePages(urls);
 
     // Combine search results with crawled content
-    return searchResults.organic.map((result, index) => {
+    const pagesWithContent = searchResults.organic.map((result, index) => {
       const crawledPage = Array.isArray(crawledPages)
         ? crawledPages[index]
         : undefined;
@@ -39,5 +40,11 @@ export const searchWeb = cacheWithRedis(
         content: crawledPage?.markdown,
       };
     });
+
+    // Summarize the pages
+    const summary = await summarizePages(pagesWithContent, query);
+
+    // Return the summary as a string
+    return summary;
   },
 );
