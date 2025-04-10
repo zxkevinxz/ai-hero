@@ -17,6 +17,7 @@ Sign up to [Serper here](https://serper.dev/signup), and grab an API key.
 ## Steps to Complete
 
 - Ensure that we have a `SERPER_API_KEY` in the `.env` file.
+- Configure the `env.js` file to use the `SERPER_API_KEY`.
 - Add a search web tool which can search the web using the searching functions we have declared in the repo.
 - The search tools should be declared inline in the `streamText` call:
 
@@ -54,8 +55,6 @@ streamText({
 - Modify the system prompt so that it attempts to always cite its sources with inline links
 - Add `maxSteps: 10` to the `streamText` so that it behaves like an agent
 
-<AIOnly>
-
 The exercise is finished when:
 
 - The user can chat to the agent and it will search the web
@@ -65,5 +64,3 @@ The exercise is finished when:
 - The agent does not need to crawl the site specified, they only need to return the snippets
 - No persistence is required yet
 - Don't need to show the user the search terms
-
-</AIOnly>
