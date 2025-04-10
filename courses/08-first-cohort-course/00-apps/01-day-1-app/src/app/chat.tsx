@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { ChatMessage } from "~/components/chat-message";
 import { SignInModal } from "~/components/sign-in-modal";
 
@@ -17,11 +16,8 @@ const messages = [
 ];
 
 export const ChatPage = ({ userName }: ChatProps) => {
-  const [showSignInModal, setShowSignInModal] = useState(false);
-
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Add your form submission logic here
   };
 
   return (
@@ -71,10 +67,7 @@ export const ChatPage = ({ userName }: ChatProps) => {
         </div>
       </div>
 
-      <SignInModal
-        isOpen={showSignInModal}
-        onClose={() => setShowSignInModal(false)}
-      />
+      <SignInModal isOpen={false} onClose={() => {}} />
     </>
   );
 };
