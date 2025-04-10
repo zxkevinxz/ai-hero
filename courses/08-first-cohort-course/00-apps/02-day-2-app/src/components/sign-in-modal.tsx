@@ -1,7 +1,14 @@
 import { signIn } from "next-auth/react";
 import { siDiscord } from "simple-icons/icons";
 
-export const SignInModal = () => {
+interface SignInModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+export const SignInModal = ({ isOpen, onClose }: SignInModalProps) => {
+  if (!isOpen) return null;
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
       <div className="w-full max-w-md rounded-lg bg-gray-900 p-6 shadow-xl">
@@ -12,6 +19,12 @@ export const SignInModal = () => {
           Please sign in to continue your conversation.
         </p>
         <div className="flex justify-end gap-3">
+          <button
+            onClick={onClose}
+            className="rounded px-4 py-2 text-gray-400 hover:text-gray-300"
+          >
+            Cancel
+          </button>
           <button
             onClick={() => void signIn("discord")}
             className="flex items-center gap-2 rounded bg-[#5865F2] px-4 py-2 text-white hover:bg-[#4752C4] focus:outline-none focus:ring-2 focus:ring-blue-400"

@@ -1,10 +1,7 @@
 import ReactMarkdown, { type Components } from "react-markdown";
-import type { Message } from "ai";
-
-export type MessagePart = NonNullable<Message["parts"]>[number];
 
 interface ChatMessageProps {
-  parts: MessagePart[] | undefined;
+  text: string;
   role: string;
   userName: string;
 }
@@ -41,36 +38,7 @@ const Markdown = ({ children }: { children: string }) => {
   return <ReactMarkdown components={components}>{children}</ReactMarkdown>;
 };
 
-const ToolInvocation = ({
-  toolInvocation,
-}: {
-  toolInvocation: NonNullable<
-    MessagePart & { type: "tool-invocation" }
-  >["toolInvocation"];
-}) => {
-  return (
-    <div className="mb-4 rounded-lg bg-gray-700 p-4">
-      <div className="mb-2 font-mono text-sm text-gray-400">
-        {toolInvocation.toolName}
-      </div>
-      <div className="overflow-x-auto">
-        <pre className="text-sm">
-          {JSON.stringify(toolInvocation.args, null, 2)}
-        </pre>
-        {toolInvocation.state === "result" && (
-          <>
-            <div className="my-2 border-t border-gray-600" />
-            <pre className="text-sm">
-              {JSON.stringify(toolInvocation.result, null, 2)}
-            </pre>
-          </>
-        )}
-      </div>
-    </div>
-  );
-};
-
-export const ChatMessage = ({ parts, role, userName }: ChatMessageProps) => {
+export const ChatMessage = ({ text, role, userName }: ChatMessageProps) => {
   const isAI = role === "assistant";
 
   return (
@@ -85,22 +53,7 @@ export const ChatMessage = ({ parts, role, userName }: ChatMessageProps) => {
         </p>
 
         <div className="prose prose-invert max-w-none">
-          {parts?.map((part, index) => {
-            if (part.type === "text") {
-              return <Markdown key={index}>{part.text}</Markdown>;
-            }
-
-            if (part.type === "tool-invocation") {
-              return (
-                <ToolInvocation
-                  key={index}
-                  toolInvocation={part.toolInvocation}
-                />
-              );
-            }
-
-            return null;
-          })}
+          <Markdown>{text}</Markdown>
         </div>
       </div>
     </div>
