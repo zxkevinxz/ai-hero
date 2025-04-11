@@ -2,6 +2,8 @@
 id: lesson-c3344
 ---
 
+In this section we're going to work on showing the tool calls that we've got already in the front end. We'll be using the `MessagePart` type to show the tool calls.
+
 <AISummary title="Understanding Message Parts" href="https://sdk.vercel.ai/docs/reference/ai-sdk-ui/use-chat#messages.ui-message.parts">
 
 The `MessagePart` type from `ai` represents different types of content that can appear in a message. Here's a comprehensive overview of all possible message parts:

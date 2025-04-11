@@ -2,9 +2,15 @@
 id: lesson-yex6y
 ---
 
-Steps to complete:
+## Problem
 
-- Use the `getChats` helper function to fetch the chats from the database to display in the sidebar.
+Now we've set up the relatively complex process of creating new chats, we need to fetch the chats from the database to display in the sidebar.
+
+We also need to fetch the chat when the user navigates to the page with a `/?id=...` search param.
+
+## Steps to Complete
+
+- Use the `getChats` helper function to fetch the chats from the database to display in the sidebar. Remember that any helper function needs to be called within a server component, not a client component.
 
 - If there is an `/?id=...` search param, use the `getChat` helper function to fetch the chat from the database to display in the `ChatPage` component. Pass the messages to `initialMessages` in `useChat`.
 
