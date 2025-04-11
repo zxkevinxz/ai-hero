@@ -38,7 +38,7 @@ export const upsertChat = async (opts: {
       id: crypto.randomUUID(),
       chatId,
       role: message.role,
-      parts: message.content,
+      parts: message.parts,
       order: index,
     })),
   );
