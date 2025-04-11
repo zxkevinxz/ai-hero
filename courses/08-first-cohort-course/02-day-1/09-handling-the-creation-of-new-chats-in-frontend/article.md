@@ -8,7 +8,7 @@ Our `/api/chat` endpoint is now set up to handle the creation of new chats and u
 
 ### Updating Existing Chats
 
-The simpler of the two is to update existing chats.
+The simpler problem is updating existing chats.
 
 In this case we simply need to take the chat ID from the search parameters and pass it to the `useChat` hook, via the `body` property.
 
