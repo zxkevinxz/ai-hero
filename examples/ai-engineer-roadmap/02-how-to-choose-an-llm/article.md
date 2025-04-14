@@ -123,7 +123,7 @@ This limit is counted in tokens, and counts both input and completion tokens. Pa
 
 The context window size is related to the mechanism the model uses to generate text - so is tied to the design of the model itself. Context window sizes are growing all the time. Currently, Gemini models have the largest context windows.
 
-Since the context window is limited on all models, managing it is a constant battle for AI engineers. Patterns like chunking in [RAG](https://aihero.dev/what-is-rag) are designed to squeeze more information into the context window.
+Since the context window is limited on all models, managing it is a constant battle for AI engineers. Patterns like chunking in RAG are designed to squeeze more information into the context window.
 
 ## Conclusion
 
