@@ -1,41 +1,30 @@
-import { and, desc, eq } from "drizzle-orm";
+import { db } from ".";
+import { chats, messages } from "./schema";
 import type { Message } from "ai";
+import { eq, and } from "drizzle-orm";
 
-import { db } from "~/server/db";
-import { chats, messages, type DB } from "~/server/db/schema";
-
-/**
- * Create or update a chat with all its messages
- * If the chat already exists, it will delete all existing messages and replace them with the new ones
- * If the chat does not exist, it will create a new chat with the id passed in
- */
 export const upsertChat = async (opts: {
   userId: string;
   chatId: string;
   title: string;
   messages: Message[];
 }) => {
-  const { userId, chatId, title, messages: chatMessages } = opts;
+  const { userId, chatId, title, messages: newMessages } = opts;
 
-  // Check if the chat exists and belongs to the user
+  // First, check if the chat exists and belongs to the user
   const existingChat = await db.query.chats.findFirst({
-    where: and(eq(chats.id, chatId), eq(chats.userId, userId)),
+    where: eq(chats.id, chatId),
   });
 
-  // If the chat exists, delete all existing messages
   if (existingChat) {
+    // If chat exists but belongs to a different user, throw error
+    if (existingChat.userId !== userId) {
+      throw new Error("Chat ID already exists under a different user");
+    }
+    // Delete all existing messages
     await db.delete(messages).where(eq(messages.chatId, chatId));
-
-    // Update the chat title and updatedAt timestamp
-    await db
-      .update(chats)
-      .set({
-        title,
-        updatedAt: new Date(),
-      })
-      .where(eq(chats.id, chatId));
   } else {
-    // Create a new chat
+    // Create new chat
     await db.insert(chats).values({
       id: chatId,
       userId,
@@ -44,30 +33,27 @@ export const upsertChat = async (opts: {
   }
 
   // Insert all messages
-  if (chatMessages.length > 0) {
-    await db.insert(messages).values(
-      chatMessages.map((message, index) => ({
-        id: message.id,
-        chatId,
-        role: message.role,
-        parts: message.parts,
-        order: index,
-      })),
-    );
-  }
+  await db.insert(messages).values(
+    newMessages.map((message, index) => ({
+      id: crypto.randomUUID(),
+      chatId,
+      role: message.role,
+      parts: message.parts,
+      order: index,
+    })),
+  );
 
   return { id: chatId };
 };
 
-/**
- * Get a chat by id with its messages
- */
-export const getChat = async (chatId: string, userId: string) => {
+export const getChat = async (opts: { userId: string; chatId: string }) => {
+  const { userId, chatId } = opts;
+
   const chat = await db.query.chats.findFirst({
     where: and(eq(chats.id, chatId), eq(chats.userId, userId)),
     with: {
       messages: {
-        orderBy: [messages.order],
+        orderBy: (messages, { asc }) => [asc(messages.order)],
       },
     },
   });
@@ -76,17 +62,21 @@ export const getChat = async (chatId: string, userId: string) => {
     return null;
   }
 
-  return chat;
+  return {
+    ...chat,
+    messages: chat.messages.map((message) => ({
+      id: message.id,
+      role: message.role,
+      content: message.parts,
+    })),
+  };
 };
 
-/**
- * Get all chats for a user, without the messages
- */
-export const getChats = async (userId: string) => {
-  const userChats = await db.query.chats.findMany({
-    where: eq(chats.userId, userId),
-    orderBy: [desc(chats.updatedAt)],
-  });
+export const getChats = async (opts: { userId: string }) => {
+  const { userId } = opts;
 
-  return userChats;
+  return await db.query.chats.findMany({
+    where: eq(chats.userId, userId),
+    orderBy: (chats, { desc }) => [desc(chats.updatedAt)],
+  });
 };

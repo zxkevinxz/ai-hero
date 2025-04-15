@@ -1,26 +1,19 @@
 "use client";
 
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
 import { useChat } from "@ai-sdk/react";
-import type { Message } from "ai";
+import { Loader2 } from "lucide-react";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { ChatMessage } from "~/components/chat-message";
 import { SignInModal } from "~/components/sign-in-modal";
-import { Send } from "lucide-react";
 import { isNewChatCreated } from "~/utils";
+import type { Message } from "ai";
 
 interface ChatProps {
   userName: string;
   isAuthenticated: boolean;
-  chatId?: string;
-  initialMessages?: {
-    id: string;
-    chatId: string;
-    role: string;
-    parts: unknown;
-    order: number;
-    createdAt: Date;
-  }[];
+  chatId: string | undefined;
+  initialMessages: Message[];
 }
 
 export const ChatPage = ({
@@ -29,43 +22,39 @@ export const ChatPage = ({
   chatId,
   initialMessages,
 }: ChatProps) => {
+  const [showSignInModal, setShowSignInModal] = useState(false);
   const router = useRouter();
-
-  // Map database messages to the format expected by useChat
-  const mappedInitialMessages = initialMessages?.map((msg) => ({
-    id: msg.id,
-    // msg.role is typed as string, so we need to cast it to the correct type
-    role: msg.role as "user" | "assistant",
-    // msg.parts is typed as unknown[], so we need to cast it to the correct type
-    parts: msg.parts as Message["parts"],
-    // content is not persisted, so we can safely pass an empty string
-    content: "",
-  }));
-
   const {
     messages,
     input,
     handleInputChange,
-    handleSubmit,
+    handleSubmit: originalHandleSubmit,
     isLoading,
     data,
-    error,
   } = useChat({
     body: {
       chatId,
     },
-    initialMessages: mappedInitialMessages,
+    initialMessages,
   });
 
-  // Check if the latest data item is a NEW_CHAT_CREATED object
   useEffect(() => {
-    if (data && data.length > 0) {
-      const latestData = data[data.length - 1];
-      if (isNewChatCreated(latestData)) {
-        router.push(`/?id=${latestData.chatId}`);
-      }
+    const lastDataItem = data?.[data.length - 1];
+    if (lastDataItem && isNewChatCreated(lastDataItem)) {
+      router.push(`?id=${lastDataItem.chatId}`);
     }
   }, [data, router]);
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (!isAuthenticated) {
+      setShowSignInModal(true);
+      return;
+    }
+
+    originalHandleSubmit(e);
+  };
 
   return (
     <>
@@ -75,11 +64,11 @@ export const ChatPage = ({
           role="log"
           aria-label="Chat messages"
         >
-          {messages.map((message) => {
+          {messages.map((message, index) => {
             return (
               <ChatMessage
-                key={message.id}
-                parts={message.parts}
+                key={index}
+                parts={message.parts ?? []}
                 role={message.role}
                 userName={userName}
               />
@@ -97,26 +86,27 @@ export const ChatPage = ({
                 autoFocus
                 aria-label="Chat input"
                 className="flex-1 rounded border border-gray-700 bg-gray-800 p-2 text-gray-200 placeholder-gray-400 focus:border-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-400 disabled:opacity-50"
-                disabled={!isAuthenticated}
               />
               <button
                 type="submit"
-                disabled={isLoading || !isAuthenticated}
+                disabled={isLoading}
                 className="rounded bg-gray-700 px-4 py-2 text-white hover:bg-gray-600 focus:border-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-400 disabled:opacity-50 disabled:hover:bg-gray-700"
               >
-                <Send className="size-4" />
+                {isLoading ? (
+                  <Loader2 className="size-4 animate-spin" />
+                ) : (
+                  "Send"
+                )}
               </button>
             </div>
-            {error && (
-              <div className="mt-2 rounded bg-red-900/50 p-2 text-sm text-red-200">
-                Error: {error.message || "An error occurred during the chat"}
-              </div>
-            )}
           </form>
         </div>
       </div>
 
-      {!isAuthenticated && <SignInModal />}
+      <SignInModal
+        isOpen={showSignInModal}
+        onClose={() => setShowSignInModal(false)}
+      />
     </>
   );
 };

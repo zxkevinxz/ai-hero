@@ -20,10 +20,6 @@ Here are the important files in the repo.
 **src/types.ts** is where general-use types should live.
 **src/utils.ts** is where general-use utilities should live.
 
-**src/tools/search-web.ts** is where the web search implementation lives.
-**src/tools/scrape-pages.ts** is where the page scraping implementation lives.
-**src/tools/summarize-pages.ts** is where the page summarization implementation lives.
-
 **src/components** is where the components for the repo live, in dash-cased names like `auth-button.tsx`
 
 **src/server/db/schema.ts** is where the drizzle schema lives.

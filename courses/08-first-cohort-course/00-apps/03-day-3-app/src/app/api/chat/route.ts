@@ -1,122 +1,121 @@
+import type { Message } from "ai";
 import {
-  appendResponseMessages,
-  createDataStreamResponse,
   streamText,
-  type Message,
+  createDataStreamResponse,
+  appendResponseMessages,
 } from "ai";
-import { z } from "zod";
-import { model } from "~/models";
+import { model } from "~/model";
 import { auth } from "~/server/auth";
+import { searchSerper } from "~/serper";
+import { z } from "zod";
 import { upsertChat } from "~/server/db/queries";
-import { searchWeb } from "~/tools/search-web";
+import { eq } from "drizzle-orm";
+import { db } from "~/server/db";
+import { chats } from "~/server/db/schema";
 
 export const maxDuration = 60;
 
 export async function POST(request: Request) {
   const session = await auth();
 
-  if (!session?.user) {
+  if (!session) {
     return new Response("Unauthorized", { status: 401 });
   }
 
-  const json = await request.json();
-  const { messages, chatId }: { messages: Message[]; chatId?: string } = json;
+  const body = (await request.json()) as {
+    messages: Array<Message>;
+    chatId?: string;
+  };
 
-  const backupChatId = crypto.randomUUID();
+  const { messages, chatId } = body;
+
+  if (!messages.length) {
+    return new Response("No messages provided", { status: 400 });
+  }
+
+  // If no chatId is provided, create a new chat with the user's message
+  let currentChatId = chatId;
+  if (!currentChatId) {
+    const newChatId = crypto.randomUUID();
+    await upsertChat({
+      userId: session.user.id,
+      chatId: newChatId,
+      title: messages[messages.length - 1]!.content.slice(0, 50) + "...",
+      messages: messages, // Only save the user's message initially
+    });
+    currentChatId = newChatId;
+  } else {
+    // Verify the chat belongs to the user
+    const chat = await db.query.chats.findFirst({
+      where: eq(chats.id, currentChatId),
+    });
+    if (!chat || chat.userId !== session.user.id) {
+      return new Response("Chat not found or unauthorized", { status: 404 });
+    }
+  }
 
   return createDataStreamResponse({
     execute: async (dataStream) => {
-      // If there is no chatId, write data to indicate that a new chat has been created
+      // If this is a new chat, send the chat ID to the frontend
       if (!chatId) {
         dataStream.writeData({
           type: "NEW_CHAT_CREATED",
-          chatId: backupChatId,
+          chatId: currentChatId,
         });
       }
 
       const result = streamText({
         model,
         messages,
-        maxSteps: 20,
-        system: `You are a helpful AI assistant with access to web search and page scraping tools. The current date and time is ${new Date().toLocaleString()}.
-        
-IMPORTANT INSTRUCTIONS:
-1. ALWAYS think step by step when solving problems. Break down complex queries into smaller, manageable steps.
-2. Use <thinking> tags to:
-   - Reflect on search results and organize your thoughts
-   - Break down complex reasoning into smaller steps
-   - Keep track of your thought process
-3. ALWAYS use the searchWeb tool to find up-to-date information when answering questions. This tool will:
-   - Search the web for relevant pages
-   - Automatically crawl and extract content from those pages
-   - Return both search snippets and full page content
-4. ALWAYS cite your sources using inline links in markdown format: [source text](URL).
-5. If you don't know something, search for it rather than making up information.
-6. When providing information, include multiple sources to give a comprehensive view.
-7. When users ask for up-to-date information, use the current date (${new Date().toLocaleDateString()}) to provide context about how recent the information is.
-8. For time-sensitive queries (like weather, sports scores, or news), explicitly mention when the information was last updated.
-9. Your workflow should always be:
-   a. First, use <thinking> tags to plan the steps needed to solve the query
-   b. Then, use searchWeb to find and crawl relevant pages
-   c. Use <thinking> tags to analyze and organize the information
-   d. Finally, provide a comprehensive answer inside <answer> tags based on the full content
+        maxSteps: 10,
+        system: `You are a helpful AI assistant with access to real-time web search capabilities. When answering questions:
 
-Here are examples of how to handle different types of queries:
+1. Always search the web for up-to-date information when relevant
+2. ALWAYS format URLs as markdown links using the format [title](url)
+3. Be thorough but concise in your responses
+4. If you're unsure about something, search the web to verify
+5. When providing information, always include the source where you found it using markdown links
+6. Never include raw URLs - always use markdown link format
 
-Example 1 - Comparative Query: "Compare the managerial records of Jurgen Klopp and Pep Guardiola"
-Steps:
-1. Use <thinking> tags to plan the comparison approach
-2. Use searchWeb to find information about both managers' careers
-3. Use <thinking> tags to analyze and organize the data
-4. Compare their records across different metrics (trophies, win rates, etc.)
-5. Present a balanced comparison with sources inside <answer> tags
-
-Example 2 - Specific Fact Query: "How long was Bukayo Saka been injured during the 2024/2025 season?"
-Steps:
-1. Use <thinking> tags to plan the search strategy
-2. Use searchWeb to find news articles about Saka's injuries
-3. Use <thinking> tags to organize the timeline of events
-4. Extract specific dates of injury and return to play
-5. Use <thinking> tags to calculate and verify the duration
-6. Present the findings with relevant context inside <answer> tags
-
-Example 3 - Multi-step Reasoning Query: "What is the combined population of Exeter, Plymouth and Barnstaple? Is this more than the population of Luxembourg?"
-Steps:
-1. Use <thinking> tags to plan the data collection approach
-2. Use searchWeb to find current population data for all cities
-3. Use <thinking> tags to organize and verify the data
-4. Calculate and compare the populations
-5. Present the comparison with sources and calculations inside <answer> tags`,
+Remember to use the searchWeb tool whenever you need to find current information.`,
         tools: {
           searchWeb: {
             parameters: z.object({
               query: z.string().describe("The query to search the web for"),
             }),
             execute: async ({ query }, { abortSignal }) => {
-              return searchWeb(query, abortSignal);
+              const results = await searchSerper(
+                { q: query, num: 10 },
+                abortSignal,
+              );
+
+              return results.organic.map((result) => ({
+                title: result.title,
+                link: result.link,
+                snippet: result.snippet,
+              }));
             },
           },
         },
         onFinish: async ({ response }) => {
-          const responseMessages = response.messages;
+          // Merge the existing messages with the response messages
           const updatedMessages = appendResponseMessages({
             messages,
-            responseMessages,
+            responseMessages: response.messages,
           });
 
-          try {
-            // Update the chat with all messages
-            await upsertChat({
-              userId: session.user.id,
-              chatId: chatId ?? backupChatId,
-              title: messages[0]?.content ?? "New Chat",
-              messages: updatedMessages,
-            });
-          } catch (error) {
-            console.error("Error upserting chat");
-            console.error(error);
-            throw error;
+          const lastMessage = messages[messages.length - 1];
+          if (!lastMessage) {
+            return;
           }
+
+          // Save the complete chat history
+          await upsertChat({
+            userId: session.user.id,
+            chatId: currentChatId,
+            title: lastMessage.content.slice(0, 50) + "...",
+            messages: updatedMessages,
+          });
         },
       });
 
