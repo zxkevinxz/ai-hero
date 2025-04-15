@@ -41,3 +41,5 @@ export function register() {
 ```
 
 This `instrumentation.ts` file will be called both in development and production. This, combined with the environment variables which we've already configured, will export our data to langfuse.
+
+- Run the app locally, make a few queries and check the LangFuse dashboard to see the data.
