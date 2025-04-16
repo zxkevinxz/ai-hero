@@ -52,17 +52,19 @@ const langfuse = new Langfuse({
 });
 ```
 
-- When the `/api/chat` route is called, create a trace and add the user and session to it. Give the trace a name of `chat`.
+- When the `/api/chat` route is called, create a trace and add the user and session to it. Give the trace a name of `chat`. The user ID will come from the existing authentication session. We're going to reuse the chat ID to be the Langfuse session ID.
 
 ```ts
 const session = await auth(); // existing code
 
 const trace = langfuse.trace({
-  sessionId: "your-session-id",
+  sessionId: currentChatId,
   name: "chat",
   userId: session.user.id,
 });
 ```
+
+Remember the way that the chat ID was created - if the user didn't pass a chat ID we create a chat first. Make sure you don't blindly use the one being passed in from the request body.
 
 - Inside the `streamText` function, change the `experimental_telemetry` to contain the trace:
 

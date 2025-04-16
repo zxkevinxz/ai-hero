@@ -10,14 +10,20 @@ This will get even worse when we head to production. Our application will be put
 
 We need to add some kind of observability platform - one that we can use locally to assist our development and also monitor our production application.
 
+## Which Observability Platform?
+
 There are many many options in this space. A whole cottage industry has sprung up around observability platforms targeted to LLMs.
 
-I've decided to go for Langfuse. It's a platform that allows you to monitor and trace LLM applications. Here's why:
+You could even decide to go for a more mature player in this space. Vercel's AI SDK supports OpenTelemetry so any platform that allows for collecting OpenTelemetry data would work.
 
-- It's **open source**, and can be **run locally via Docker**, so it's safer from vendor lock-in concerns
-- It has a **generous free tier**, so it's easy to get started
-- It **integrates well with Vercel's AI SDK**, so it's simple to set up
+For this course, I've decided to go for [Langfuse](https://langfuse.com/). It's a platform that allows you to monitor and trace LLM applications. Here's why I picked it:
+
+- It's **open source**, and can be **[run locally via Docker](https://langfuse.com/self-hosting/local)**, so it's safer from vendor lock-in concerns
+- It has a **generous [free tier](https://langfuse.com/pricing)**, so it's easy to get started
+- It **integrates well with [Vercel's AI SDK](https://langfuse.com/docs/integrations/vercel-ai-sdk)**, so it's simple to set up
 
 However, I wouldn't blame you for going for any of the other solutions in this space. They all have their pros and cons and are each fighting it out for dominance.
 
-We are not sponsored by Langfuse - I just thought the product was pretty good and decided to recommend it as part of the course
+The constraints I have - choosing a good enough tool for the course - are not quite the same constraints that you'll have in production. However, I'm happy enough with Langfuse that I'm comfortable recommending it.
+
+The course isn't sponsored by Langfuse - I just thought the product was good enough to recommend.
