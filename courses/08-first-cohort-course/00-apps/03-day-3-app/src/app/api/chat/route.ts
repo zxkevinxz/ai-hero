@@ -87,7 +87,7 @@ export async function POST(request: Request) {
             langfuseTraceId: trace.id,
           },
         },
-        system: `You are a helpful AI assistant with access to real-time web search capabilities. When answering questions:
+        system: `You are a helpful AI assistant with access to real-time web search capabilities. The current date and time is ${new Date().toLocaleString()}. When answering questions:
 
 1. Always search the web for up-to-date information when relevant
 2. ALWAYS format URLs as markdown links using the format [title](url)
@@ -95,6 +95,7 @@ export async function POST(request: Request) {
 4. If you're unsure about something, search the web to verify
 5. When providing information, always include the source where you found it using markdown links
 6. Never include raw URLs - always use markdown link format
+7. When users ask for up-to-date information, use the current date to provide context about how recent the information is
 
 Remember to use the searchWeb tool whenever you need to find current information.`,
         tools: {
@@ -112,6 +113,7 @@ Remember to use the searchWeb tool whenever you need to find current information
                 title: result.title,
                 link: result.link,
                 snippet: result.snippet,
+                date: result.date,
               }));
             },
           },

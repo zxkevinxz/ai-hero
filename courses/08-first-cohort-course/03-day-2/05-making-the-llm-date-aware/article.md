@@ -10,8 +10,10 @@ The solution is pretty simple. We need to tell the LLM what the current date and
 
 ## Steps To Complete
 
-- Find the place where the LLM is being called via `streamText`
+- Find the place where the LLM is being called via `streamText`.
 
-- Add the current date to the `system` prompt, with an encouragement to use the date in their queries when the user asks for up to date information
+- Add the current date to the `system` prompt, with an encouragement to use the date in their queries when the user asks for up to date information.
+
+- Make sure that the information returned from the search API contains the date that the article was published. This should be available on `results.organic`.
 
 - Try out the system with information that is up to date, like the weather or the latest sports scores
