@@ -2,19 +2,17 @@
 id: lesson-t2c4t
 ---
 
-Problem statement:
+## Problem
 
 Our agent is not planning well, it doesn't handle comparative queries well.
 
 It should be able to make detailed plans for how to solve the user's query.
 
-Background Information:
-
 We'll need to encourage the LLM to think step by step, and to come up with a detailed plan for how to solve the user's query.
 
 To do that, we can add some general chain-of-thought prompting to the system prompt, and add some examples for the LLM to follow.
 
-Steps to complete:
+## Steps to complete
 
 - Find the system prompt
 
