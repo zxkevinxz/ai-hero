@@ -89,5 +89,3 @@ await langfuse.flushAsync();
 ```
 
 - Run the app locally, make a few queries and check the Langfuse dashboard to see the data.
-
-- Make a few queries and see if the Langfuse dashboard is updated with the new data.
