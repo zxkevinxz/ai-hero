@@ -1,3 +1,7 @@
+---
+id: lesson-koanm
+---
+
 ## The Problem
 
 We are already seeing that our application is tricky to monitor. There are long conversational threads, Tool calls, And database queries we need to keep track of.

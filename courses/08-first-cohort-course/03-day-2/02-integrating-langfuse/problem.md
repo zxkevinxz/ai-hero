@@ -1,3 +1,7 @@
+---
+id: lesson-27675
+---
+
 ## The Problem
 
 We need to integrate Langfuse into our application.

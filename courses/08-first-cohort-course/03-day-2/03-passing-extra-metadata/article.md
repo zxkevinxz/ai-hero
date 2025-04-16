@@ -1,3 +1,7 @@
+---
+id: lesson-i3z8p
+---
+
 ## The Problem
 
 We're getting some fairly decent information from Langfuse. But we aren't using the platform to its full potential.
