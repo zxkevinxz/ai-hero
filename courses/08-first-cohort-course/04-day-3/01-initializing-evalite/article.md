@@ -1,3 +1,5 @@
+## Problem
+
 Our application is now more objectively useful.
 
 We've also hooked it up to an observability platform so that we can monitor it in production.
@@ -10,7 +12,7 @@ We have a good understanding of what our users are planning to do but we aren't 
 
 We need to change that by evaluating our application as we develop it, using user data.
 
-## Langfuse?
+### Langfuse?
 
 We could use Langfuse for this. Langfuse has a built-in evaluation set up that allows you to automatically evaluate your application based on user data.
 
@@ -18,7 +20,7 @@ However, I've found that writing your evals as code is much more flexible.
 
 So instead we're going to use something called Evalite.
 
-## Evalite
+### Evalite
 
 Evalite is a Vitest-based evals framework that runs in TypeScript. It feels very familiar if you've ever written a test in TypeScript before.
 
@@ -68,12 +70,12 @@ evalite("My Eval", {
 
 - Run the script with `pnpm run evals`.
 
-Evalite will run at localhost:3004.
+Evalite will run at `localhost:3006`.
 
-- Now it's time to set up Evalite with your environment variables. Create a `vite.config.ts` file with the following contents:
+- Now it's time to set up Evalite with your environment variables. Create a `vitest.config.ts` file with the following contents:
 
 ```ts
-import { defineConfig } from "vite";
+import { defineConfig } from "vitest/config";
 
 export default defineConfig({
   test: {
