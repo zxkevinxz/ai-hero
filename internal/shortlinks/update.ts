@@ -1,9 +1,14 @@
 import { execSync } from "child_process";
 import { readFileSync, writeFileSync } from "fs";
 import path from "path";
+import { fileURLToPath } from "url";
+
+const dirname = path.dirname(
+  fileURLToPath(import.meta.url),
+);
 
 const shortlinksPath = path.join(
-  import.meta.dirname,
+  dirname,
   "./shortlinks.json",
 );
 
