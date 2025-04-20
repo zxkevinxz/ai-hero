@@ -167,4 +167,4 @@ export const getNextAction = async (
 ## Steps To Complete
 
 - Create the `getNextAction` function, with all required types and schemas.
-- Don't yet implement the
+- Take a look at our existing `streamText` call and use its system prompt as inspiration for the `getNextAction` prompt.
