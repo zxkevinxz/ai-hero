@@ -23,7 +23,7 @@ The way to improve our app is to make it more modular - to break each action out
 
 However, it also means significant code changes.
 
-## The `maxSteps` Loop
+### The `maxSteps` Loop
 
 To make this work, we need to take control over a process that is currently managed by the AI SDK: the tool calling loop.
 
@@ -50,7 +50,7 @@ flowchart
 
 Our plan is to take control of this loop.
 
-## Our Loop
+### Our Loop
 
 Let's pseudocode this so you can see what I mean. We'll start with a traditional `while` loop.
 
@@ -116,7 +116,7 @@ return answerQuestion(ctx, {
 
 This means we always get a final answer - which in the current system is not guaranteed.
 
-## What Benefits Do We Get?
+### What Benefits Do We Get?
 
 We'll see the benefits of this slowly, as we add more to the implementation. But I'll give you a preview now:
 
