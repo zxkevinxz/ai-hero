@@ -36,26 +36,22 @@ while (ctx.step < 10) {
 
 ## Designing the `evaluateAnswer` function
 
-Our `evaluateAnswer` function needs to be carefully designed. We need to match it to the success criteria for our answers.
+Our `evaluateAnswer` function needs to be carefully designed. We need to match it to the success criteria for our answers. For now, we'll focus on two criteria:
 
 - Definitiveness - fully answers the question
-- Relevance - relevant to the question
-- Sources - uses sources
 - Recency - up to date
 
-There are two possible designs for this. We could run four different LLM calls, one for each of the criteria.
+There are two possible designs for this. We could run two different LLM calls in parallel, one for each of the criteria.
 
 ```ts
 // Option 1
 const results = await Promise.all([
   evaluateDefinitiveness(answer),
-  evaluateRelevance(answer),
-  evaluateSources(answer),
   evaluateRecency(answer),
 ]);
 ```
 
-Or, we could run a single LLM call that evaluates all four criteria at once.
+Or, we could run a single LLM call that evaluates both criteria at once.
 
 ```ts
 // Option 2
@@ -70,92 +66,70 @@ However, we should keep option 1 on our radar. Option 2 may end up being too rel
 
 ## Implementing the `evaluateAnswer` function
 
-We'll need to use structured outputs to make sure that we get output from the LLM that we can use. We'll need to use this rather large schema, with descriptions for each field:
+We'll need to use structured outputs to make sure that we get output from the LLM that we can use. We'll need to use this schema, with descriptions for each field:
 
 ```ts
 import { z } from "zod";
 import { generateObject } from "ai";
 
-export const evaluateAnswer = generateObject({
-  model,
-  schema: z.object({
-    metrics: z.object({
-      definitiveness: z.object({
-        doesMetricMatter: z
-          .boolean()
-          .describe(
-            "Whether the answer needs to be checked for definitiveness",
-          ),
-        pass: z
-          .boolean()
-          .describe(
-            "Whether the answer is definitively correct",
-          ),
-        reasoning: z
-          .string()
-          .describe("The reason for the pass or fail"),
-      }),
-      relevance: z.object({
-        doesMetricMatter: z
-          .boolean()
-          .describe(
-            "Whether the answer needs to be checked for relevance",
-          ),
-        pass: z
-          .boolean()
-          .describe(
-            "Whether the answer is relevant to the question",
-          ),
-        reasoning: z
-          .string()
-          .describe("The reason for the pass or fail"),
-      }),
-      sources: z.object({
-        doesMetricMatter: z
-          .boolean()
-          .describe(
-            "Whether the answer needs to be checked for sources",
-          ),
-        pass: z
-          .boolean()
-          .describe("Whether the answer uses sources"),
-        reasoning: z
-          .string()
-          .describe("The reason for the pass or fail"),
-      }),
-      recency: z.object({
-        doesMetricMatter: z
-          .boolean()
-          .describe(
-            "Whether the answer needs to be checked for recency",
-          ),
-        pass: z
-          .boolean()
-          .describe(
-            "Whether the answer is up to date",
-          ),
-        reasoning: z
-          .string()
-          .describe("The reason for the pass or fail"),
+export const evaluateAnswer = (opts: {
+  answer: string;
+  question: string;
+}) =>
+  generateObject({
+    model,
+    schema: z.object({
+      metrics: z.object({
+        definitiveness: z.object({
+          state: z
+            .enum(["pass", "fail"])
+            .describe(
+              "Whether the answer is definitively correct. Reply with 'pass' if it is, 'fail' if it is not.",
+            ),
+          reasoning: z
+            .string()
+            .describe(
+              "The reason for the pass or fail",
+            ),
+        }),
+        recency: z.object({
+          state: z
+            .enum(["pass", "fail", "irrelevant"])
+            .describe(
+              "Whether the answer needs to be checked for recency. Reply with 'pass' if it does, 'fail' if it does not, or 'irrelevant' if the question does not require a recency check.",
+            ),
+          reasoning: z
+            .string()
+            .describe(
+              "The reason for the pass or fail",
+            ),
+        }),
       }),
     }),
-  }),
-  prompt: `
+    prompt: `
   You are an expert evaluator. You are given an answer to a question. You need to evaluate the answer based on the following criteria:
 
   - Definitiveness
-  - Relevance
-  - Sources
   - Recency
 
-  You need to provide a pass/fail for each criterion, and a reason for the pass/fail.
+  Definitiveness:
+  - Whether the answer is definitively correct. Reply with 'pass' if it is, 'fail' if it is not.
+  - The reason for the pass or fail
 
-  
+  Recency:
+  - Whether the answer is up to date. Reply with 'pass' if it is, 'fail' if it is not, or 'irrelevant' if the question does not require a recency check.
+  - The reason for the pass or fail
 
+  Answer:
+  ${opts.answer}
 
+  Question:
+  ${opts.question}
   `,
-});
+  });
 ```
+
+Note that we are always going to check the answer for definitiveness - I can't yet think of a situation where we would want an answer that does not definitively answer the question.
 
 ## Saving Failed Attempts
 
