@@ -8,7 +8,7 @@ Clearly defining success criteria is enormously important for any AI engineering
 
 The best place to start is to imagine your ideal user. What do they want when they use your app?
 
-In the case of a deep search app, they are looking for an answer to their question. They need that answer to be:
+In the case of a DeepSearch app, they are looking for an answer to their question. They need that answer to be:
 
 - Factual - a correct answer to their question
 - Relevant - the app should not veer off and answer some different question
