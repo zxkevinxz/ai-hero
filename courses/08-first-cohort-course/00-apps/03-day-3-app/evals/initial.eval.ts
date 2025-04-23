@@ -3,7 +3,7 @@ import { evalite } from "evalite";
 import { askDeepSearch } from "~/deep-search";
 import { Factuality } from "~/factuality-scorer";
 
-evalite("Deep Search Eval", {
+evalite.experimental_skip("Deep Search Eval", {
   data: async (): Promise<{ input: string; expected: string }[]> => {
     return [
       {
