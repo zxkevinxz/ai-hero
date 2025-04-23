@@ -1,3 +1,7 @@
+---
+id: lesson-dm09x
+---
+
 ## Problem
 
 I've not been straight with you. We have some significant problems with our system.
@@ -43,9 +47,10 @@ It can stop this loop in one of two ways: either the LLM can decide to stop, or 
 
 ```mermaid
 flowchart
-  A[Tool Calling Loop]
-  A -- Decide To Stop --> C[Finished]
-  A -- maxSteps Reached--> C
+  subgraph Tool Calling Loop
+    A[LLM Call] <--> B[Tool Call]
+  end
+  A -- Decide To Stop OR maxSteps Reached --> C[Finished]
 ```
 
 Our plan is to take control of this loop.
