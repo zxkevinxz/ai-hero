@@ -1,3 +1,7 @@
+---
+id: lesson-cxp47
+---
+
 ## Problem
 
 It's all very well having the ability to view our evals side by side.

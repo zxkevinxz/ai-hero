@@ -1,3 +1,7 @@
+---
+id: lesson-kps4x
+---
+
 ## Problem
 
 We have picked out the easiest possible thing we could evaluate for our first eval.

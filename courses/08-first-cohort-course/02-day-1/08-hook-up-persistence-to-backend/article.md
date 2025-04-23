@@ -2,7 +2,7 @@
 id: lesson-pq2af
 ---
 
-## The Problem
+## Problem
 
 Now we've created our database resources, it's time to hook them up to `/api/chat`. We're gonna focus only on the 'adding' parts of this - we'll handle fetching and displaying the chats in the next couple of sections.
 

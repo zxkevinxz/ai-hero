@@ -1,3 +1,7 @@
+---
+id: lesson-rludz
+---
+
 We've now got Evalite set up so that it can run evals for us. But what evals should we run?
 
 To know what evals we need to run, we need to understand what we are evaluating for. What does success look like in our application?
