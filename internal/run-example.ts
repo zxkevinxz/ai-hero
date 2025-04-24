@@ -4,11 +4,15 @@ import { Command } from "commander";
 import path from "path";
 import { readdir } from "fs/promises";
 import { execSync } from "child_process";
+import { fileURLToPath } from "url";
 
 const program = new Command();
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 const examplesPath = path.resolve(
-  import.meta.dirname,
+  __dirname,
   "../examples",
 );
 
