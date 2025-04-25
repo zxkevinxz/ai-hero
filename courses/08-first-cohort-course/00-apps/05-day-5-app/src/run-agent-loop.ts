@@ -2,11 +2,13 @@ import { SystemContext } from "./system-context";
 import { getNextAction } from "./get-next-action";
 import { searchSerper } from "./serper";
 import { bulkCrawlWebsites } from "./server/scraper";
-import { generateText } from "ai";
+import { streamText, type StreamTextResult } from "ai";
 import { model } from "~/model";
 import { answerQuestion } from "./answer-question";
 
-export async function runAgentLoop(initialQuestion: string) {
+export async function runAgentLoop(
+  initialQuestion: string,
+): Promise<StreamTextResult<{}, string>> {
   // A persistent container for the state of our system
   const ctx = new SystemContext(initialQuestion);
 
@@ -57,7 +59,7 @@ export async function runAgentLoop(initialQuestion: string) {
     ctx.incrementStep();
   }
 
-  // If we've taken 10 actions and still don't have an answer,
+  // If we've taken 10 actions and haven't answered yet,
   // we ask the LLM to give its best attempt at an answer
   return answerQuestion(ctx, { isFinal: true });
 }

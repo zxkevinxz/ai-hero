@@ -1,14 +1,14 @@
-import { generateText } from "ai";
+import { streamText, type StreamTextResult } from "ai";
 import { model } from "~/model";
 import { SystemContext } from "./system-context";
 
-export async function answerQuestion(
+export function answerQuestion(
   ctx: SystemContext,
   options: { isFinal?: boolean } = {},
-) {
+): StreamTextResult<{}, string> {
   const { isFinal = false } = options;
 
-  const result = await generateText({
+  return streamText({
     model,
     system: `You are a helpful AI assistant that answers questions based on the information gathered from web searches and scraped content.
 
@@ -28,6 +28,4 @@ ${ctx.getQueryHistory()}
 
 ${ctx.getScrapeHistory()}`,
   });
-
-  return result.text;
 }

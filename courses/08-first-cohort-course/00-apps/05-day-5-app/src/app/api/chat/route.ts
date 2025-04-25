@@ -70,7 +70,7 @@ export async function POST(request: Request) {
         });
       }
 
-      const result = streamFromDeepSearch({
+      const result = await streamFromDeepSearch({
         messages,
         onFinish: async ({ response }) => {
           // Merge the existing messages with the response messages
