@@ -1,5 +1,3 @@
-## Problem
-
 Our frontend is not as nice as it could be. Specifically, one feature I really like in other question answerers is that they show their reasoning visually.
 
 Specifically, they show each step taken, and why it's been taken. We're going to implement something similar.
