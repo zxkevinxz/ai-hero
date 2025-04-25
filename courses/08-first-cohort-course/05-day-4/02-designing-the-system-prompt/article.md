@@ -1,4 +1,6 @@
-## Problem
+---
+id: lesson-f0b5g
+---
 
 The first step I want to walk through is designing the shape of the context. We'll be passing this context to the `getNextAction` function, so its shape will be important - and will evolve with our implementation.
 
@@ -14,9 +16,13 @@ We'll need several properties:
 - `queries`: The history of all queries searched
 - `urls`: The history of all URLs scraped
 
-We'll also add a `toPrompt` method, to serialize the context into a string that can be passed to the LLM.
+Keeping them `private` means we can expose a smaller API to the rest of our codebase, which helps keep the code organized.
 
-We'll use XML as the formatter for the context. This is easier for LLM's to parse than JSON.
+And a couple of methods:
+
+- `shouldStop`: Whether the loop should stop
+- `reportQueries`: Report the results of a query
+- `reportScrapes`: Report the results of a scrape
 
 ```ts
 type QueryResult = {
@@ -35,46 +41,31 @@ type ScrapeResult = {
 };
 
 export class SystemContext {
-  step = 0;
-  queries: QueryResult[] = [];
-  urls: ScrapeResult[] = [];
+  /**
+   * The current step in the loop
+   */
+  private step = 0;
 
-  toPrompt() {
-    return `
-  <queries>
-    ${this.queries
-      .map(
-        (q) => `
-    <query>
-      <text>${q.query}</text>
-      <results>
-        ${q.results
-          .map(
-            (r) => `
-        <result>
-          <date>${r.date}</date>
-          <title>${r.title}</title>
-          <url>${r.url}</url>
-          <snippet>${r.snippet}</snippet>
-        </result>`,
-          )
-          .join("")}
-      </results>
-    </query>`,
-      )
-      .join("")}
-  </queries>
-  <urls>
-    ${this.urls
-      .map(
-        (u) => `
-    <url>
-      <address>${u.url}</address>
-      <content>${u.result}</content>
-    </url>`,
-      )
-      .join("")}
-  </urls>`;
+  /**
+   * The history of all queries searched
+   */
+  private queryHistory: QueryResult[] = [];
+
+  /**
+   * The history of all URLs scraped
+   */
+  private scrapeHistory: ScrapeResult[] = [];
+
+  shouldStop() {
+    return this.step >= 10;
+  }
+
+  reportQueries(queries: QueryResult[]) {
+    this.queryHistory.push(...queries);
+  }
+
+  reportScrapes(scrapes: ScrapeResult[]) {
+    this.scrapeHistory.push(...scrapes);
   }
 }
 ```

@@ -1,8 +1,10 @@
-## Problem
+---
+id: lesson-1nu9s
+---
 
-Now that we know the shape of our system prompt, and the general design for our system, we need to implement perhaps its most important function.
+Now that we know the shape of our system's shared context, and the general design for our system, we need to implement perhaps its most important function.
 
-We need a system for choosing the correct next action among several alternatives.
+We need a function for choosing the correct next action among several alternatives.
 
 The next action will be one of:
 
@@ -72,6 +74,8 @@ export const actionSchema = z.union([
 #### Beware `z.union`
 
 However, `z.union` is often a trap when working with LLMs.
+
+<Video resourceId="zuniondangers-kwXDch5P.mp4" />
 
 Under the hood, Zod is translated into JSON schema before being passed to the LLM. `z.union` is translated into a `oneOf` array.
 
@@ -147,7 +151,7 @@ import { generateObject } from "ai";
 export const getNextAction = async (
   context: SystemContext,
 ) => {
-  const action = await generateObject({
+  const result = await generateObject({
     model,
     schema: actionSchema,
     prompt: `
@@ -158,11 +162,11 @@ export const getNextAction = async (
     `,
   });
 
-  return action;
+  return result.object;
 };
 ```
 
-`action` will be an object that matches the schema.
+`result.object` will be an object that matches the schema.
 
 ## Steps To Complete
 
