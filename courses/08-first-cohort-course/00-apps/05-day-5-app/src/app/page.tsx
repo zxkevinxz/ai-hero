@@ -88,7 +88,6 @@ export default async function HomePage({
       </div>
 
       <ChatPage
-        key={chatId}
         userName={userName}
         isAuthenticated={isAuthenticated}
         chatId={chatId}
