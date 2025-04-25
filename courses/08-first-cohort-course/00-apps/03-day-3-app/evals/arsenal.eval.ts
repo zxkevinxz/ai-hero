@@ -98,6 +98,16 @@ evalite("Arsenal", {
         })
         `,
       },
+      {
+        input: "How do I export subtitles from DaVinci Resolve?",
+        expected: `Exporting Subtitles as a Separate File (SRT):
+
+Deliver Page: Go to the Deliver page in DaVinci Resolve.
+Render Settings: In the "Render Settings" panel, make sure to check the "Export Subtitle" option.
+Format: Choose "Subtitle Files (*.srt)" or your desired format. SRT is widely compatible.
+Burn into Video: Uncheck the "Burn into video" option if you want a separate subtitle file.
+Export: Add the job to the render queue and render. DaVinci Resolve will create both the video file and a separate .srt file.`,
+      },
       // {
       //   input: `Which Arsenal player has scored the most goals from corners in the 2024-2025 season, in the Champions League?`,
       //   expected: ``,

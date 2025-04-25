@@ -2,56 +2,81 @@
 id: lesson-rludz
 ---
 
-We've now got Evalite set up so that it can run evals for us. But what evals should we run?
+We've now got two very important things set up for our LLM-powered app. We have observability through Langfuse, which gives us production data. And we have Evalite set up to run evals. But a crucial question remains: what does a good app look like? What metrics can we use to assess the quality of our application?
 
-To know what evals we need to run, we need to understand what we are evaluating for. What does success look like in our application?
+## Defining Success Criteria
 
-## How do you create success criteria?
+Many of these metrics will be familiar from other applications:
 
-The best place to start is to imagine your ideal user. What do they want when they use your app?
+- Conversion rates from free to paid users
+- Error rates in user sessions
+- Query response times
+- Total LLM costs (tracked through Langfuse)
 
-In the case of a DeepSearch app, they are looking for an answer to their question. They need that answer to be:
+But our app is different. It has a probabilistic element at its core that we need to carefully monitor. The key question is: how do we assess the quality of our answers? And more importantly, how do we turn that assessment into trackable metrics that we can measure over time?
 
-- Factual - a correct answer to their question
-- Relevant - the app should not veer off and answer some different question
-- Sourced - the app should use sources in its answer, and provide those sources to the user
-- Up to date - the app should use the most recent information available
-- Fast (ish) - the app should return an answer in a reasonable time frame
+## Core Metrics for DeepSearch
 
-Each of these metrics will form the basis of how well we think our application is doing.
+For our DeepSearch application, we need to nail down several key metrics:
 
-Crucially, instead of a pass/fail grade, good success criteria score these metrics on how often they are met. We can then aim to improve the application over time.
+- **Factual**: The answer must be correct
+- **Relevant**: The app should stay focused on the user's question
+- **Sourced**: Answers should include and cite their sources
+- **Up to date**: The app should use the most recent information
+- **Fast (ish)**: Response times should be reasonable (with some built-in latency expectations)
 
-### Business metrics
+These metrics will form the foundation of our evals, ensuring they closely match our production application's quality.
 
-Separately from our evals, we also need to keep an eye on metrics relevant for our business.
+## Business and Error Metrics
 
-- Cost per query: the amount we pay for each query
-- Cost per user: the amount each user costs us per month
-- Conversion rate: the percentage of users who convert to paying customers
+Beyond our core evals, we need to track business-critical metrics:
 
-We can't evaluate these in our evals, but we should bear them in mind for our success criteria.
+- Cost per query
+- Cost per user
+- Conversion rates
 
-### Error metrics
+While these can't be evaluated directly in our evals, they're crucial for overall success criteria.
 
-## What constitutes a 'good' score?
+## Setting Goals vs. Tracking Progress
 
-It's one thing to define your success metrics. It's another to say whether you've passed or failed them. At a simple level, you want to see the numbers go up over time. But it can be tempting to pick a number ahead of time to aim for - like 'factual accuracy' of 90%.
+There's an important distinction between choosing metrics and setting goals for those metrics. In many contexts, you won't need to set specific goals at all.
 
-Indeed, there are certain situations where you will _need_ to pick a number. If you're running an agency and bidding for a project, metrics like 'factual accuracy' will be as important as 'uptime'.
+For example:
 
-### Establish a Baseline
+- **Startups**: Focus on proving improvement over time, using metrics to drive development and secure funding
+- **Agencies**: Need concrete success criteria and goals for contract bidding
 
-In situations where you need to pick a number, establishing a baseline is very useful. For a DeepSearch application like ours, try testing similar implementations. Track how often they get the answer right, and use that as your baseline.
+### Establishing Baselines
 
-In the real world, the baseline might be human performance. Let's say you're building an internal HR chatbot. You could track how long it takes for users to answer a question, and how often they get the right information, and use that as your baseline.
+When you do need specific numbers, establishing a baseline is crucial. For a DeepSearch app, you might:
 
-Instead of promising numbers, "beating the baseline" is a much more useful framing for success criteria. This lets you promise an improvement to the company, and then track that over time.
+- Test similar implementations
+- Compare against human performance
+- Track historical performance
 
-## Success criteria impacts your system design
+Instead of promising specific numbers, "beating the baseline" is often a more useful framing. This lets you promise improvement and track progress over time.
 
-I've described elsewhere the [staircase of complexity](https://www.aihero.dev/how-to-improve-your-llm-powered-app). It's a staircase you descend as you add more complexity to your application.
+## Impact on System Design
 
-At the bottom of the staircase are extremely complex, extremely costly techniques like fine-tuning. At the top are simpler techniques, like zero-shot prompting or adjusting temperature.
+Your success criteria will directly impact your system design. I've described this elsewhere as the [staircase of complexity](https://www.aihero.dev/how-to-improve-your-llm-powered-app).
 
-How you define your success criteria will tell you how far you need to go down that staircase. For example, if the domain you're in demands high factuality, you'll need to go pretty deep. But if your application only writes tweets or summarizes content, you can get away with a simpler approach.
+The staircase ranges from:
+
+- Simple techniques at the top (zero-shot prompting, temperature adjustments)
+- Complex, costly techniques at the bottom (fine-tuning)
+
+Your success criteria determine how far down this staircase you need to go. For instance:
+
+- High factuality requirements → deeper down the staircase
+- Simple tasks (tweets, summaries) → simpler approaches suffice
+
+## Creating a Culture of Improvement
+
+For these criteria to be useful, they need to be actionable and extremely visible in the organization. A prominent AI startup implements this by:
+
+- Rolling up metrics every few hours
+- Sending updates to Slack
+- Treating metric degradations as incidents
+- Using success criteria as a driving force for development
+
+For our purposes, we'll use these criteria to design our evals, ensuring we can track and improve our application's performance over time.
