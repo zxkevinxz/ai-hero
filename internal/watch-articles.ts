@@ -163,7 +163,7 @@ const updateContent = async (
 
     if (workshopSlug) {
       console.log(
-        `📚 Updated lesson: https://aihero.dev/workshops/${workshopSlug}/${lesson.fields.slug}/edit`,
+        `📚 Updated lesson: https://aihero.dev/workshops/${workshopSlug}/${lesson.fields.slug}`,
       );
     } else {
       console.log(
