@@ -40,10 +40,10 @@ return answerQuestion(ctx, { isFinal: true });
 
 - Read the existing `SystemContext` class.
 
-- Read the existing `streamText` call.
+- Read the existing tool calls for `scrapeUrl` and `searchWeb`.
 
-- Implement the loop in place of the existing `streamText` call. Take the tool calls and reuse them as the `scrapeUrl` and `searchWeb` functions.
+- Create a new file called `run-agent-loop.ts`. Take the tool calls and reuse them as the `scrapeUrl` and `searchWeb` functions. Do not change the original implementation - do some copy/pasting.
 
-- Implement the `answerQuestion` function, which will be a call to a LLM with a system prompt designed to answer the user's question.
+- Implement the `answerQuestion` function, which will be a call to a LLM with a system prompt designed to answer the user's question. Put it in a separate file.
 
 If the `isFinal` flag is true, tell the LLM that we may not have all the information we need to answer the question, but we need to make our best effort.

@@ -29,7 +29,9 @@ export const getNextAction = async (context: SystemContext) => {
     system: `
     You are a helpful AI assistant that can search the web, scrape URLs, or answer questions. Your goal is to determine the next best action to take based on the current context.
     `,
-    prompt: `Based on this context, choose the next action:
+    prompt: `Question: ${context.getInitialQuestion()}
+
+Based on this context, choose the next action:
 1. If you need more information, use 'search' with a relevant query
 2. If you have URLs that need to be scraped, use 'scrape' with those URLs
 3. If you have enough information to answer the question, use 'answer'
