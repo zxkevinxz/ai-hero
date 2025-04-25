@@ -155,10 +155,13 @@ export const getNextAction = async (
     model,
     schema: actionSchema,
     prompt: `
-    You are a helpful assistant that can search the web, scrape a URL, or answer the user's question.
+You are a helpful assistant that can search the web, scrape a URL, or answer the user's question.
 
-    Here is the context:
-    ${context.toPrompt()}
+Here is the context:
+
+${context.getQueryHistory()}
+
+${context.getScrapeHistory()}
     `,
   });
 
