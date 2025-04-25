@@ -6,8 +6,6 @@ We've now got Evalite set up so that it can run evals for us. But what evals sho
 
 To know what evals we need to run, we need to understand what we are evaluating for. What does success look like in our application?
 
-Clearly defining success criteria is enormously important for any AI engineering project. These success criteria give you a bar to clear - something to aim for.
-
 ## How do you create success criteria?
 
 The best place to start is to imagine your ideal user. What do they want when they use your app?
@@ -22,32 +20,38 @@ In the case of a DeepSearch app, they are looking for an answer to their questio
 
 Each of these metrics will form the basis of how well we think our application is doing.
 
-Crucially, instead of a pass/fail grade, good success criteria score these metrics on how often they are met.
+Crucially, instead of a pass/fail grade, good success criteria score these metrics on how often they are met. We can then aim to improve the application over time.
 
-For example, we should try to return a factual result 85% of the time, under 30 seconds for 90% of queries, and so on.
+### Business metrics
 
-## How do you pick the scores you go for?
+Separately from our evals, we also need to keep an eye on metrics relevant for our business.
 
-The scores that you pick should be based on a cost-benefit analysis of how much performance matters to your application.
+- Cost per query: the amount we pay for each query
+- Cost per user: the amount each user costs us per month
+- Conversion rate: the percentage of users who convert to paying customers
 
-For example, if your application is a question-answerer based on legal documents, any factual error from your system becomes extremely costly. Let's say you charge a subscription for your services. If the user encounters a factual error, they may cancel their subscription - costing you the revenue from that user.
+We can't evaluate these in our evals, but we should bear them in mind for our success criteria.
 
-However, in a more general-purpose, low-stakes application, users may have a slightly higher tolerance for innacuracies. In this case, you may be able to get away with a lower factual accuracy score.
+### Error metrics
 
-## Why not aim for 100%?
+## What constitutes a 'good' score?
 
-It's tempting to ask why not aim for 100% in all of our metrics? 100% accuracy, as fast as possible.
+It's one thing to define your success metrics. It's another to say whether you've passed or failed them. At a simple level, you want to see the numbers go up over time. But it can be tempting to pick a number ahead of time to aim for - like 'factual accuracy' of 90%.
 
-The first reason is that 100% is often impossible to achieve. LLMs are probabilistic systems; they will never work deterministically - and a deterministic system is really the only way you're going to get 100% accuracy.
+Indeed, there are certain situations where you will _need_ to pick a number. If you're running an agency and bidding for a project, metrics like 'factual accuracy' will be as important as 'uptime'.
 
-The other reason is that the closer you get to 100%, the harder improvements become. Getting to 50% accuracy is easy. Getting to 80% is harder. 90% is very hard, and 95% is almost impossible.
+### Establish a Baseline
 
-At some point, you need to work out the costs of continuing to push up that hill.
+In situations where you need to pick a number, establishing a baseline is very useful. For a DeepSearch application like ours, try testing similar implementations. Track how often they get the answer right, and use that as your baseline.
 
----
+In the real world, the baseline might be human performance. Let's say you're building an internal HR chatbot. You could track how long it takes for users to answer a question, and how often they get the right information, and use that as your baseline.
 
-In traditional software engineering, your success criteria are fairly obvious: "Does the app work?". "Do the users use it?"
+Instead of promising numbers, "beating the baseline" is a much more useful framing for success criteria. This lets you promise an improvement to the company, and then track that over time.
 
-But in AI engineering because LLMs are so probabilistic, the app likely won't work 100% of the time. In our deep search implementation.
+## Success criteria impacts your system design
 
-If you think about it, these would be the same metrics you would want from a general-purpose search engine. There's nothing particularly novel about the fact we're using AI here.
+I've described elsewhere the [staircase of complexity](https://www.aihero.dev/how-to-improve-your-llm-powered-app). It's a staircase you descend as you add more complexity to your application.
+
+At the bottom of the staircase are extremely complex, extremely costly techniques like fine-tuning. At the top are simpler techniques, like zero-shot prompting or adjusting temperature.
+
+How you define your success criteria will tell you how far you need to go down that staircase. For example, if the domain you're in demands high factuality, you'll need to go pretty deep. But if your application only writes tweets or summarizes content, you can get away with a simpler approach.

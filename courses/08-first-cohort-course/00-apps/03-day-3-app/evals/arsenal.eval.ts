@@ -77,6 +77,27 @@ evalite("Arsenal", {
           54 points in the second half of games, compared to 63 in the first half.
           Liverpool are the best team in the second half of games, with 75 points.`,
       },
+      {
+        input: `How do I pnpm upgrade only a certain set of dependencies - ones starting with @tanstack`,
+        expected: `pnpm upgrade "@tanstack/*"`,
+      },
+      {
+        input: "How do you do a 404 page in tanstack start?",
+        expected: `
+        import { createRouter, Link } from '@tanstack/react-router'
+
+        const router = createRouter({
+          defaultNotFoundComponent: () => {
+            return (
+              <div>
+                <p>Not found!</p>
+                <Link to="/">Go home</Link>
+              </div>
+            )
+          },
+        })
+        `,
+      },
       // {
       //   input: `Which Arsenal player has scored the most goals from corners in the 2024-2025 season, in the Champions League?`,
       //   expected: ``,
