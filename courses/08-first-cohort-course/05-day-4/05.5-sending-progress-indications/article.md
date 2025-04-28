@@ -1,3 +1,7 @@
+---
+id: lesson-ab1lc
+---
+
 We need to show something to the user while our system is working.
 
 Currently all we have is a loading spinner. That's fine, but people expect a bit more from LLM-powered applications these days.
@@ -13,9 +17,9 @@ This will serve two purposes:
 
 I've put together a basic design for what we want to show.
 
-<!-- VIDEO -->
+![Progress indications design](https://res.cloudinary.com/total-typescript/image/upload/v1745853940/workshops/lesson-xt078/jnrugfqnpu5uclwtpt2y.png)
 
-We can think of it kind of like a debug trace for the users. Each step that the system takes will be shown as a separate step, with a description of what the system is doing.
+We can think of it kind of like a debug trace for the users. Each step that the system takes will be shown as a separate step, with a description of what the system was thinking at the time.
 
 To do that we're going to need to extract a bit more information from our system - our `getNextAction` function needs to give us a `title` for the step, and a `reasoning` for why it chose that step:
 
@@ -125,7 +129,7 @@ We'll need some kind of components that can take the annotations and display the
 
 If you're feeling lazy, feel free to copy this component:
 
-```tsx
+```ts
 export const ReasoningSteps = ({
   annotations,
 }: {
