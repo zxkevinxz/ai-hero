@@ -32,7 +32,8 @@ export const getNextAction = async (
     system: `
     You are a helpful AI assistant that can search the web, scrape URLs, or answer questions. Your goal is to determine the next best action to take based on the current context.
     `,
-    prompt: `Question: ${context.getInitialQuestion()}
+    prompt: `Message History:
+${context.getMessageHistory()}
 
 Based on this context, choose the next action:
 1. If you need more information, use 'search' with a relevant query
@@ -44,7 +45,7 @@ Remember:
 - Only use 'scrape' if you have URLs that need to be scraped
 - Use 'answer' when you have enough information to provide a complete answer
 
-Here is the context:
+Here is the search and scrape history:
 
 ${context.getQueryHistory()}
 

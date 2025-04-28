@@ -6,12 +6,7 @@ export const streamFromDeepSearch = async (opts: {
   onFinish: Parameters<typeof streamText>[0]["onFinish"];
   langfuseTraceId?: string;
 }): Promise<StreamTextResult<{}, string>> => {
-  const lastMessage = opts.messages[opts.messages.length - 1];
-  if (!lastMessage) {
-    throw new Error("No messages provided");
-  }
-
-  return runAgentLoop(lastMessage.content, {
+  return runAgentLoop(opts.messages, {
     langfuseTraceId: opts.langfuseTraceId,
   });
 };

@@ -1,3 +1,5 @@
+import type { Message } from "ai";
+
 type QueryResultSearchResult = {
   date: string;
   title: string;
@@ -25,9 +27,9 @@ export class SystemContext {
   private step = 0;
 
   /**
-   * The initial question being answered
+   * The message history
    */
-  private readonly initialQuestion: string;
+  private readonly messages: Message[];
 
   /**
    * The history of all queries searched
@@ -39,12 +41,17 @@ export class SystemContext {
    */
   private scrapeHistory: ScrapeResult[] = [];
 
-  constructor(initialQuestion: string) {
-    this.initialQuestion = initialQuestion;
+  constructor(messages: Message[]) {
+    this.messages = messages;
   }
 
-  getInitialQuestion(): string {
-    return this.initialQuestion;
+  getMessageHistory(): string {
+    return this.messages
+      .map((message) => {
+        const role = message.role === "user" ? "User" : "Assistant";
+        return `<${role}>${message.content}</${role}>`;
+      })
+      .join("\n\n");
   }
 
   shouldStop() {

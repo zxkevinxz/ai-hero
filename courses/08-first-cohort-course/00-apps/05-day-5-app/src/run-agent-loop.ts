@@ -2,16 +2,16 @@ import { SystemContext } from "./system-context";
 import { getNextAction } from "./get-next-action";
 import { searchSerper } from "./serper";
 import { bulkCrawlWebsites } from "./server/scraper";
-import { streamText, type StreamTextResult } from "ai";
+import { streamText, type StreamTextResult, type Message } from "ai";
 import { model } from "~/model";
 import { answerQuestion } from "./answer-question";
 
 export async function runAgentLoop(
-  initialQuestion: string,
+  messages: Message[],
   opts: { langfuseTraceId?: string } = {},
 ): Promise<StreamTextResult<{}, string>> {
   // A persistent container for the state of our system
-  const ctx = new SystemContext(initialQuestion);
+  const ctx = new SystemContext(messages);
 
   // A loop that continues until we have an answer
   // or we've taken 10 actions
