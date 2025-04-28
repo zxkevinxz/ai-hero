@@ -8,6 +8,7 @@ import { chats } from "~/server/db/schema";
 import { Langfuse } from "langfuse";
 import { env } from "~/env";
 import { streamFromDeepSearch } from "~/deep-search";
+import type { OurMessageAnnotation } from "~/types";
 
 const langfuse = new Langfuse({
   environment: env.NODE_ENV,
@@ -95,6 +96,9 @@ export async function POST(request: Request) {
           await langfuse.flushAsync();
         },
         langfuseTraceId: trace.id,
+        writeMessageAnnotation: (annotation) => {
+          dataStream.writeMessageAnnotation(annotation);
+        },
       });
 
       result.mergeIntoDataStream(dataStream);
