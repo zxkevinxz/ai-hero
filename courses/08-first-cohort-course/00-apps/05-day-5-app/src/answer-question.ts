@@ -4,9 +4,9 @@ import { SystemContext } from "./system-context";
 
 export function answerQuestion(
   ctx: SystemContext,
-  options: { isFinal?: boolean } = {},
+  opts: { isFinal?: boolean; langfuseTraceId?: string } = {},
 ): StreamTextResult<{}, string> {
-  const { isFinal = false } = options;
+  const { isFinal = false, langfuseTraceId } = opts;
 
   return streamText({
     model,
@@ -27,5 +27,14 @@ Based on the following context, please answer the question:
 ${ctx.getQueryHistory()}
 
 ${ctx.getScrapeHistory()}`,
+    experimental_telemetry: langfuseTraceId
+      ? {
+          isEnabled: true,
+          functionId: "answer-question",
+          metadata: {
+            langfuseTraceId,
+          },
+        }
+      : undefined,
   });
 }

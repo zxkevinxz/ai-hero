@@ -12,17 +12,20 @@ export const actionSchema = z.object({
   ),
   query: z
     .string()
-    .describe("The query to search for. Required if type is 'search'.")
+    .describe("The query to search for. Only required if type is 'search'.")
     .optional(),
   urls: z
     .array(z.string())
-    .describe("The URLs to scrape. Required if type is 'scrape'.")
+    .describe("The URLs to scrape. Only required if type is 'scrape'.")
     .optional(),
 });
 
 export type Action = z.infer<typeof actionSchema>;
 
-export const getNextAction = async (context: SystemContext) => {
+export const getNextAction = async (
+  context: SystemContext,
+  opts: { langfuseTraceId?: string } = {},
+) => {
   const result = await generateObject({
     model,
     schema: actionSchema,
@@ -47,6 +50,15 @@ ${context.getQueryHistory()}
 
 ${context.getScrapeHistory()}
 `,
+    experimental_telemetry: opts.langfuseTraceId
+      ? {
+          isEnabled: true,
+          functionId: "get-next-action",
+          metadata: {
+            langfuseTraceId: opts.langfuseTraceId,
+          },
+        }
+      : undefined,
   });
 
   return result.object;

@@ -8,6 +8,7 @@ import { answerQuestion } from "./answer-question";
 
 export async function runAgentLoop(
   initialQuestion: string,
+  opts: { langfuseTraceId?: string } = {},
 ): Promise<StreamTextResult<{}, string>> {
   // A persistent container for the state of our system
   const ctx = new SystemContext(initialQuestion);
@@ -16,7 +17,7 @@ export async function runAgentLoop(
   // or we've taken 10 actions
   while (!ctx.shouldStop()) {
     // We choose the next action based on the state of our system
-    const nextAction = await getNextAction(ctx);
+    const nextAction = await getNextAction(ctx, opts);
 
     // We execute the action and update the state of our system
     if (nextAction.type === "search") {
@@ -52,7 +53,7 @@ export async function runAgentLoop(
         );
       }
     } else if (nextAction.type === "answer") {
-      return answerQuestion(ctx);
+      return answerQuestion(ctx, { isFinal: false, ...opts });
     }
 
     // We increment the step counter
@@ -61,5 +62,5 @@ export async function runAgentLoop(
 
   // If we've taken 10 actions and haven't answered yet,
   // we ask the LLM to give its best attempt at an answer
-  return answerQuestion(ctx, { isFinal: true });
+  return answerQuestion(ctx, { isFinal: true, ...opts });
 }
