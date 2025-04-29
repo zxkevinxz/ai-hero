@@ -12,7 +12,8 @@ export async function runAgentLoop(
   opts: {
     langfuseTraceId?: string;
     writeMessageAnnotation?: (annotation: OurMessageAnnotation) => void;
-  } = {},
+    onFinish: Parameters<typeof streamText>[0]["onFinish"];
+  },
 ): Promise<StreamTextResult<{}, string>> {
   // A persistent container for the state of our system
   const ctx = new SystemContext(messages);

@@ -4,9 +4,13 @@ import { SystemContext } from "./system-context";
 
 export function answerQuestion(
   ctx: SystemContext,
-  opts: { isFinal?: boolean; langfuseTraceId?: string } = {},
+  opts: {
+    isFinal?: boolean;
+    langfuseTraceId?: string;
+    onFinish: Parameters<typeof streamText>[0]["onFinish"];
+  },
 ): StreamTextResult<{}, string> {
-  const { isFinal = false, langfuseTraceId } = opts;
+  const { isFinal = false, langfuseTraceId, onFinish } = opts;
 
   return streamText({
     model,
@@ -37,5 +41,6 @@ ${ctx.getScrapeHistory()}`,
           },
         }
       : undefined,
+    onFinish,
   });
 }

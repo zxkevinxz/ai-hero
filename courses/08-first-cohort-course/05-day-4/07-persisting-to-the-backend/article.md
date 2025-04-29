@@ -46,19 +46,30 @@ const writeMessageAnnotation = (
 };
 ```
 
-Then, when the loop has finished, we can save the annotations to the database using the existing `upsertChat` function:
+Then, when the loop has finished, we can save the annotations to the database. The plan here is, before upserting the chat and its messages, we'll manually add the annotations to the last message
 
 ```ts
 streamText({
   // ...existing code
   onFinish: async () => {
+    // Get the last message
+    const lastMessage = messages[messages.length - 1];
+    if (!lastMessage) {
+      return;
+    }
+
+    // Add the annotations to the last message
+    lastMessage.annotations = annotations;
+
+    // Upsert the chat and its messages
     await upsertChat({
-      // ...existing code
-      annotations, //
+      messages,
     });
   },
 });
 ```
+
+You'll then also need to go into `upsertChat` and ensure that the annotations are saved to the database, along with the `role` and `parts`.
 
 ## Steps To Complete
 
@@ -68,5 +79,5 @@ streamText({
 - Add a new `annotations` field to table where the messages are stored. It should be `json`, and optional.
 - Adjust the helper functions to save the annotations to the database, adjust the places the messages are fetched to include the annotations.
 - Make sure the `onFinish` function is passed to the `streamText` function in the answer question code.
-- Adjust the `onFinish` function to save the annotations to the database.
+- Adjust the `/api/chat` route to collect the annotations (via the `writeMessageAnnotation` function), append them to the last message, and then pass the updated messages to the `upsertChat` function.
 - Check it in the UI to see if it works.

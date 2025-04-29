@@ -71,6 +71,8 @@ export async function POST(request: Request) {
         });
       }
 
+      const annotations: OurMessageAnnotation[] = [];
+
       const result = await streamFromDeepSearch({
         messages,
         onFinish: async ({ response }) => {
@@ -80,10 +82,13 @@ export async function POST(request: Request) {
             responseMessages: response.messages,
           });
 
-          const lastMessage = messages[messages.length - 1];
+          const lastMessage = updatedMessages[updatedMessages.length - 1];
           if (!lastMessage) {
             return;
           }
+
+          // Add the annotations to the last message
+          lastMessage.annotations = annotations;
 
           // Save the complete chat history
           await upsertChat({
@@ -97,6 +102,9 @@ export async function POST(request: Request) {
         },
         langfuseTraceId: trace.id,
         writeMessageAnnotation: (annotation) => {
+          // Save the annotation in-memory
+          annotations.push(annotation);
+          // Send it to the client
           dataStream.writeMessageAnnotation(annotation);
         },
       });
