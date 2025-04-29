@@ -1,3 +1,7 @@
+---
+id: lesson-d38cb
+---
+
 This course is going to feel quite different from courses you've taken before.
 
 That's because this course is designed to be taken using an AI coding assistant. They'll be guiding you, writing your code for you, and helping to answer your questions.
