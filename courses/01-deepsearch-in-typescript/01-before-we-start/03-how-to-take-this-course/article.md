@@ -20,7 +20,7 @@ Or many others.
 
 ## Where Is The Code?
 
-You won't be starting with an empty directory. I've initialized a Next.js project for you in the `courses/08-first-cohort-course/00-apps` folder of the AI Hero repo.
+You won't be starting with an empty directory. I've initialized a Next.js project for you in the `courses/01-deepsearch-in-typescript/00-apps` folder of the AI Hero repo.
 
 You'll notice that there are multiple directories. Most of you will start with the first day's directory: `01-day-1-app`. But if you've fallen behind a bit, you can start with the directory for the day you're on: `02-day-2-app`, `03-day-3-app`, etc.
 
