@@ -2,8 +2,6 @@
 id: lesson-ywbt8
 ---
 
-## Problem Statement
-
 Now that we've picked our summarizer model, we need to implement it.
 
 We have multiple options for our implementation, based on how much we want to feed into the summarizer:

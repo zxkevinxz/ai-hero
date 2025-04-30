@@ -2,8 +2,6 @@
 id: lesson-6y7pw
 ---
 
-## Problem
-
 The first thing we need to do in any LLM-powered app is choose our LLM.
 
 If you don't already have an LLM of choice, I recommend checking out my [previous post](https://www.aihero.dev/how-to-choose-an-llm) on it. It explains the various metrics you need to understand in order to choose an LLM effectively.

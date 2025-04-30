@@ -2,8 +2,6 @@
 id: lesson-g4pr8
 ---
 
-## Problem
-
 Our application is now more objectively useful. We've also hooked it up to an observability platform so that we can monitor it in production.
 
 But one thing we don't have a good handle on is how well our experiments are performing locally.

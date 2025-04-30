@@ -2,8 +2,6 @@
 id: lesson-dm09x
 ---
 
-## Problem
-
 I've not been straight with you. We have some significant problems with our system.
 
 It appears to work correctly, but it has one major flaw - all of the functions of our system depend on a single system prompt.

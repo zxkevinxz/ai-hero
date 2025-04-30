@@ -2,8 +2,6 @@
 id: lesson-8tchb
 ---
 
-## Problem statement
-
 We currently have two tools set up:
 
 - Search The Web: searches the web for information, returns a list of URLs and associated snippets

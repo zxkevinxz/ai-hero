@@ -2,11 +2,9 @@
 id: lesson-a56bv
 ---
 
-## Problem
-
 Our `/api/chat` endpoint is now set up to handle the creation of new chats and update existing chats. However, we need to handle this in the frontend.
 
-### Updating Existing Chats
+## Updating Existing Chats
 
 The simpler problem is updating existing chats.
 
@@ -24,7 +22,7 @@ useChat({
 
 Anything passed to the `body` property will be passed along to the API endpoint along with the `messages` array.
 
-### Creating New Chats
+## Creating New Chats
 
 Creating a new chat is a bit more complicated. We need to make a complicated sequence of events work:
 
@@ -34,7 +32,7 @@ Creating a new chat is a bit more complicated. We need to make a complicated seq
 
 Number 1 is already working for us. So let's focus on numbers 2 and 3.
 
-#### Step 2: Using `dataStream.writeData` to send the new chat ID
+### Step 2: Using `dataStream.writeData` to send the new chat ID
 
 You may remember that in our API chat route we have a function called `createDataStreamResponse`.
 
@@ -65,7 +63,7 @@ createDataStreamResponse({
 });
 ```
 
-#### Step 3: Listening for the `NEW_CHAT_CREATED` event
+### Step 3: Listening for the `NEW_CHAT_CREATED` event
 
 This means that in the front end we can listen for this event, and then redirect to the new `chatId`.
 
@@ -107,7 +105,7 @@ useEffect(() => {
 }, [data]);
 ```
 
-### Summary
+## Summary
 
 You should now see that when you send a message in a new chat, you are redirected to the id of the new chat. The conversation should continue as normal.
 

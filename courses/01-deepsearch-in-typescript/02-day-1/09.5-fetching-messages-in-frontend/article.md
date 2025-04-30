@@ -2,8 +2,6 @@
 id: lesson-yex6y
 ---
 
-## Problem
-
 Now we've set up the relatively complex process of creating new chats, we need to fetch the chats from the database to display in the sidebar.
 
 We also need to fetch the chat when the user navigates to the page with a `/?id=...` search param.

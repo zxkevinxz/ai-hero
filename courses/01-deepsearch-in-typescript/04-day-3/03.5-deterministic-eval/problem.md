@@ -2,8 +2,6 @@
 id: lesson-cxp47
 ---
 
-## Problem
-
 It's all very well having the ability to view our evals side by side.
 
 But we've not actually written any scorers to give us a sense for how well our system is doing.

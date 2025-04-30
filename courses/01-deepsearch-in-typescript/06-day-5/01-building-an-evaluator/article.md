@@ -1,5 +1,3 @@
-## Problem
-
 TODO: Find questions that our system can't answer.
 
 We've improved our system. But i still feel like it's a little bit eager to answer the user's question. There is no explicit evaluation step built in to our implementation.

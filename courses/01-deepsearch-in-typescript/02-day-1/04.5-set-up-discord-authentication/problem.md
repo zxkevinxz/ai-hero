@@ -2,8 +2,6 @@
 id: lesson-gzxr6
 ---
 
-## Problem
-
 Our app is currently open to anyone. If we're going to deploy this, we need to restrict access to only logged-in users, so we can track their usage.
 
 There are many options for this. We're using `next-auth`, so any of their providers will work.

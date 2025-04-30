@@ -2,8 +2,6 @@
 id: lesson-bh5a2
 ---
 
-## Problem statement:
-
 We are currently hard-coding a variable that is very important to our system - the number of results we want to return from the search.
 
 We want to be able to change that number easily, possibly even on the fly in production.

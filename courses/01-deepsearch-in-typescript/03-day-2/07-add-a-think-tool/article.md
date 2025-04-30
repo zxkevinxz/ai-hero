@@ -2,8 +2,6 @@
 id: lesson-0jcrk
 ---
 
-## Problem
-
 This is how a `think` tool could be declared.
 
 ```ts

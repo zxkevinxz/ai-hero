@@ -2,8 +2,6 @@
 id: lesson-t2c4t
 ---
 
-## Problem
-
 Our agent is not planning well, it doesn't handle comparative queries well.
 
 It should be able to make detailed plans for how to solve the user's query.

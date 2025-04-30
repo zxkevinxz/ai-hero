@@ -2,8 +2,6 @@
 id: lesson-q2yqx
 ---
 
-## Problem
-
 In the last lesson we learned about the data flywheel - the virtuous loop that happens when you have users using your application in production.
 
 The obvious lesson of the data flywheel is to launch fast. Get users using your application and generating data as soon as possible.

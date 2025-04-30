@@ -2,8 +2,6 @@
 id: lesson-jkfv0
 ---
 
-## Problem
-
 It's now time to hook up our model to the chat page. We're going to do that using the AI SDK.
 
 Our plan is to create a POST route at `/api/chat` that will be used to send messages to the model.

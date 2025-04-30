@@ -2,8 +2,6 @@
 id: lesson-bh5a2
 ---
 
-## Problem Statement
-
 Our collapsed search and crawl tool is pretty brutal in terms of context window usage.
 
 It takes the entire contents of the page even stuff that's irrelevant to ourqueryand pulls it into the lm context window.

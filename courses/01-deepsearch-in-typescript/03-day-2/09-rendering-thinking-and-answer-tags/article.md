@@ -2,8 +2,6 @@
 id: lesson-5jafh
 ---
 
-## Problem statement
-
 Currently, our `<thinking>` and `<answer>` tags are rendered in plain text. We want to render them nicely in the UI.
 
 ## Supporting information

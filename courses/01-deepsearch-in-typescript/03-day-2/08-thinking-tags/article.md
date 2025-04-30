@@ -2,8 +2,6 @@
 id: lesson-susvn
 ---
 
-## Problem
-
 Our 'think' tool is OK, but not perfect. It encourages the LLM to think about something, but it also adds an extra round-trip to the LLM in order to log the thought.
 
 We'd like to encourage the LLM to do thinking in the stream, and not add an extra round-trip to the LLM in order to log the thought.

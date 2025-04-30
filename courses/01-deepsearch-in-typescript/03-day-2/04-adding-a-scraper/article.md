@@ -2,8 +2,6 @@
 id: lesson-wnbd7
 ---
 
-## Problem statement
-
 Now that we have some observability hooked up, we can start increasing the complexity of our implementation while still being able to observe it.
 
 The main issue I see is that we are not actually crawling the sites that we are searching for. We are only using the snippets from search results.
