@@ -27,6 +27,8 @@ Since `summarizeURL` is an expensive call, it'll be useful to cache this in Redi
 
 And we should also use our existing telemetry infrastructure to track the calls to `summarizeURL`.
 
+Finally, we should also consider using a specialized LLM for summarization. We'll need a fast one with a large context window - we don't need much in the way of reasoning, and we want to prioritize speed.
+
 ## Prompt
 
 For the prompt, we can draw inspiration from Together.ai's summarizer, which uses this prompt:
@@ -57,6 +59,8 @@ Critical Reminder: If content lacks a specific aspect of the research topic, cle
 - Look for where the system context is defined.
 - Look for where the redis cache functions are defined.
 - Look for where the telemetry is defined.
+- Look for where the existing models are declared.
+- Add a new model for summarizing - if using Google, use `gemini-1.5-flash`. If not using Google, ask the user which model they'd like to use.
 - Implement the `summarizeURL` function, using the AI SDK and `generateText`.
 - When the URL's are scraped, call `summarizeURL` for each URL in parallel.
 - Update the system context and the answer function to use the summaries instead of the raw URLs.
