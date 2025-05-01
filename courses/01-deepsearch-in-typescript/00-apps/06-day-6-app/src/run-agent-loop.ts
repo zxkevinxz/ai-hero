@@ -37,33 +37,29 @@ export async function runAgentLoop(
       if (!nextAction.query) {
         throw new Error("Query is required for search action");
       }
+      // Search with fewer results to reduce context window usage
       const results = await searchSerper(
-        { q: nextAction.query, num: 10 },
+        { q: nextAction.query, num: 3 },
         undefined,
       );
-      ctx.reportQueries([
-        {
+
+      // Scrape the URLs from the search results
+      const scrapeResults = await bulkCrawlWebsites({
+        urls: results.organic.map((result) => result.link),
+      });
+
+      if (scrapeResults.success) {
+        // Combine search and scrape results
+        ctx.reportSearch({
           query: nextAction.query,
-          results: results.organic.map((result) => ({
+          results: results.organic.map((result, index) => ({
             date: result.date || new Date().toISOString(),
             title: result.title,
             url: result.link,
             snippet: result.snippet,
+            scrapedContent: scrapeResults.results[index]!.result.data,
           })),
-        },
-      ]);
-    } else if (nextAction.type === "scrape") {
-      if (!nextAction.urls) {
-        throw new Error("URLs are required for scrape action");
-      }
-      const results = await bulkCrawlWebsites({ urls: nextAction.urls });
-      if (results.success) {
-        ctx.reportScrapes(
-          results.results.map(({ url, result }) => ({
-            url,
-            result: result.data,
-          })),
-        );
+        });
       }
     } else if (nextAction.type === "answer") {
       return answerQuestion(ctx, { isFinal: false, ...opts });
@@ -73,7 +69,6 @@ export async function runAgentLoop(
     ctx.incrementStep();
   }
 
-  // If we've taken 10 actions and haven't answered yet,
-  // we ask the LLM to give its best attempt at an answer
+  // If we've taken 10 actions and still haven't answered, return a final answer
   return answerQuestion(ctx, { isFinal: true, ...opts });
 }
