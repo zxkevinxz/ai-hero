@@ -6,6 +6,7 @@ type SearchResult = {
   url: string;
   snippet: string;
   scrapedContent: string;
+  summary?: string;
 };
 
 type SearchHistoryEntry = {
@@ -64,9 +65,9 @@ export class SystemContext {
               `### ${result.date} - ${result.title}`,
               result.url,
               result.snippet,
-              `<scrape_result>`,
-              result.scrapedContent,
-              `</scrape_result>`,
+              result.summary
+                ? `<summary>${result.summary}</summary>`
+                : `<scrape_result>${result.scrapedContent}</scrape_result>`,
             ].join("\n\n"),
           ),
         ].join("\n\n"),

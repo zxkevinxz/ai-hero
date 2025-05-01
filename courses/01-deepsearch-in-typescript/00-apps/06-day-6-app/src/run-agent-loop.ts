@@ -1,10 +1,10 @@
-import { SystemContext } from "./system-context";
+import { streamText, type Message, type StreamTextResult } from "ai";
+import { answerQuestion } from "./answer-question";
 import { getNextAction } from "./get-next-action";
 import { searchSerper } from "./serper";
 import { bulkCrawlWebsites } from "./server/scraper";
-import { streamText, type StreamTextResult, type Message } from "ai";
-import { model } from "~/model";
-import { answerQuestion } from "./answer-question";
+import { summarizeURL } from "./summarize-url";
+import { SystemContext } from "./system-context";
 import type { OurMessageAnnotation } from "./types";
 
 export async function runAgentLoop(
@@ -39,7 +39,7 @@ export async function runAgentLoop(
       }
       // Search with fewer results to reduce context window usage
       const results = await searchSerper(
-        { q: nextAction.query, num: 3 },
+        { q: nextAction.query, num: 10 },
         undefined,
       );
 
@@ -48,19 +48,46 @@ export async function runAgentLoop(
         urls: results.organic.map((result) => result.link),
       });
 
-      if (scrapeResults.success) {
-        // Combine search and scrape results
-        ctx.reportSearch({
-          query: nextAction.query,
-          results: results.organic.map((result, index) => ({
+      // Summarize each scraped result in parallel
+      const summarizedResults = await Promise.all(
+        results.organic.map(async (result, index) => {
+          const scrapeResult = scrapeResults.results[index]!.result;
+
+          let summary: string | undefined;
+
+          if (scrapeResult.success) {
+            summary = await summarizeURL({
+              conversationHistory: ctx.getMessageHistory(),
+              scrapedContent: scrapeResult.data,
+              metadata: {
+                date: result.date || new Date().toISOString(),
+                title: result.title,
+                url: result.link,
+                snippet: result.snippet,
+              },
+              query: nextAction.query!,
+              langfuseTraceId: opts.langfuseTraceId,
+            });
+          }
+
+          return {
             date: result.date || new Date().toISOString(),
             title: result.title,
             url: result.link,
             snippet: result.snippet,
-            scrapedContent: scrapeResults.results[index]!.result.data,
-          })),
-        });
-      }
+            scrapedContent: scrapeResult.success
+              ? scrapeResult.data
+              : scrapeResult.error,
+            summary,
+          };
+        }),
+      );
+
+      // Combine search and scrape results
+      ctx.reportSearch({
+        query: nextAction.query,
+        results: summarizedResults,
+      });
     } else if (nextAction.type === "answer") {
       return answerQuestion(ctx, { isFinal: false, ...opts });
     }
