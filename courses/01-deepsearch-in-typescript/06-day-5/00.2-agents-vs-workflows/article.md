@@ -1,3 +1,7 @@
+---
+id: lesson-paz5s
+---
+
 We have succeeded in an important goal - we have modularized our system.
 
 Instead of having all of the parts of our application depending on a single system prompt, we've split discreet functions into separate LLM calls. This makes our system more predictable and testable.

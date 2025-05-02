@@ -1,8 +1,8 @@
 ---
-id: lesson-8tchb
+id: lesson-xmds2
 ---
 
-In our previous article, we discussed the trade-offs between agentic and deterministic approaches. One way to make our system more deterministic is to reduce the number of decisions the LLM needs to make.
+In our previous exercise, we discussed the trade-offs between agentic and deterministic approaches. One way to make our system more deterministic is to reduce the number of decisions the LLM needs to make.
 
 Currently, our system has two separate actions that can be chosen by `getNextAction`:
 
