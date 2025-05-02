@@ -37,34 +37,41 @@ export async function runAgentLoop(
       if (!nextAction.query) {
         throw new Error("Query is required for search action");
       }
-      const results = await searchSerper(
-        { q: nextAction.query, num: 10 },
+      // 1. Search the web
+      const searchResults = await searchSerper(
+        { q: nextAction.query, num: 3 }, // Fetch 3 results
         undefined,
       );
-      ctx.reportQueries([
-        {
-          query: nextAction.query,
-          results: results.organic.map((result) => ({
-            date: result.date || new Date().toISOString(),
-            title: result.title,
-            url: result.link,
-            snippet: result.snippet,
-          })),
-        },
-      ]);
-    } else if (nextAction.type === "scrape") {
-      if (!nextAction.urls) {
-        throw new Error("URLs are required for scrape action");
-      }
-      const results = await bulkCrawlWebsites({ urls: nextAction.urls });
-      if (results.success) {
-        ctx.reportScrapes(
-          results.results.map(({ url, result }) => ({
-            url,
-            result: result.data,
-          })),
-        );
-      }
+
+      const searchResultUrls = searchResults.organic.map((r) => r.link);
+
+      // 2. Scrape the results
+      const crawlResults = await bulkCrawlWebsites({ urls: searchResultUrls });
+
+      // 3. Combine search and scrape results
+      const combinedResults = searchResults.organic.map((result) => {
+        const crawlData = crawlResults.success
+          ? crawlResults.results.find((cr) => cr.url === result.link)
+          : undefined;
+
+        const scrapedContent = crawlData?.result.success
+          ? crawlData.result.data
+          : "Failed to scrape.";
+
+        return {
+          date: result.date || new Date().toISOString(),
+          title: result.title,
+          url: result.link,
+          snippet: result.snippet,
+          scrapedContent,
+        };
+      });
+
+      // 4. Report the combined results to the system context
+      ctx.reportSearch({
+        query: nextAction.query,
+        results: combinedResults,
+      });
     } else if (nextAction.type === "answer") {
       return answerQuestion(ctx, { isFinal: false, ...opts });
     }
