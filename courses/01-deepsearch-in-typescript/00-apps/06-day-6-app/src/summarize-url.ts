@@ -2,6 +2,15 @@ import { generateText } from "ai";
 import { model } from "~/model";
 import { cacheWithRedis } from "~/server/redis/redis";
 
+export type SummarizedResult = {
+  date: string;
+  title: string;
+  url: string;
+  snippet: string;
+  scrapedContent: string | undefined;
+  summary: string | undefined;
+};
+
 export interface SummarizeURLOptions {
   conversationHistory: string;
   scrapedContent: string;

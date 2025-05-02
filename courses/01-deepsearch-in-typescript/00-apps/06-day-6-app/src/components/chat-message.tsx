@@ -1,7 +1,7 @@
 import ReactMarkdown, { type Components } from "react-markdown";
 import type { Message } from "ai";
 import { useState } from "react";
-import { SearchIcon, LinkIcon } from "lucide-react";
+import { SearchIcon, FileTextIcon, LightbulbIcon } from "lucide-react";
 import type { OurMessageAnnotation } from "~/types";
 
 type MessagePart = NonNullable<Message["parts"]>[number];
@@ -90,11 +90,24 @@ const ReasoningSteps = ({
 
   if (annotations.length === 0) return null;
 
+  // Helper to get title based on annotation type
+  const getTitle = (annotation: OurMessageAnnotation) => {
+    switch (annotation.type) {
+      case "PLAN_AND_QUERIES":
+        return "Planning & Query Generation";
+      case "DECISION":
+        return `Decision: ${annotation.decision.type === "continue" ? "Continue Searching" : "Answer Question"}`;
+      default:
+        return "Processing Step"; // Fallback
+    }
+  };
+
   return (
     <div className="mb-4 w-full">
       <ul className="space-y-1">
         {annotations.map((annotation, index) => {
           const isOpen = openStep === index;
+          const title = getTitle(annotation);
           return (
             <li key={index} className="relative">
               <button
@@ -114,29 +127,43 @@ const ReasoningSteps = ({
                 >
                   {index + 1}
                 </span>
-                {annotation.action.title}
+                {title}
               </button>
               <div className={`${isOpen ? "mt-1" : "hidden"}`}>
                 {isOpen && (
-                  <div className="px-2 py-1">
-                    <div className="text-sm italic text-gray-400">
-                      <Markdown>{annotation.action.reasoning}</Markdown>
-                    </div>
-                    {annotation.action.type === "search" && (
-                      <div className="mt-2 flex items-center gap-2 text-sm text-gray-400">
-                        <SearchIcon className="size-4" />
-                        <span>{annotation.action.query}</span>
-                      </div>
+                  <div className="px-2 py-1 text-sm text-gray-400">
+                    {annotation.type === "PLAN_AND_QUERIES" && (
+                      <>
+                        <div className="mb-2 flex items-center gap-2 font-medium">
+                          <FileTextIcon className="size-4" />
+                          <span>Plan:</span>
+                        </div>
+                        <div className="mb-3 italic">
+                          <Markdown>{annotation.plan}</Markdown>
+                        </div>
+                        <div className="mb-1 flex items-center gap-2 font-medium">
+                          <SearchIcon className="size-4" />
+                          <span>Generated Queries:</span>
+                        </div>
+                        <ul className="list-inside list-decimal pl-2">
+                          {annotation.queries.map((q, i) => (
+                            <li key={i} className="text-gray-400">
+                              {q}
+                            </li>
+                          ))}
+                        </ul>
+                      </>
                     )}
-                    {annotation.action.type === "scrape" && (
-                      <div className="mt-2 flex items-center gap-2 text-sm text-gray-400">
-                        <LinkIcon className="size-4" />
-                        <span>
-                          {annotation.action.urls
-                            ?.map((url) => new URL(url).hostname)
-                            ?.join(", ")}
-                        </span>
-                      </div>
+                    {annotation.type === "DECISION" && (
+                      <>
+                        <div className="mb-2 flex items-center gap-2 font-medium">
+                          <LightbulbIcon className="size-4" />
+                          <span>Reasoning:</span>
+                        </div>
+                        <div className="italic">
+                          <Markdown>{annotation.decision.reasoning}</Markdown>
+                        </div>
+                      </>
                     )}
                   </div>
                 )}
