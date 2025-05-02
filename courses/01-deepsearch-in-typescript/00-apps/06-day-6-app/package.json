@@ -21,7 +21,7 @@
     "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,mdx}\" --cache"
   },
   "dependencies": {
-    "@ai-sdk/google": "^1.2.10",
+    "@ai-sdk/google": "^1.2.14",
     "@ai-sdk/react": "^1.2.8",
     "@auth/drizzle-adapter": "^1.7.2",
     "@opentelemetry/api-logs": "^0.200.0",

@@ -1,3 +1,7 @@
+---
+id: lesson-6g65i
+---
+
 Now we have search and scrape working, but there's an issue.
 
 In order to be sensible with our context window limits, we've had to reduce the number of results we fetch from the search engine.
@@ -60,7 +64,7 @@ Critical Reminder: If content lacks a specific aspect of the research topic, cle
 - Look for where the redis cache functions are defined.
 - Look for where the telemetry is defined.
 - Look for where the existing models are declared.
-- Add a new model for summarizing - if using Google, use `gemini-1.5-flash`. If not using Google, ask the user which model they'd like to use.
+- Add a new model for summarizing - if using Google, use `gemini-2.0-flash-lite`. If not using Google, ask the user which model they'd like to use.
 - Implement the `summarizeURL` function, using the AI SDK and `generateText`.
 - When the URL's are scraped, call `summarizeURL` for each URL in parallel.
 - Update the system context and the answer function to use the summaries instead of the raw URLs.
