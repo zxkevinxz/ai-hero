@@ -1,5 +1,5 @@
 import { generateText } from "ai";
-import { model } from "~/model";
+import { summarizerModel } from "~/model";
 import { cacheWithRedis } from "~/server/redis/redis";
 
 export type SummarizedResult = {
@@ -36,7 +36,7 @@ export const summarizeURL = cacheWithRedis(
     } = opts;
 
     const result = await generateText({
-      model,
+      model: summarizerModel,
       system: `You are a research extraction specialist. Given a research topic and raw web content, create a thoroughly detailed synthesis as a cohesive narrative that flows naturally between key concepts.
 
 Extract the most valuable information related to the research topic, including relevant facts, statistics, methodologies, claims, and contextual information. Preserve technical terminology and domain-specific language from the source material.

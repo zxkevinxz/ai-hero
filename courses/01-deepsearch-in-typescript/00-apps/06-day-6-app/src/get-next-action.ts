@@ -22,7 +22,6 @@ export const nextActionSchema = z.object({
     ),
 });
 
-// Update the Action type accordingly
 export type NextAction = z.infer<typeof nextActionSchema>;
 
 export const getNextAction = async (

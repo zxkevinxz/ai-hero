@@ -18,7 +18,8 @@ export async function runAgentLoop(
 ): Promise<StreamTextResult<{}, string>> {
   const ctx = new SystemContext(messages);
 
-  while (!ctx.shouldStop()) {
+  while (true) {
+    ctx.incrementStep();
     const { plan, queries } = await queryRewriter(ctx, opts);
 
     if (opts.writeMessageAnnotation) {
@@ -96,6 +97,10 @@ export async function runAgentLoop(
 
     await Promise.all(combinedResultsPromises);
 
+    if (ctx.shouldStop()) {
+      break;
+    }
+
     const decision = await getNextAction(ctx, opts);
 
     // Store the feedback in the context
@@ -112,8 +117,6 @@ export async function runAgentLoop(
     if (decision.type === "answer") {
       return answerQuestion(ctx, { isFinal: false, ...opts });
     }
-
-    ctx.incrementStep();
   }
 
   return answerQuestion(ctx, { isFinal: true, ...opts });
