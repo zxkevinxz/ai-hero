@@ -30,6 +30,11 @@ export class SystemContext {
    */
   private searchHistory: SearchHistoryEntry[] = [];
 
+  /**
+   * The most recent feedback from the evaluator
+   */
+  private latestFeedback: string | undefined = undefined;
+
   constructor(messages: Message[]) {
     this.messages = messages;
   }
@@ -53,6 +58,14 @@ export class SystemContext {
 
   reportSearch(search: SearchHistoryEntry) {
     this.searchHistory.push(search);
+  }
+
+  setLatestFeedback(feedback: string | undefined) {
+    this.latestFeedback = feedback;
+  }
+
+  getLatestFeedback(): string | undefined {
+    return this.latestFeedback;
   }
 
   getSearchHistory(): string {

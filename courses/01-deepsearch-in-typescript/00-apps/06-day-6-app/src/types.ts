@@ -10,6 +10,7 @@ type PlanAndQueriesAnnotation = {
 type DecisionAnnotation = {
   type: "DECISION";
   decision: NextAction;
+  feedback?: string;
 };
 
 export type OurMessageAnnotation =

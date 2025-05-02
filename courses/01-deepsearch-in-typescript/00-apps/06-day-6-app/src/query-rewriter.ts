@@ -25,6 +25,8 @@ export const queryRewriter = async (
   context: SystemContext,
   opts: { langfuseTraceId?: string } = {},
 ): Promise<QueryRewriterResult> => {
+  const latestFeedback = context.getLatestFeedback();
+
   const result = await generateObject({
     model,
     schema: queryRewriterSchema,
@@ -57,8 +59,15 @@ ${context.getMessageHistory()}
 
 Search History (summaries of previous searches):
 ${context.getSearchHistory()}
-
-Based on the message and search history, create a research plan and generate the corresponding search queries.`,
+${
+  latestFeedback
+    ? `
+Previous Feedback (Identified Information Gaps):
+${latestFeedback}
+`
+    : ""
+}
+Based on the message history, search history, ${latestFeedback ? "and the previous feedback, " : ""}create a research plan and generate the corresponding search queries. Use the feedback to refine the plan and address the identified information gaps.`,
     experimental_telemetry: opts.langfuseTraceId
       ? {
           isEnabled: true,

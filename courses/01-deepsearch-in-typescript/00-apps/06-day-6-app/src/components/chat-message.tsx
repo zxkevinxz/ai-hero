@@ -1,7 +1,12 @@
 import ReactMarkdown, { type Components } from "react-markdown";
 import type { Message } from "ai";
 import { useState } from "react";
-import { SearchIcon, FileTextIcon, LightbulbIcon } from "lucide-react";
+import {
+  SearchIcon,
+  FileTextIcon,
+  LightbulbIcon,
+  AlertCircleIcon,
+} from "lucide-react";
 import type { OurMessageAnnotation } from "~/types";
 
 type MessagePart = NonNullable<Message["parts"]>[number];
@@ -163,6 +168,17 @@ const ReasoningSteps = ({
                         <div className="italic">
                           <Markdown>{annotation.decision.reasoning}</Markdown>
                         </div>
+                        {annotation.feedback && (
+                          <>
+                            <div className="mb-2 mt-3 flex items-center gap-2 font-medium">
+                              <AlertCircleIcon className="size-4" />
+                              <span>Feedback (Missing Info):</span>
+                            </div>
+                            <div className="italic">
+                              <Markdown>{annotation.feedback}</Markdown>
+                            </div>
+                          </>
+                        )}
                       </>
                     )}
                   </div>

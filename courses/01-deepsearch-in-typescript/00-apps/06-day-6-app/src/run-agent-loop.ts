@@ -98,10 +98,14 @@ export async function runAgentLoop(
 
     const decision = await getNextAction(ctx, opts);
 
+    // Store the feedback in the context
+    ctx.setLatestFeedback(decision.feedback);
+
     if (opts.writeMessageAnnotation) {
       opts.writeMessageAnnotation({
         type: "DECISION",
         decision,
+        feedback: decision.feedback,
       });
     }
 
