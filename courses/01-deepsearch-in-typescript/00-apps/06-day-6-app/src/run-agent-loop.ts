@@ -6,6 +6,7 @@ import { streamText, type StreamTextResult, type Message } from "ai";
 import { model } from "~/model";
 import { answerQuestion } from "./answer-question";
 import type { OurMessageAnnotation } from "./types";
+import { summarizeURL } from "./summarize-url";
 
 export async function runAgentLoop(
   messages: Message[],
@@ -39,7 +40,7 @@ export async function runAgentLoop(
       }
       // 1. Search the web
       const searchResults = await searchSerper(
-        { q: nextAction.query, num: 3 }, // Fetch 3 results
+        { q: nextAction.query, num: 10 },
         undefined,
       );
 
@@ -48,29 +49,53 @@ export async function runAgentLoop(
       // 2. Scrape the results
       const crawlResults = await bulkCrawlWebsites({ urls: searchResultUrls });
 
-      // 3. Combine search and scrape results
-      const combinedResults = searchResults.organic.map((result) => {
-        const crawlData = crawlResults.success
-          ? crawlResults.results.find((cr) => cr.url === result.link)
-          : undefined;
+      // 3. Summarize each scraped result in parallel
+      const summaries = await Promise.all(
+        searchResults.organic.map(async (result) => {
+          const crawlData = crawlResults.success
+            ? crawlResults.results.find((cr) => cr.url === result.link)
+            : undefined;
 
-        const scrapedContent = crawlData?.result.success
-          ? crawlData.result.data
-          : "Failed to scrape.";
+          const scrapedContent = crawlData?.result.success
+            ? crawlData.result.data
+            : "Failed to scrape.";
 
-        return {
-          date: result.date || new Date().toISOString(),
-          title: result.title,
-          url: result.link,
-          snippet: result.snippet,
-          scrapedContent,
-        };
-      });
+          if (scrapedContent === "Failed to scrape.") {
+            return {
+              ...result,
+              summary: "Failed to scrape, so no summary could be generated.",
+            };
+          }
 
-      // 4. Report the combined results to the system context
+          const summary = await summarizeURL({
+            conversation: ctx.getMessageHistory(), // Need to add getAllMessages to SystemContext
+            scrapedContent,
+            searchMetadata: {
+              date: result.date || new Date().toISOString(),
+              title: result.title,
+              url: result.link,
+            },
+            query: nextAction.query!, // query is guaranteed to exist here
+            langfuseTraceId: opts.langfuseTraceId,
+          });
+
+          return {
+            ...result,
+            summary,
+          };
+        }),
+      );
+
+      // 4. Report the summaries to the system context
       ctx.reportSearch({
         query: nextAction.query,
-        results: combinedResults,
+        results: summaries.map((summaryResult) => ({
+          date: summaryResult.date || new Date().toISOString(),
+          title: summaryResult.title,
+          url: summaryResult.link,
+          snippet: summaryResult.snippet,
+          summary: summaryResult.summary,
+        })),
       });
     } else if (nextAction.type === "answer") {
       return answerQuestion(ctx, { isFinal: false, ...opts });
