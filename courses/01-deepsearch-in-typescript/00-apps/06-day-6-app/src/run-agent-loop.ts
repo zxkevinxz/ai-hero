@@ -1,11 +1,10 @@
-import { streamText, type Message, type StreamTextResult } from "ai";
-import { answerQuestion } from "./answer-question";
-import { getNextAction } from "./get-next-action";
-import { queryRewriter } from "./query-rewriter";
-import { searchSerper } from "./serper";
-import { bulkCrawlWebsites, type BulkCrawlResponse } from "./server/scraper";
-import { summarizeURL } from "./summarize-url";
 import { SystemContext } from "./system-context";
+import { getNextAction } from "./get-next-action";
+import { searchSerper } from "./serper";
+import { bulkCrawlWebsites } from "./server/scraper";
+import { streamText, type StreamTextResult, type Message } from "ai";
+import { model } from "~/model";
+import { answerQuestion } from "./answer-question";
 import type { OurMessageAnnotation } from "./types";
 
 export async function runAgentLoop(
@@ -16,108 +15,65 @@ export async function runAgentLoop(
     onFinish: Parameters<typeof streamText>[0]["onFinish"];
   },
 ): Promise<StreamTextResult<{}, string>> {
+  // A persistent container for the state of our system
   const ctx = new SystemContext(messages);
 
-  while (true) {
-    ctx.incrementStep();
-    const { plan, queries } = await queryRewriter(ctx, opts);
+  // A loop that continues until we have an answer
+  // or we've taken 10 actions
+  while (!ctx.shouldStop()) {
+    // We choose the next action based on the state of our system
+    const nextAction = await getNextAction(ctx, opts);
 
+    // Send the action as an annotation if writeMessageAnnotation is provided
     if (opts.writeMessageAnnotation) {
       opts.writeMessageAnnotation({
-        type: "PLAN_AND_QUERIES",
-        plan,
-        queries,
+        type: "NEW_ACTION",
+        action: nextAction,
       });
     }
 
-    const searchPromises = queries.map((query) =>
-      searchSerper({ q: query, num: 5 }, undefined),
-    );
-    const searchResultsArray = await Promise.all(searchPromises);
-
-    const allUrlsToScrape = searchResultsArray.flatMap((results) =>
-      results.organic.map((result) => result.link),
-    );
-    const scrapeResultsContainer = await bulkCrawlWebsites({
-      urls: allUrlsToScrape,
-    });
-
-    const scrapeResultMap = new Map<
-      string,
-      BulkCrawlResponse["results"][number]
-    >();
-    scrapeResultsContainer.results.forEach((result, index) => {
-      scrapeResultMap.set(allUrlsToScrape[index]!, result);
-    });
-
-    const combinedResultsPromises = searchResultsArray.map(
-      async (searchResults, queryIndex) => {
-        const query = queries[queryIndex]!;
-        const summarizedResults = await Promise.all(
-          searchResults.organic.map(async (result) => {
-            const scrapeResult = scrapeResultMap.get(result.link)?.result;
-            let summary: string | undefined;
-
-            if (scrapeResult?.success) {
-              summary = await summarizeURL({
-                conversationHistory: ctx.getMessageHistory(),
-                scrapedContent: scrapeResult.data,
-                metadata: {
-                  date: result.date || new Date().toISOString(),
-                  title: result.title,
-                  url: result.link,
-                  snippet: result.snippet,
-                },
-                query,
-                langfuseTraceId: opts.langfuseTraceId,
-              });
-            }
-
-            return {
-              date: result.date || new Date().toISOString(),
-              title: result.title,
-              url: result.link,
-              snippet: result.snippet,
-              scrapedContent: scrapeResult?.success
-                ? scrapeResult.data
-                : (scrapeResult?.error ?? "Scraping failed"),
-              summary,
-            };
-          }),
+    // We execute the action and update the state of our system
+    if (nextAction.type === "search") {
+      if (!nextAction.query) {
+        throw new Error("Query is required for search action");
+      }
+      const results = await searchSerper(
+        { q: nextAction.query, num: 10 },
+        undefined,
+      );
+      ctx.reportQueries([
+        {
+          query: nextAction.query,
+          results: results.organic.map((result) => ({
+            date: result.date || new Date().toISOString(),
+            title: result.title,
+            url: result.link,
+            snippet: result.snippet,
+          })),
+        },
+      ]);
+    } else if (nextAction.type === "scrape") {
+      if (!nextAction.urls) {
+        throw new Error("URLs are required for scrape action");
+      }
+      const results = await bulkCrawlWebsites({ urls: nextAction.urls });
+      if (results.success) {
+        ctx.reportScrapes(
+          results.results.map(({ url, result }) => ({
+            url,
+            result: result.data,
+          })),
         );
-
-        const combinedResult = {
-          query,
-          results: summarizedResults,
-        };
-        ctx.reportSearch(combinedResult);
-        return combinedResult;
-      },
-    );
-
-    await Promise.all(combinedResultsPromises);
-
-    if (ctx.shouldStop()) {
-      break;
-    }
-
-    const decision = await getNextAction(ctx, opts);
-
-    // Store the feedback in the context
-    ctx.setLatestFeedback(decision.feedback);
-
-    if (opts.writeMessageAnnotation) {
-      opts.writeMessageAnnotation({
-        type: "DECISION",
-        decision,
-        feedback: decision.feedback,
-      });
-    }
-
-    if (decision.type === "answer") {
+      }
+    } else if (nextAction.type === "answer") {
       return answerQuestion(ctx, { isFinal: false, ...opts });
     }
+
+    // We increment the step counter
+    ctx.incrementStep();
   }
 
+  // If we've taken 10 actions and haven't answered yet,
+  // we ask the LLM to give its best attempt at an answer
   return answerQuestion(ctx, { isFinal: true, ...opts });
 }

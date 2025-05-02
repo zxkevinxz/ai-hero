@@ -1,18 +1,24 @@
 import type { Message } from "ai";
 
-type SearchResult = {
+type QueryResultSearchResult = {
   date: string;
   title: string;
   url: string;
   snippet: string;
-  scrapedContent: string;
-  summary?: string;
 };
 
-type SearchHistoryEntry = {
+type QueryResult = {
   query: string;
-  results: SearchResult[];
+  results: QueryResultSearchResult[];
 };
+
+type ScrapeResult = {
+  url: string;
+  result: string;
+};
+
+const toQueryResult = (query: QueryResultSearchResult) =>
+  [`### ${query.date} - ${query.title}`, query.url, query.snippet].join("\n\n");
 
 export class SystemContext {
   /**
@@ -26,14 +32,14 @@ export class SystemContext {
   private readonly messages: Message[];
 
   /**
-   * The history of all searches and their scraped content
+   * The history of all queries searched
    */
-  private searchHistory: SearchHistoryEntry[] = [];
+  private queryHistory: QueryResult[] = [];
 
   /**
-   * The most recent feedback from the evaluator
+   * The history of all URLs scraped
    */
-  private latestFeedback: string | undefined = undefined;
+  private scrapeHistory: ScrapeResult[] = [];
 
   constructor(messages: Message[]) {
     this.messages = messages;
@@ -49,40 +55,40 @@ export class SystemContext {
   }
 
   shouldStop() {
-    return this.step >= 2;
+    return this.step >= 10;
   }
 
   incrementStep() {
     this.step++;
   }
 
-  reportSearch(search: SearchHistoryEntry) {
-    this.searchHistory.push(search);
+  reportQueries(queries: QueryResult[]) {
+    this.queryHistory.push(...queries);
   }
 
-  setLatestFeedback(feedback: string | undefined) {
-    this.latestFeedback = feedback;
+  reportScrapes(scrapes: ScrapeResult[]) {
+    this.scrapeHistory.push(...scrapes);
   }
 
-  getLatestFeedback(): string | undefined {
-    return this.latestFeedback;
-  }
-
-  getSearchHistory(): string {
-    return this.searchHistory
-      .map((search) =>
+  getQueryHistory(): string {
+    return this.queryHistory
+      .map((query) =>
         [
-          `## Query: "${search.query}"`,
-          ...search.results.map((result) =>
-            [
-              `### ${result.date} - ${result.title}`,
-              result.url,
-              result.snippet,
-              result.summary
-                ? `<summary>${result.summary}</summary>`
-                : `<scrape_result>${result.scrapedContent}</scrape_result>`,
-            ].join("\n\n"),
-          ),
+          `## Query: "${query.query}"`,
+          ...query.results.map(toQueryResult),
+        ].join("\n\n"),
+      )
+      .join("\n\n");
+  }
+
+  getScrapeHistory(): string {
+    return this.scrapeHistory
+      .map((scrape) =>
+        [
+          `## Scrape: "${scrape.url}"`,
+          `<scrape_result>`,
+          scrape.result,
+          `</scrape_result>`,
         ].join("\n\n"),
       )
       .join("\n\n");

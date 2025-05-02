@@ -1,18 +1,6 @@
-import type { NextAction } from "./get-next-action";
-import type { QueryRewriterResult } from "./query-rewriter";
+import type { Action } from "./get-next-action";
 
-type PlanAndQueriesAnnotation = {
-  type: "PLAN_AND_QUERIES";
-  plan: string;
-  queries: string[];
+export type OurMessageAnnotation = {
+  type: "NEW_ACTION";
+  action: Action;
 };
-
-type DecisionAnnotation = {
-  type: "DECISION";
-  decision: NextAction;
-  feedback?: string;
-};
-
-export type OurMessageAnnotation =
-  | PlanAndQueriesAnnotation
-  | DecisionAnnotation;

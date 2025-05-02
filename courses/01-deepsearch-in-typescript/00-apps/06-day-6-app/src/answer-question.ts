@@ -14,7 +14,7 @@ export function answerQuestion(
 
   return streamText({
     model,
-    system: `You are a helpful AI assistant that answers questions based on the information gathered from web searches and summarized content.
+    system: `You are a helpful AI assistant that answers questions based on the information gathered from web searches and scraped content.
 
 When answering:
 1. Be thorough but concise
@@ -22,7 +22,6 @@ When answering:
 3. If you're unsure about something, say so
 4. Format URLs as markdown links using [title](url)
 5. Never include raw URLs
-6. Use the summaries provided to form your answer, as they contain the most relevant information
 
 ${isFinal ? "Note: We may not have all the information needed to answer the question completely. Please provide your best attempt at an answer based on the available information." : ""}`,
     prompt: `Message History:
@@ -30,7 +29,9 @@ ${ctx.getMessageHistory()}
 
 Based on the following context, please answer the question:
 
-${ctx.getSearchHistory()}`,
+${ctx.getQueryHistory()}
+
+${ctx.getScrapeHistory()}`,
     experimental_telemetry: langfuseTraceId
       ? {
           isEnabled: true,

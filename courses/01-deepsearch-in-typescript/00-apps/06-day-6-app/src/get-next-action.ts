@@ -3,26 +3,30 @@ import { z } from "zod";
 import { model } from "~/model";
 import { SystemContext } from "~/system-context";
 
-export const nextActionSchema = z.object({
-  reasoning: z
+export const actionSchema = z.object({
+  title: z
     .string()
     .describe(
-      "The reasoning behind choosing to continue searching or to answer the question.",
+      "The title of the action, to be displayed in the UI. Be extremely concise. 'Searching Saka's injury history', 'Checking HMRC industrial action', 'Comparing toaster ovens'",
     ),
-  type: z.enum(["continue", "answer"]).describe(
-    `The type of action to take next.
-      - 'continue': Indicate that more searching is needed before answering.
-      - 'answer': Indicate that enough information has been gathered to answer the question.`,
+  reasoning: z.string().describe("The reason you chose this step."),
+  type: z.enum(["search", "scrape", "answer"]).describe(
+    `The type of action to take.
+      - 'search': Search the web for more information.
+      - 'scrape': Scrape a URL.
+      - 'answer': Answer the user's question and complete the loop.`,
   ),
-  feedback: z
+  query: z
     .string()
-    .optional()
-    .describe(
-      "If type is 'continue', provide feedback on what information is still missing or needs clarification based on the original research goal and the search results so far. This feedback will be used to refine the next search.",
-    ),
+    .describe("The query to search for. Only required if type is 'search'.")
+    .optional(),
+  urls: z
+    .array(z.string())
+    .describe("The URLs to scrape. Only required if type is 'scrape'.")
+    .optional(),
 });
 
-export type NextAction = z.infer<typeof nextActionSchema>;
+export type Action = z.infer<typeof actionSchema>;
 
 export const getNextAction = async (
   context: SystemContext,
@@ -30,28 +34,29 @@ export const getNextAction = async (
 ) => {
   const result = await generateObject({
     model,
-    schema: nextActionSchema, // Use the new schema
+    schema: actionSchema,
     system: `
-    You are a research query optimizer. Your task is to analyze search results against the original research goal and either decide to answer the question or to search for more information.
-
-    PROCESS:
-    1. Identify ALL information explicitly requested in the original research goal (in the message history)
-    2. Analyze what specific information has been successfully retrieved in the search results (in the search history)
-    3. Identify ALL information gaps between what was requested and what was found
-    4. If deciding to 'continue' searching: Provide feedback detailing the identified gaps. This feedback should guide the generation of new search queries. Focus on WHAT information is missing.
-    5. If deciding to 'answer': Provide a brief reasoning, but feedback is not necessary.
+    You are a helpful AI assistant that can search the web, scrape URLs, or answer questions. Your goal is to determine the next best action to take based on the current context.
     `,
-    prompt: `Message History (including user question):
+    prompt: `Message History:
 ${context.getMessageHistory()}
 
-Search History (summaries of previous searches):
-${context.getSearchHistory()}
+Based on this context, choose the next action:
+1. If you need more information, use 'search' with a relevant query
+2. If you have URLs that need to be scraped, use 'scrape' with those URLs
+3. If you have enough information to answer the question, use 'answer'
 
-Based on the message history and the search history, decide the next step:
-1. If the available information is sufficient to provide a comprehensive answer to the user's question, choose 'answer'.
-2. If more information is needed or the current information isn't quite enough, choose 'continue'.
+Remember:
+- Only use 'search' if you need more information
+- Only use 'scrape' if you have URLs that need to be scraped
+- Use 'answer' when you have enough information to provide a complete answer
 
-Explain your reasoning clearly.`,
+Here is the search and scrape history:
+
+${context.getQueryHistory()}
+
+${context.getScrapeHistory()}
+`,
     experimental_telemetry: opts.langfuseTraceId
       ? {
           isEnabled: true,
