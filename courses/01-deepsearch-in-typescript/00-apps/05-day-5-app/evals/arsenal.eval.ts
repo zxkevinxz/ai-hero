@@ -1,3 +1,6 @@
+// Note: You'll want to modify these evals, since they may be out of date.
+// You should choose your own evals because we are actively testing for recency.
+
 import type { Message } from "ai";
 import { evalite } from "evalite";
 import { askDeepSearch } from "~/deep-search";
