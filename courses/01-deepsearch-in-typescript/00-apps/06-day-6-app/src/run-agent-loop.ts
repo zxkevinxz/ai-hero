@@ -34,14 +34,50 @@ export async function runAgentLoop(
         undefined,
       );
 
-      const searchResultUrls = searchResults.organic.map((r) => r.link);
+      return {
+        query,
+        results: searchResults.organic,
+      };
+    });
 
-      // 2. Scrape the results
+    // 3. Wait for all search results
+    const allSearchResults = await Promise.all(searchResultsPromises);
+
+    // 4. Deduplicate sources by URL
+    const uniqueSources = Array.from(
+      new Map(
+        allSearchResults
+          .flatMap((sr) => sr.results)
+          .map((result) => [
+            result.link,
+            {
+              title: result.title,
+              url: result.link,
+              snippet: result.snippet,
+              favicon: `https://www.google.com/s2/favicons?domain=${new URL(result.link).hostname}`,
+            },
+          ]),
+      ).values(),
+    );
+
+    // 5. Send unique sources to frontend
+    if (opts.writeMessageAnnotation) {
+      opts.writeMessageAnnotation({
+        type: "SOURCES",
+        sources: uniqueSources,
+      });
+    }
+
+    // 6. Process each query's results
+    const processPromises = allSearchResults.map(async ({ query, results }) => {
+      const searchResultUrls = results.map((r) => r.link);
+
+      // Scrape the results
       const crawlResults = await bulkCrawlWebsites({ urls: searchResultUrls });
 
-      // 3. Summarize each scraped result in parallel
+      // Summarize each scraped result in parallel
       const summaries = await Promise.all(
-        searchResults.organic.map(async (result) => {
+        results.map(async (result) => {
           const crawlData = crawlResults.success
             ? crawlResults.results.find((cr) => cr.url === result.link)
             : undefined;
@@ -76,7 +112,7 @@ export async function runAgentLoop(
         }),
       );
 
-      // 4. Report the summaries to the system context
+      // Report the summaries to the system context
       ctx.reportSearch({
         query,
         results: summaries.map((summaryResult) => ({
@@ -89,10 +125,10 @@ export async function runAgentLoop(
       });
     });
 
-    // 3. Wait for all queries to complete and save to context
-    await Promise.all(searchResultsPromises);
+    // 7. Wait for all processing to complete
+    await Promise.all(processPromises);
 
-    // 4. Decide whether to continue or answer
+    // 8. Decide whether to continue or answer
     const nextAction = await getNextAction(ctx, opts);
 
     // Store the feedback in the system context only if it exists
