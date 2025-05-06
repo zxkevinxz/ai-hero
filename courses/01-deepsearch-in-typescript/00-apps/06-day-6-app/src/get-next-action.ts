@@ -7,18 +7,14 @@ export const actionSchema = z.object({
   title: z
     .string()
     .describe(
-      "The title of the action, to be displayed in the UI. Be extremely concise. 'Searching Saka's injury history', 'Checking HMRC industrial action', 'Comparing toaster ovens'",
+      "The title of the action, to be displayed in the UI. Be extremely concise. 'Continuing search', 'Providing answer'",
     ),
   reasoning: z.string().describe("The reason you chose this step."),
-  type: z.enum(["search", "answer"]).describe(
+  type: z.enum(["continue", "answer"]).describe(
     `The type of action to take.
-      - 'search': Search the web for more information and scrape the results.
+      - 'continue': Continue searching for more information.
       - 'answer': Answer the user's question and complete the loop.`,
   ),
-  query: z
-    .string()
-    .describe("The query to search for. Only required if type is 'search'.")
-    .optional(),
 });
 
 export type Action = z.infer<typeof actionSchema>;
@@ -31,17 +27,17 @@ export const getNextAction = async (
     model,
     schema: actionSchema,
     system: `
-    You are a helpful AI assistant that can search the web and scrape the results, or answer questions. Your goal is to determine the next best action to take based on the current context.
+    You are a helpful AI assistant that can search the web and scrape the results, or answer questions. Your goal is to determine whether you have enough information to answer the question or need to continue searching.
     `,
     prompt: `Message History:
 ${context.getMessageHistory()}
 
 Based on this context, choose the next action:
-1. If you need more information, use 'search' with a relevant query.
+1. If you need more information, use 'continue'.
 2. If you have enough information to answer the question, use 'answer'.
 
 Remember:
-- Only use 'search' if you need more information.
+- Only use 'continue' if you need more information.
 - Use 'answer' when you have enough information to provide a complete answer.
 
 Here is the search history:

@@ -111,6 +111,55 @@ Format: Choose "Subtitle Files (*.srt)" or your desired format. SRT is widely co
 Burn into Video: Uncheck the "Burn into video" option if you want a separate subtitle file.
 Export: Add the job to the render queue and render. DaVinci Resolve will create both the video file and a separate .srt file.`,
       },
+      {
+        input: `How do you create an electron app which can monitor your audio?`,
+        expected: `
+        Creating an Electron app to monitor audio involves several steps, and the approach can vary depending on the target operating system due to platform-specific limitations. Here's a breakdown of the process:
+
+**1. Project Setup and Core Structure**
+
+*   **Electron Framework:** Electron is a framework for building desktop applications using web technologies such as JavaScript, HTML, and CSS ([Electron: Build cross-platform desktop apps with JavaScript, HTML ...](https://electronjs.org/)). It combines Chromium and Node.js into a single runtime.
+*   **Basic Files:** A basic Electron app consists of \`package.json\` (metadata, dependencies), \`main.js\` (main process, app lifecycle), and \`index.html\` (renderer process, user interface) ([Nydareld/electron-audio-visualizer - GitHub](https://github.com/Nydareld/electron-audio-visualizer)).
+*   **Main and Renderer Processes:** The \`main.js\` file runs the main process, which controls the application's lifecycle. The \`index.html\` file runs the renderer process, which is essentially a browser window displaying the UI ([How to Build Your First Desktop App with JavaScript Using Electron](https://www.freecodecamp.org/news/how-to-build-your-first-app-with-electron-41ebdb796930/)).
+
+**2. Audio Capture**
+
+*   **\`desktopCapturer\` API:** Electron provides the \`desktopCapturer\` API to access media sources that can be used to capture audio and video from the desktop ([desktopCapturer - Electron](https://electronjs.org/docs/latest/api/desktop-capturer)).
+*   **\`navigator.mediaDevices.getUserMedia\`:** This API is used to capture audio and video streams. You can use it in conjunction with \`desktopCapturer\` to capture audio from specific sources ([desktopCapturer - Electron](https://electronjs.org/docs/latest/api/desktop-capturer)).
+*   **Cross-Platform Considerations:**
+    *   The \`desktopCapturer\` and \`navigator.mediaDevices.getUserMedia\` APIs can be used to capture audio and video from the desktop ([desktopCapturer - Electron](https://electronjs.org/docs/latest/api/desktop-capturer)).
+    *   On macOS, \`navigator.mediaDevices.getUserMedia\` does not work for audio capture due to the requirement of a signed kernel extension, which Chromium (and therefore Electron) does not provide ([desktopCapturer - Electron](https://electronjs.org/docs/latest/api/desktop-capturer)).
+
+**3. macOS Audio Capture Workarounds**
+
+*   **Soundflower (or similar):** One workaround involves using another macOS app like Soundflower to capture system audio and pass it through a virtual audio input device ([Electron desktopCapturer for MacOS - Stack Overflow](https://stackoverflow.com/questions/69636306/electron-desktopcapturer-for-macos), [desktopCapturer - Electron](https://electronjs.org/docs/latest/api/desktop-capturer)). This virtual device can then be queried with \`navigator.mediaDevices.getUserMedia\`.
+*   **Swift Binary:** Another solution involves creating a Swift binary with ScreenCaptureKit (for macOS 13.0-14.1) and Core Audio Hardware Taps (for macOS 14.2+) ([macOS: Capture system audio and use it in Electron.js](https://stackoverflow.com/questions/76476274/macos-capture-system-audio-and-use-it-in-electron-js)).
+
+**4. Audio Processing and Visualization**
+
+*   **Web Audio API:** The Web Audio API is a powerful tool for processing and visualizing audio in the browser ([Web Audio API - MDN Web Docs - Mozilla](https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API)).
+*   **Audio Analysis:** The Web Audio API has the \`AudioAnalyser\` node, which is required for the visualizer as it provides the frequency or time domain response ([How to build an audio player in electron | by Sourav De - Medium](https://medium.com/@SrvZ/build-a-audio-player-in-electron-e1b133776c6)).
+*   **Visualization:** Use the Canvas API to visualize the audio data. This involves extracting frequency, waveform, and other data from your audio source, which can then be used to create visualizations ([Visualizations with Web Audio API - MDN Web Docs](https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API/Visualizations_with_Web_Audio_API)).
+*   **Libraries:**
+    *   **Essentia.js:** A JavaScript library for audio and music analysis and processing ([essentia.js | JavaScript library for music/audio analysis and ...](https://mtg.github.io/essentia.js/)). It supports both real-time and offline audio analysis use-cases.
+    *   **Howler.js:** A JavaScript audio library that makes working with audio in JavaScript easy and reliable across all platforms ([howler.js - JavaScript audio library for the modern web](https://howlerjs.com/)).
+    *   **Tone.js:**  A framework for creating interactive music in the browser.
+
+**5. Code Example (Conceptual)**
+
+Below is a conceptual outline.  Refer to the linked documentation for specific code implementations.
+
+**Important Considerations:**
+
+*   **Permissions:**  Ensure you handle user permissions correctly for accessing audio devices.
+*   **macOS System Audio:**  Remember the limitations on macOS and implement the necessary workarounds.
+*   **Performance:**  Audio processing and visualization can be resource-intensive. Optimize your code to ensure smooth performance.
+*   **Security:**  Be mindful of security best practices when building Electron applications, especially when dealing with user input and external resources.
+
+This information should provide a solid foundation for creating your Electron audio monitoring application. Remember to consult the linked resources for more detailed information and code examples.
+
+        `,
+      },
       // {
       //   input: `Which Arsenal player has scored the most goals from corners in the 2024-2025 season, in the Champions League?`,
       //   expected: ``,

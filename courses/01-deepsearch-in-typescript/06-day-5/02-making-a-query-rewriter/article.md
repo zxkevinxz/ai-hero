@@ -1,3 +1,7 @@
+---
+id: lesson-c059k
+---
+
 When we modularized our system, We did a good job of breaking out the 'answer' functionality from the 'choose next action' functionality.
 
 However, the 'choose next action' function is still responsible for two very important, and distinct, tasks:

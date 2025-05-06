@@ -122,10 +122,12 @@ const ReasoningSteps = ({
                     <div className="text-sm italic text-gray-400">
                       <Markdown>{annotation.action.reasoning}</Markdown>
                     </div>
-                    {annotation.action.type === "search" && (
-                      <div className="mt-2 flex items-center gap-2 text-sm text-gray-400">
-                        <SearchIcon className="size-4" />
-                        <span>{annotation.action.query}</span>
+                    {annotation.action.type === "continue" && (
+                      <div className="mt-2 flex flex-col gap-2 text-sm text-gray-400">
+                        <div className="flex items-center gap-2">
+                          <SearchIcon className="size-4" />
+                          <span>Continuing search...</span>
+                        </div>
                       </div>
                     )}
                   </div>

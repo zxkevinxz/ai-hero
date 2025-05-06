@@ -7,6 +7,7 @@ import { model } from "~/model";
 import { answerQuestion } from "./answer-question";
 import type { OurMessageAnnotation } from "./types";
 import { summarizeURL } from "./summarize-url";
+import { queryRewriter } from "./query-rewriter";
 
 export async function runAgentLoop(
   messages: Message[],
@@ -22,25 +23,14 @@ export async function runAgentLoop(
   // A loop that continues until we have an answer
   // or we've taken 10 actions
   while (!ctx.shouldStop()) {
-    // We choose the next action based on the state of our system
-    const nextAction = await getNextAction(ctx, opts);
+    // 1. Get the plan and queries
+    const { plan, queries } = await queryRewriter(ctx, opts);
 
-    // Send the action as an annotation if writeMessageAnnotation is provided
-    if (opts.writeMessageAnnotation) {
-      opts.writeMessageAnnotation({
-        type: "NEW_ACTION",
-        action: nextAction,
-      });
-    }
-
-    // We execute the action and update the state of our system
-    if (nextAction.type === "search") {
-      if (!nextAction.query) {
-        throw new Error("Query is required for search action");
-      }
+    // 2. Execute all queries in parallel
+    const searchResultsPromises = queries.map(async (query) => {
       // 1. Search the web
       const searchResults = await searchSerper(
-        { q: nextAction.query, num: 10 },
+        { q: query, num: 5 }, // Reduced from 10 to 5 results per query
         undefined,
       );
 
@@ -68,14 +58,14 @@ export async function runAgentLoop(
           }
 
           const summary = await summarizeURL({
-            conversation: ctx.getMessageHistory(), // Need to add getAllMessages to SystemContext
+            conversation: ctx.getMessageHistory(),
             scrapedContent,
             searchMetadata: {
               date: result.date || new Date().toISOString(),
               title: result.title,
               url: result.link,
             },
-            query: nextAction.query!, // query is guaranteed to exist here
+            query,
             langfuseTraceId: opts.langfuseTraceId,
           });
 
@@ -88,7 +78,7 @@ export async function runAgentLoop(
 
       // 4. Report the summaries to the system context
       ctx.reportSearch({
-        query: nextAction.query,
+        query,
         results: summaries.map((summaryResult) => ({
           date: summaryResult.date || new Date().toISOString(),
           title: summaryResult.title,
@@ -97,7 +87,23 @@ export async function runAgentLoop(
           summary: summaryResult.summary,
         })),
       });
-    } else if (nextAction.type === "answer") {
+    });
+
+    // 3. Wait for all queries to complete and save to context
+    await Promise.all(searchResultsPromises);
+
+    // 4. Decide whether to continue or answer
+    const nextAction = await getNextAction(ctx, opts);
+
+    // Send the action as an annotation if writeMessageAnnotation is provided
+    if (opts.writeMessageAnnotation) {
+      opts.writeMessageAnnotation({
+        type: "NEW_ACTION",
+        action: nextAction,
+      });
+    }
+
+    if (nextAction.type === "answer") {
       return answerQuestion(ctx, { isFinal: false, ...opts });
     }
 
