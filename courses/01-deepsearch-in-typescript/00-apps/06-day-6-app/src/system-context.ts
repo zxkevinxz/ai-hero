@@ -32,6 +32,11 @@ export class SystemContext {
    */
   private searchHistory: SearchHistoryEntry[] = [];
 
+  /**
+   * The most recent feedback from getNextAction
+   */
+  private lastFeedback: string | null = null;
+
   constructor(messages: Message[]) {
     this.messages = messages;
   }
@@ -55,6 +60,14 @@ export class SystemContext {
 
   reportSearch(search: SearchHistoryEntry) {
     this.searchHistory.push(search);
+  }
+
+  setLastFeedback(feedback: string) {
+    this.lastFeedback = feedback;
+  }
+
+  getLastFeedback(): string | null {
+    return this.lastFeedback;
   }
 
   getSearchHistory(): string {

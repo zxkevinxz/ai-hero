@@ -1,3 +1,7 @@
+---
+id: lesson-bduru
+---
+
 Our system over the last few exercises has actually changed a lot.
 
 We have taken significant 'agency' away from the 'agent'. We now always search at the start of the loop.
