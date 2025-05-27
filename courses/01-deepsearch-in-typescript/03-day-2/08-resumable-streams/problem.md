@@ -99,6 +99,18 @@ if (streamContext) {
 }
 ```
 
+- We also need to make sure we consume the stream, so that the stream does not get cut off by the data stream ending.
+
+```ts
+import { streamText } from "ai";
+
+const result = streamText({
+  // ...whatever options we're passing here
+});
+
+result.consumeStream();
+```
+
 ### `useAutoResume`
 
 - Create a hook for resuming a stream called `useAutoResume`. Here, I've added a `DataPart` type that we'll use to parse the data from the stream. There may already be a type for the `data` property somewhere in the codebase, so add `append-message` to that if it exists.
@@ -178,11 +190,17 @@ export async function GET(request: Request) {
     });
   }
 
+  const userId = "foo"; // Get the user id from the current auth session
+
   // Check that the user exists
   // Check that the user is the owner of the chat
   // Check that the chat exists
 
-  const streams = await getStreamsByChatId(chatId);
+  const streams =
+    await whateverOurDbHelperToGetTheStreamsIs({
+      chatId,
+      userId,
+    });
 
   const recentStream = streams.at(-1);
 
@@ -212,10 +230,13 @@ export async function GET(request: Request) {
   }
 
   // Use existing db helpers to get the most recent message
-  const messages = await getMessagesByChatId({
-    id: chatId,
-  });
-  const mostRecentMessage = messages.at(-1);
+  const chat = await whateverOurDbHelperToGetTheChatIs(
+    {
+      chatId,
+      userId,
+    },
+  );
+  const mostRecentMessage = chat.messages.at(-1);
 
   // If there are no messages, return an empty stream
   if (!mostRecentMessage) {

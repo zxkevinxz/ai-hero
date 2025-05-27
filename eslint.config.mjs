@@ -22,6 +22,8 @@ export default tseslint.config(
     },
     languageOptions: {
       globals: {
+        Request: "readonly",
+        Response: "readonly",
         model: "readonly",
         console: "readonly",
         URL: "readonly",
