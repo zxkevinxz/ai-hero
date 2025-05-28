@@ -8,3 +8,7 @@ However, it opens us up to several new vectors of attack.
 
 - IP Address Switching, where a user switches their IP address to avoid rate limiting.
 - Bots, where a user uses a bot to make requests to our service.
+
+These are non-trivial problems that a lot of engineering effort goes into solving.
+
+##

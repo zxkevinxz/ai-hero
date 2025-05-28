@@ -22,6 +22,13 @@ export default tseslint.config(
     },
     languageOptions: {
       globals: {
+        setTimeout: "readonly",
+        clearTimeout: "readonly",
+        setInterval: "readonly",
+        clearInterval: "readonly",
+        setImmediate: "readonly",
+        clearImmediate: "readonly",
+        fetch: "readonly",
         Request: "readonly",
         Response: "readonly",
         model: "readonly",
