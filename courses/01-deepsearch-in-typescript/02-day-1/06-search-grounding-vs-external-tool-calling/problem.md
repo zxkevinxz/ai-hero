@@ -1,3 +1,7 @@
+---
+id: lesson-1kfq2
+---
+
 Those of you who are familiar with the capabilities of the current crop of LLM's might be able to spot something. We are using external tools to connect the LLM with search, but there is another option.
 
 Model providers like Google and OpenAI can use search grounding _natively_, to directly connect the LLM with search.

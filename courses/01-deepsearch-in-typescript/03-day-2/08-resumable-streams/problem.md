@@ -29,14 +29,14 @@ type Stream = {
 
 ### Resumable Streams
 
-- Install the `resumable-stream` package.
+- Install the `resumable-stream` package. Since we're using `ioredis` (which is already installed), we'll need to import it from the `resumable-stream/ioredis` entrypoint.
 - Create a function for retrieving the `globalStreamContext`. It's a singleton, so there should be one per process:
 
 ```ts
 import {
   createResumableStreamContext,
   type ResumableStreamContext,
-} from "resumable-stream";
+} from "resumable-stream/ioredis";
 import { after } from "next/server";
 
 let globalStreamContext: ResumableStreamContext | null =
