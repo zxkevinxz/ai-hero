@@ -1,3 +1,7 @@
+---
+id: lesson-1we34
+---
+
 Our evals are exposing a potential weakness in our system. Our system has no global limit to how often it calls LLMs.
 
 In fact, our only limit is being decided by the API that we're calling. If we hit a rate limit error, then our users have to suffer the consequences.
@@ -45,21 +49,18 @@ The code below is a good start. We create a `checkRateLimit` function that takes
 ```ts
 import { redis } from "./redis/redis";
 
-export const checkRateLimit = async (
-  identifier: string,
-  {
-    maxRequests,
-    windowMs,
-    keyPrefix = "rate_limit",
-  }: RateLimitConfig,
-) => {
+export const checkRateLimit = async ({
+  maxRequests,
+  windowMs,
+  keyPrefix = "rate_limit",
+}: RateLimitConfig) => {
   // 1. Calculate the window start
   const now = Date.now();
   const windowStart =
     Math.floor(now / windowMs) * windowMs;
 
   // 2. Create a unique key for storing in Redis
-  const key = `${keyPrefix}:${identifier}:${windowStart}`;
+  const key = `${keyPrefix}:${windowStart}`;
 
   // 3. Use a pipeline to increment the count and set the expiration
   const pipeline = redis.pipeline();
@@ -87,15 +88,19 @@ This is an extremely efficient way to model our rate limit.
 
 I've built out a full function for you below. It features:
 
-- Extra metadata about the rate limit
-- A `retry` function that will wait the right amount of time before the next request is allowed. This retries a maximum number of times before eventually throwing an error.
-- Error handling for if the Redis pipeline fails
+- A clear separation between checking and recording rate limits
+- The `recordRateLimit` function handles incrementing counters in Redis and setting expiration times
+- The `checkRateLimit` function provides a non-destructive way to check current limits
+- Both functions use Redis pipelines for atomic operations
+- Comprehensive error handling with proper error propagation
+- A retry mechanism that waits for the rate limit window to reset
+- Detailed metadata about the current rate limit state
 
 ```ts
 import { setTimeout } from "node:timers/promises";
 import { redis } from "./redis";
 
-interface RateLimitConfig {
+export interface RateLimitConfig {
   // Maximum number of requests
   maxRequests: number;
   // Time window in milliseconds
@@ -115,31 +120,23 @@ interface RateLimitResult {
   // Wait for the rate limit to reset,
   // passing a maximum number of retries
   // to avoid infinite recursion
-  retry: (
-    retryCount: number | undefined,
-  ) => Promise<void>;
+  retry: () => Promise<boolean>;
 }
 
-export class RateLimitExceededError extends Error {
-  constructor(message: string) {
-    super(message);
-    this.name = "RateLimitExceededError";
-  }
-}
-
-export async function checkRateLimit(
-  identifier: string,
-  {
-    maxRequests,
-    windowMs,
-    keyPrefix = "rate_limit",
-    maxRetries = 3,
-  }: RateLimitConfig,
-): Promise<RateLimitResult> {
+/**
+ * Records a new request in the rate limit window
+ */
+export async function recordRateLimit({
+  windowMs,
+  keyPrefix = "rate_limit",
+}: Pick<
+  RateLimitConfig,
+  "windowMs" | "keyPrefix"
+>): Promise<void> {
   const now = Date.now();
   const windowStart =
     Math.floor(now / windowMs) * windowMs;
-  const key = `${keyPrefix}:${identifier}:${windowStart}`;
+  const key = `${keyPrefix}:${windowStart}`;
 
   try {
     const pipeline = redis.pipeline();
@@ -153,18 +150,43 @@ export async function checkRateLimit(
         "Redis pipeline execution failed",
       );
     }
-
-    const currentCount = results[0]?.[1] as number;
-    const allowed = currentCount <= maxRequests;
-    const remaining = Math.max(
-      0,
-      maxRequests - currentCount,
+  } catch (error) {
+    console.error(
+      "Rate limit recording failed:",
+      error,
     );
+    throw error;
+  }
+}
+
+/**
+ * Checks if a request is allowed under the current rate limit
+ * without incrementing the counter
+ */
+export async function checkRateLimit({
+  maxRequests,
+  windowMs,
+  keyPrefix = "rate_limit",
+  maxRetries = 3,
+}: RateLimitConfig): Promise<RateLimitResult> {
+  const now = Date.now();
+  const windowStart =
+    Math.floor(now / windowMs) * windowMs;
+  const key = `${keyPrefix}:${windowStart}`;
+
+  try {
+    const currentCount = await redis.get(key);
+    const count = currentCount
+      ? parseInt(currentCount, 10)
+      : 0;
+
+    const allowed = count < maxRequests;
+    const remaining = Math.max(0, maxRequests - count);
     const resetTime = windowStart + windowMs;
 
-    const wait = async (
-      retryCount = 0,
-    ): Promise<void> => {
+    let retryCount = 0;
+
+    const retry = async (): Promise<boolean> => {
       if (!allowed) {
         const waitTime = resetTime - Date.now();
         if (waitTime > 0) {
@@ -172,33 +194,31 @@ export async function checkRateLimit(
         }
 
         // Check rate limit again after waiting
-        const retryResult = await checkRateLimit(
-          identifier,
-          {
-            maxRequests,
-            windowMs,
-            keyPrefix,
-            maxRetries,
-          },
-        );
+        const retryResult = await checkRateLimit({
+          maxRequests,
+          windowMs,
+          keyPrefix,
+          maxRetries,
+        });
 
         if (!retryResult.allowed) {
           if (retryCount >= maxRetries) {
-            throw new RateLimitExceededError(
-              `Rate limit exceeded after ${maxRetries} retries`,
-            );
+            return false;
           }
-          await retryResult.retry(retryCount + 1);
+          retryCount++;
+          return await retryResult.retry();
         }
+        return true;
       }
+      return true;
     };
 
     return {
       allowed,
       remaining,
       resetTime,
-      totalHits: currentCount,
-      retry: wait,
+      totalHits: count,
+      retry,
     };
   } catch (error) {
     console.error("Rate limit check failed:", error);
@@ -207,7 +227,7 @@ export async function checkRateLimit(
       allowed: true,
       remaining: maxRequests - 1,
       resetTime: windowStart + windowMs,
-      totalHits: 1,
+      totalHits: 0,
       retry: async () => {},
     };
   }
@@ -218,17 +238,31 @@ export async function checkRateLimit(
 
 The plan will be to use this function in our `/api/chat` route to check the rate limit before calling the LLM.
 
-For testing, we can set the `maxRequests` to 1, and the `windowMs` to 5 seconds.
+For testing, we can set the `maxRequests` to 1, and the `windowMs` to 20 seconds.
 
 ```ts
-const rateLimitCheck = await checkRateLimit("global", {
+const config: RateLimitConfig = {
   maxRequests: 1,
-  windowMs: 5_000,
-});
+  maxRetries: 3,
+  windowMs: 20_000,
+  keyPrefix: "global",
+};
+
+// Check the rate limit
+const rateLimitCheck = await checkRateLimit(config);
 
 if (!rateLimitCheck.allowed) {
   console.log("Rate limit exceeded, waiting...");
-  await rateLimitCheck.retry(3); // Retry 3 times before throwing an error
+  const isAllowed = await rateLimitCheck.retry();
+  // If the rate limit is still exceeded, return a 429
+  if (!isAllowed) {
+    return new Response("Rate limit exceeded", {
+      status: 429,
+    });
+  }
+
+  // Record the request
+  await recordRateLimit(config);
 }
 ```
 
