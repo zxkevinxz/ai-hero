@@ -1,3 +1,7 @@
+---
+id: lesson-pcelh
+---
+
 We've now built the structure of our loop, but we're not persisting the state of the system to the backend.
 
 We can see this because when we refresh the page, the AI messages are lost.

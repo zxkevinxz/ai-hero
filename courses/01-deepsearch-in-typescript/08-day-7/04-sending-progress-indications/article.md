@@ -129,7 +129,7 @@ We'll need some kind of components that can take the annotations and display the
 
 If you're feeling lazy, feel free to copy this component:
 
-```ts
+```tsx
 export const ReasoningSteps = ({
   annotations,
 }: {

@@ -1,3 +1,7 @@
+---
+id: lesson-e5et2
+---
+
 Currently, we are only passing the latest message to the loop. This means that if we ask a follow-up question, we lose all context on what came before it.
 
 <Video resourceId="messagehistorynotworking-fm8kmSydi.mp4" />
