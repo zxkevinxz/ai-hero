@@ -1,4 +1,8 @@
-Now that we're collapsing search and scrap into a single tool, it's time to reassess our scraper situation.
+---
+id: lesson-fz25m
+---
+
+Now that we're collapsing search and scrape into a single tool, it's time to reassess our scraper situation.
 
 We're currently searching and scraping in two separate steps. What if we used an API that allowed us to do those in a single pass?
 
@@ -22,6 +26,9 @@ const tvly = tavily({
 });
 const response = await tvly.search(
   "Who is Leo Messi?",
+  {
+    num: 5,
+  },
 );
 ```
 
