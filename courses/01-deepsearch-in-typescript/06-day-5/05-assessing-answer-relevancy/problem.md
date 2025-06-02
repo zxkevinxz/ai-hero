@@ -1,3 +1,7 @@
+---
+id: lesson-took1
+---
+
 Let's add another eval to our list. We're going to try to assess how relevant the answer is to the question.
 
 To do that, we're going to copy an example of an eval I found in the wild - in [Mastra's codebase](https://github.com/mastra-ai/mastra/blob/e2228f6925099e2e08dcbc0007e94d1930ff4f4e/packages/evals/src/metrics/llm/answer-relevancy/metricJudge.ts). [Mastra](https://mastra.ai/) is an open source TypeScript framework for building AI agents.

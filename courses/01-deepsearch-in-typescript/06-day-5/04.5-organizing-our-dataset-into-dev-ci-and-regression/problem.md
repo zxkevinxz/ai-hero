@@ -1,3 +1,7 @@
+---
+id: lesson-89dd1
+---
+
 In a previous exercise, we discussed the three different dataset sizes you need in order to run efficient evals:
 
 | Type       | Size   | Frequency          | Purpose                                                          |
