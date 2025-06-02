@@ -1,8 +1,14 @@
+---
+id: lesson-tbm19
+---
+
 At this point, we can gain a lot of value by optimizing the prompt we're passing to the LLM.
 
 How we do this will depend on what our goals are.
 
 ## Encourage Our Agent To Plan
+
+<Video resourceId="optimizingourpromptforplanning-WF3JMe5DC.mp4" />
 
 We want our application to handle complex multi-hop queries. We'll look at robust strategies for this in a later lesson, including task decomposition.
 
@@ -24,9 +30,9 @@ Few-Shot prompting, by contrast, provides examples of what kind of reasoning we 
 
 For more information, I strongly recommend checking out the [Prompt Report](https://www.aihero.dev/the-prompt-report), an extremely comprehensive overview of the current state of prompt engineering. Section 2.2.2 covers thought generation in depth, and you can get some great insights on how to improve your prompt.
 
-<!-- Video showing an improvement based on the prompt above -->
-
 ## Improving Information Sources
+
+<Video resourceId="optimizingsystempromptforinformationsources-IV243b8l.mp4" />
 
 The quality of our application's responses will depend on the quality of the information it receives.
 
@@ -41,8 +47,6 @@ For any information about football transfer news, prioritize sources from David 
 ```
 
 This extra level of detail in your instructions can really take your application to the next level - especially when you want to specialize it for a specific use case.
-
-<!-- Video showing an improvement based on the prompt above -->
 
 ## Styling The Output
 
@@ -104,8 +108,6 @@ Follow this format consistently throughout your response.
 ```
 
 Since Claude and most other models are already being prompted by a very detailed system prompt, it follows that it's pretty good at writing system prompts itself.
-
-<!-- Video showing an improvement based on the prompt above -->
 
 ## More Examples
 
