@@ -1,3 +1,7 @@
+---
+id: lesson-vrsxs
+---
+
 Before we deploy our application to production, we need to make sure that our users can't take advantage of us.
 
 We've integrated paid services into our app, and we need to make sure that users can't bankrupt us.

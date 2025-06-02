@@ -1,3 +1,7 @@
+---
+id: lesson-kcoi9
+---
+
 You may have noticed that our new chat button is not actually working.
 
 This is a surprisingly complicated problem to solve.

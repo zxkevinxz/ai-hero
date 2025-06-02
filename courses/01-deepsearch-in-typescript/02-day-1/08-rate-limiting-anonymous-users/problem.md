@@ -1,3 +1,7 @@
+---
+id: lesson-vc3fs
+---
+
 Rate limiting users who have logged in is pretty simple. You track the requests against their email address, and then limit them once they've hit the limit.
 
 But what about users who are not logged in?

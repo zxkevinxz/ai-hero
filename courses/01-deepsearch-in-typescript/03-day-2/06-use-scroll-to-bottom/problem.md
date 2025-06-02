@@ -1,3 +1,7 @@
+---
+id: lesson-qogar
+---
+
 One annoying thing you might have noticed about our UI is that we don't automatically scroll to the bottom of the chat when new messages stream in.
 
 This is a surprisingly difficult problem. And fortunately, there is a nice little library to help.
@@ -31,6 +35,14 @@ function ChatPage() {
   );
 }
 ```
+
+## Styling The Scrollbar
+
+Our current chat component has a bit of styling on the scrollbar.
+
+Annoyingly, the `use-stick-to-bottom` library doesn't provide any mechanism for passing a class name to the scrollbar.
+
+We can work around this by using a special Tailwind class that allows for styling direct descendants. The direct descendant is a div, so we can use the `[&>div]:my-tailwind-class` class to apply the styles.
 
 ## Steps To Complete
 

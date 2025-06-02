@@ -1,3 +1,7 @@
+---
+id: lesson-a467n
+---
+
 Our observability tool is doing a good job of monitoring our LLM. But it could also be helping us in terms of monitoring other parts of our system.
 
 I'm especially thinking about our database calls. The way our database behaves is a key part of our system and influences how the LLM behaves.

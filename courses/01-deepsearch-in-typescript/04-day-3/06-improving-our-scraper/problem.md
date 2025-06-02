@@ -1,3 +1,7 @@
+---
+id: lesson-d739v
+---
+
 Our scraper is still pretty naive. It looks at the HTML of the page, tries to find the main content, and then returns it.
 
 This is fine, but it's not very robust. There are several things it doesn't handle:
