@@ -1,3 +1,7 @@
+---
+id: lesson-j8lhh
+---
+
 Our application currently isn't very resilient to users refreshing the page.
 
 When they refresh the page during a stream, the stream is lost.
@@ -119,7 +123,7 @@ result.consumeStream();
 "use client";
 
 import { useEffect } from "react";
-import type { UIMessage } from "ai";
+import type { Message } from "ai";
 import type { UseChatHelpers } from "@ai-sdk/react";
 
 export type DataPart = {
@@ -128,23 +132,19 @@ export type DataPart = {
 };
 
 export interface UseAutoResumeParams {
-  autoResume: boolean;
-  initialMessages: UIMessage[];
+  initialMessages: Message[];
   experimental_resume: UseChatHelpers["experimental_resume"];
   data: UseChatHelpers["data"];
   setMessages: UseChatHelpers["setMessages"];
 }
 
 export function useAutoResume({
-  autoResume,
   initialMessages,
   experimental_resume,
   data,
   setMessages,
 }: UseAutoResumeParams) {
   useEffect(() => {
-    if (!autoResume) return;
-
     const mostRecentMessage = initialMessages.at(-1);
 
     if (mostRecentMessage?.role === "user") {
@@ -164,14 +164,29 @@ export function useAutoResume({
     if (dataPart.type === "append-message") {
       const message = JSON.parse(
         dataPart.message,
-      ) as UIMessage;
+      ) as Message;
       setMessages([...initialMessages, message]);
     }
   }, [data, initialMessages, setMessages]);
 }
 ```
 
+If you get errors about `experimental_resume` not being a function, make sure you're on the latest version of `@ai-sdk/react`, by updating it via `pnpm`.
+
+### `ChatPage`
+
 - Add the `useAutoResume` hook to our `ChatPage` component.
+- Pass an `id` parameters into `useChat` to identify the chat. This will be passed to `GET` `/api/chat` to resume the stream.
+
+```tsx
+import { useChat } from "@ai-sdk/react";
+
+// ...other code
+useChat({
+  id: chatIdFromProps,
+});
+// ...other code
+```
 
 ### `GET` `/api/chat`
 
