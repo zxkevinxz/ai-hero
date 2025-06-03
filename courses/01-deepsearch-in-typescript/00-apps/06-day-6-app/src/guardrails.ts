@@ -1,86 +1,21 @@
----
-id: lesson-qs77q
----
-
-One thing we haven't considered is that not all of our users will be helpful. If our app takes off, we're going to have a cohort of users who will attempt to abuse our system.
-
-We need to implement a pretty solid guard rail system that will refuse to answer certain questions.
-
-We're going to do this in a relatively simple way - by calling a LLM to classify the question.
-
-## The Model
-
-We're going to use a pretty cheap LLM for this. This is going to be a blocking operation that comes in before the rest of our loop. So it's got to be fast and it's got to be reliable.
-
-We should add this model into our models.ts as a separate one from our main model:
-
-```ts
-import { google } from "@ai-sdk/google";
-
-export const guardrailModel = google(
-  "gemini-2.0-flash-001",
-);
-```
-
-## The Setup
-
-We're going to pass the entire message history to this LLM. The LLM will then return one of two things:
-
-- `allow` - if the question is safe to answer
-- `refuse` - if the question is not safe to answer
-
-```mermaid
-flowchart
-  A[Message History] --> B[LLM]
-  B --> C[Allow]
-  B --> D[Refuse]
-```
-
-To handle this, we'll use `generateObject` from the AI SDK:
-
-```ts
 import { generateObject } from "ai";
 import { z } from "zod";
+import { guardrailModel } from "./model";
+import type { SystemContext } from "./system-context";
+import type { GuardrailResult } from "./types";
 
 export const checkIsSafe = async (
   ctx: SystemContext,
-) => {
-  const messageHistory: string =
-    ctx.getMessageHistory();
+): Promise<GuardrailResult> => {
+  const messageHistory: string = ctx.getMessageHistory();
 
   const { object } = await generateObject({
     model: guardrailModel,
     schema: z.object({
       classification: z.enum(["allow", "refuse"]),
-      reason: z
-        .string()
-        .optional()
-        .describe("If refused, explain why."),
+      reason: z.string().optional().describe("If refused, explain why."),
     }),
-    system: "", // TODO: Add the system prompt
-    prompt: messageHistory,
-  });
-
-  return object;
-};
-```
-
-## The Prompt
-
-Here's a prompt you can use that I iterated on with Claude 4 Sonnet.
-
-My initial question was:
-
-```md
-Give me an example system prompt that you would pass to an LLM to calculate whether it should refuse to answer a question.
-
-The reason I'm asking is that I'm building an app for a DeepSearch implementation. Users can potentially ask any question. It's a pretty wide scope. But we do want to implement some basic guardrails so that people don't use the application for nefarious means.
-```
-
-After a few iterations, the resulting prompt looked like this:
-
-```md
-You are a content safety classifier for a DeepSearch application. Your job is to analyze user queries and determine if they should be processed or refused based on safety guidelines.
+    system: `You are a content safety classifier for a DeepSearch application. Your job is to analyze user queries and determine if they should be processed or refused based on safety guidelines.
 
 You will receive the complete message history in XML format:
 
@@ -94,8 +29,8 @@ Analyze the entire conversation context, including how the current query relates
 
 For each conversation history provided, analyze the latest user message in context and respond with exactly one of these classifications:
 
-- `allow`: Query is safe to process
-- `refuse`: Query violates safety guidelines
+- **allow**: Query is safe to process
+- **refuse**: Query violates safety guidelines
 
 Consider conversation context including:
 
@@ -104,7 +39,7 @@ Consider conversation context including:
 - Multi-turn attempts to extract dangerous information
 - Context that makes seemingly innocent requests problematic
 
-## Safety Guidelines - `refuse` if the query seeks:
+## Safety Guidelines - REFUSE if the query seeks:
 
 ### Illegal Activities
 
@@ -137,7 +72,7 @@ Consider conversation context including:
 - Non-consensual intimate content
 - Human trafficking information
 
-## Edge Cases - Use refuse for:
+## Edge Cases - Use REFUSE for:
 
 - Legitimate research questions that could potentially be misused
 - Educational queries that need context boundaries but lack proper safeguards
@@ -192,15 +127,9 @@ Respond with valid JSON in this exact format:
 }
 
 Remember: When in doubt, err on the side of caution. Your goal is protecting users while maintaining utility for legitimate research and information needs.
-```
+`,
+    prompt: messageHistory,
+  });
 
-It's extremely detailed and provides multiple examples. You may want to take a second pass to tailor the examples closer to the types of questions you expect your users to ask.
-
-## Steps To Complete
-
-- Find the existing place we're running the agent loop
-- Find our existing model definitions
-- Add a new model definition for the guardrail model
-- Add a new function to check if a question is safe
-- Add a new function to the agent loop that checks if a question is safe
-- Run the app to see if it works
+  return object;
+};

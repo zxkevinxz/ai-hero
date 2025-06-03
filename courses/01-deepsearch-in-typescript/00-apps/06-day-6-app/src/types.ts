@@ -16,3 +16,8 @@ export type OurMessageAnnotation =
       type: "SOURCES";
       sources: Source[];
     };
+
+export type GuardrailResult = {
+  classification: "allow" | "refuse";
+  reason?: string;
+};

@@ -8,6 +8,7 @@ import { answerQuestion } from "./answer-question";
 import type { OurMessageAnnotation } from "./types";
 import { summarizeURL } from "./summarize-url";
 import { queryRewriter } from "./query-rewriter";
+import { checkIsSafe } from "./guardrails";
 
 export async function runAgentLoop(
   messages: Message[],
@@ -19,6 +20,20 @@ export async function runAgentLoop(
 ): Promise<StreamTextResult<{}, string>> {
   // A persistent container for the state of our system
   const ctx = new SystemContext(messages);
+
+  // Guardrail check before entering the main loop
+  const guardrailResult = await checkIsSafe(ctx);
+  if (guardrailResult.classification === "refuse") {
+    // Return a refusal message as a streamText result
+    return streamText({
+      model,
+      system:
+        "You are a content safety guardrail. Refuse to answer unsafe questions.",
+      prompt:
+        guardrailResult.reason || "Sorry, I can't help with that request.",
+      onFinish: opts.onFinish,
+    });
+  }
 
   // A loop that continues until we have an answer
   // or we've taken 10 actions
