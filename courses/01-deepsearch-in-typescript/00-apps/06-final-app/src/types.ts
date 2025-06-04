@@ -1,4 +1,4 @@
-import type { Action } from "./get-next-action";
+import type { Action } from "./get-next-action.ts";
 
 type Source = {
   title: string;

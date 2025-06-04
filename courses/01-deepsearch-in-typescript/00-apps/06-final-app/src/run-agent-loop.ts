@@ -1,14 +1,14 @@
-import { SystemContext } from "./system-context";
-import { getNextAction } from "./get-next-action";
-import { searchSerper } from "./serper";
-import { bulkCrawlWebsites } from "./server/scraper";
+import { SystemContext } from "./system-context.ts";
+import { getNextAction } from "./get-next-action.ts";
+import { searchSerper } from "./serper.ts";
+import { bulkCrawlWebsites } from "./server/scraper.ts";
 import { streamText, type StreamTextResult, type Message } from "ai";
 import { model } from "~/model";
-import { answerQuestion } from "./answer-question";
-import type { OurMessageAnnotation } from "./types";
-import { summarizeURL } from "./summarize-url";
-import { queryRewriter } from "./query-rewriter";
-import { checkIsSafe } from "./guardrails";
+import { answerQuestion } from "./answer-question.ts";
+import type { OurMessageAnnotation } from "./types.ts";
+import { summarizeURL } from "./summarize-url.ts";
+import { queryRewriter } from "./query-rewriter.ts";
+import { checkIsSafe } from "./guardrails.ts";
 
 export async function runAgentLoop(
   messages: Message[],

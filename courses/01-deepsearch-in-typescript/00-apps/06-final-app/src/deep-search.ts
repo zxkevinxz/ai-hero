@@ -1,6 +1,6 @@
 import { streamText, type Message, type StreamTextResult } from "ai";
-import { runAgentLoop } from "./run-agent-loop";
-import type { OurMessageAnnotation } from "./types";
+import { runAgentLoop } from "./run-agent-loop.ts";
+import type { OurMessageAnnotation } from "./types.ts";
 
 export const streamFromDeepSearch = async (opts: {
   messages: Message[];

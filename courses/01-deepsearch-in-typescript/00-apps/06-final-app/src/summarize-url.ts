@@ -1,7 +1,7 @@
 import { generateText } from "ai";
 import type { Message } from "ai";
-import { summarizationModel } from "./model";
-import { cacheWithRedis } from "./server/redis/redis";
+import { summarizationModel } from "./model.ts";
+import { cacheWithRedis } from "./server/redis/redis.ts";
 
 type SummarizeURLArgs = {
   conversation: string;

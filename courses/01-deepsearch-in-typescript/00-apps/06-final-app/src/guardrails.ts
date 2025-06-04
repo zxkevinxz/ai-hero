@@ -1,8 +1,8 @@
 import { generateObject } from "ai";
 import { z } from "zod";
-import { guardrailModel } from "./model";
-import type { SystemContext } from "./system-context";
-import type { GuardrailResult } from "./types";
+import { guardrailModel } from "./model.ts";
+import type { SystemContext } from "./system-context.ts";
+import type { GuardrailResult } from "./types.ts";
 
 export const checkIsSafe = async (
   ctx: SystemContext,

@@ -1,5 +1,5 @@
 import { cacheWithRedis } from "~/server/redis/redis";
-import { env } from "./env";
+import { env } from "./env.js";
 
 export declare namespace SerperTool {
   export type SearchInput = {

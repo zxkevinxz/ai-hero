@@ -1,6 +1,6 @@
 import { streamText, type StreamTextResult } from "ai";
 import { model } from "~/model";
-import { SystemContext } from "./system-context";
+import { SystemContext } from "./system-context.ts";
 
 export function answerQuestion(
   ctx: SystemContext,
