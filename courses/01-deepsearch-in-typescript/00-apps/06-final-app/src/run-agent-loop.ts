@@ -118,6 +118,7 @@ export async function runAgentLoop(
             },
             query,
             langfuseTraceId: opts.langfuseTraceId,
+            ctx,
           });
 
           return {
@@ -157,6 +158,18 @@ export async function runAgentLoop(
         type: "NEW_ACTION",
         action: nextAction,
       });
+      // Send token usage annotation
+      const usages = ctx.getUsages();
+      if (usages.length > 0) {
+        const totalTokens = usages.reduce(
+          (sum, u) => sum + (u.totalTokens || 0),
+          0,
+        );
+        opts.writeMessageAnnotation({
+          type: "USAGE",
+          totalTokens,
+        });
+      }
     }
 
     if (nextAction.type === "answer") {

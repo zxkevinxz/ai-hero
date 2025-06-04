@@ -178,9 +178,15 @@ const ReasoningSteps = ({
                           </div>
                         )}
                       </>
-                    ) : (
-                      <Sources sources={annotation.sources} />
-                    )}
+                    ) : annotation.type === "SOURCES" ? (
+                      <Sources
+                        sources={
+                          annotation.type === "SOURCES"
+                            ? annotation.sources
+                            : []
+                        }
+                      />
+                    ) : null}
                   </div>
                 )}
               </div>
@@ -200,6 +206,11 @@ export const ChatMessage = ({
 }: ChatMessageProps) => {
   const isAI = role === "assistant";
 
+  // Find the latest USAGE annotation (if any)
+  const usageAnnotation = isAI
+    ? annotations.findLast((a) => a.type === "USAGE")
+    : undefined;
+
   return (
     <div className="mb-6">
       <div
@@ -212,6 +223,12 @@ export const ChatMessage = ({
         </p>
 
         {isAI && <ReasoningSteps annotations={annotations} />}
+
+        {isAI && usageAnnotation && (
+          <div className="mb-2 text-xs text-gray-400">
+            Tokens used: {usageAnnotation.totalTokens}
+          </div>
+        )}
 
         <div className="prose prose-invert max-w-none">
           {parts.map((part, index) => {

@@ -75,5 +75,7 @@ ${context.getSearchHistory()}
       : undefined,
   });
 
+  context.reportUsage("get-next-action", result.usage);
+
   return result.object;
 };

@@ -12,7 +12,7 @@ export function answerQuestion(
 ): StreamTextResult<{}, string> {
   const { isFinal = false, langfuseTraceId, onFinish } = opts;
 
-  return streamText({
+  const result = streamText({
     model,
     system: `You are a helpful AI assistant that answers questions based on the information gathered from web searches and summarized content.
 
@@ -41,4 +41,10 @@ ${ctx.getSearchHistory()}`,
       : undefined,
     onFinish,
   });
+
+  result.usage.then((usage) => {
+    if (usage) ctx.reportUsage("answer-question", usage);
+  });
+
+  return result;
 }

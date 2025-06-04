@@ -66,5 +66,9 @@ ${context.getLastFeedback() ? `\nLast feedback from evaluation:\n${context.getLa
       : undefined,
   });
 
+  if (result.usage) {
+    context.reportUsage("query-rewriter", result.usage);
+  }
+
   return result.object;
 };

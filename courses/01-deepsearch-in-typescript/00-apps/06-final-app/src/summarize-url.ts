@@ -13,6 +13,7 @@ type SummarizeURLArgs = {
   };
   query: string;
   langfuseTraceId?: string;
+  ctx?: import("./system-context").SystemContext;
 };
 
 export const summarizeURL = cacheWithRedis(
@@ -57,7 +58,7 @@ Important guidelines:
 Critical Reminder: If content lacks a specific aspect of the research topic, clearly state that in the synthesis, and you should NEVER make up information and NEVER rely on external knowledge.
 `;
 
-    const { text } = await generateText({
+    const { text, usage } = await generateText({
       model: summarizationModel,
       prompt: prompt,
       experimental_telemetry: langfuseTraceId
@@ -72,6 +73,10 @@ Critical Reminder: If content lacks a specific aspect of the research topic, cle
           }
         : undefined,
     });
+
+    if (opts.ctx && usage) {
+      opts.ctx.reportUsage("summarize-url", usage);
+    }
 
     return text;
   },

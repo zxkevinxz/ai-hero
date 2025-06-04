@@ -15,6 +15,10 @@ export type OurMessageAnnotation =
   | {
       type: "SOURCES";
       sources: Source[];
+    }
+  | {
+      type: "USAGE";
+      totalTokens: number;
     };
 
 export type GuardrailResult = {

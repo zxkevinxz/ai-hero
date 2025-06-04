@@ -16,6 +16,13 @@ type SearchHistoryEntry = {
 const toQueryResult = (query: SearchResult) =>
   [`### ${query.date} - ${query.title}`, query.url, query.snippet].join("\n\n");
 
+export type TokenUsage = {
+  descriptor: string;
+  promptTokens: number;
+  completionTokens: number;
+  totalTokens: number;
+};
+
 export class SystemContext {
   /**
    * The current step in the loop
@@ -36,6 +43,8 @@ export class SystemContext {
    * The most recent feedback from getNextAction
    */
   private lastFeedback: string | null = null;
+
+  private usages: TokenUsage[] = [];
 
   constructor(messages: Message[]) {
     this.messages = messages;
@@ -88,5 +97,25 @@ export class SystemContext {
         ].join("\n\n"),
       )
       .join("\n\n");
+  }
+
+  reportUsage(
+    descriptor: string,
+    usage: {
+      promptTokens: number;
+      completionTokens: number;
+      totalTokens: number;
+    },
+  ) {
+    this.usages.push({
+      descriptor,
+      promptTokens: usage.promptTokens,
+      completionTokens: usage.completionTokens,
+      totalTokens: usage.totalTokens,
+    });
+  }
+
+  getUsages(): TokenUsage[] {
+    return this.usages;
   }
 }
