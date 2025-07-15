@@ -1,8 +1,35 @@
 diff --git a/courses/01-deepsearch-in-typescript/00-apps/05-day-8-app/src/app/api/chat/route.ts b/courses/01-deepsearch-in-typescript/00-apps/05-day-8-app/src/app/api/chat/route.ts
-index 094a9bb..152437a 100644
+index 094a9bb..bdb7f51 100644
 --- a/courses/01-deepsearch-in-typescript/00-apps/05-day-8-app/src/app/api/chat/route.ts
 +++ b/courses/01-deepsearch-in-typescript/00-apps/05-day-8-app/src/app/api/chat/route.ts
-@@ -115,14 +115,8 @@ export async function POST(request: Request) {
+@@ -11,7 +11,6 @@ import { chats } from "~/server/db/schema";
+ import { Langfuse } from "langfuse";
+ import { env } from "~/env";
+ import { streamFromDeepSearch } from "~/deep-search";
+-import type { OurMessageAnnotation } from "~/types";
+ import { textPartsToContent } from "~/utils";
+ 
+ const langfuse = new Langfuse({
+@@ -84,8 +83,6 @@ export async function POST(request: Request) {
+         });
+       }
+ 
+-      const annotations: OurMessageAnnotation[] = [];
+-
+       const result = await streamFromDeepSearch({
+         messages,
+         onFinish: async ({ response }) => {
+@@ -101,9 +98,6 @@ export async function POST(request: Request) {
+             return;
+           }
+ 
+-          // Add the annotations to the last message
+-          lastMessage.annotations = annotations;
+-
+           // Save the complete chat history
+           await upsertChat({
+             userId: session.user.id,
+@@ -115,14 +109,8 @@ export async function POST(request: Request) {
            await langfuse.flushAsync();
          },
          langfuseTraceId: trace.id,
@@ -20,13 +47,14 @@ index 094a9bb..152437a 100644
        });
  
 diff --git a/courses/01-deepsearch-in-typescript/00-apps/05-day-8-app/src/app/chat.tsx b/courses/01-deepsearch-in-typescript/00-apps/05-day-8-app/src/app/chat.tsx
-index 958589f..3f9eb1f 100644
+index 958589f..f798010 100644
 --- a/courses/01-deepsearch-in-typescript/00-apps/05-day-8-app/src/app/chat.tsx
 +++ b/courses/01-deepsearch-in-typescript/00-apps/05-day-8-app/src/app/chat.tsx
-@@ -8,13 +8,13 @@ import { ChatMessage } from "~/components/chat-message";
+@@ -7,14 +7,13 @@ import { useRouter } from "next/navigation";
+ import { ChatMessage } from "~/components/chat-message";
  import { SignInModal } from "~/components/sign-in-modal";
  import { isNewChatCreated } from "~/utils";
- import type { UIMessage } from "ai";
+-import type { UIMessage } from "ai";
 -import type { OurMessageAnnotation } from "~/types";
 +import type { OurMessage } from "~/types";
  
@@ -39,7 +67,16 @@ index 958589f..3f9eb1f 100644
  }
  
  export const ChatPage = ({
-@@ -78,9 +78,6 @@ export const ChatPage = ({
+@@ -31,7 +30,7 @@ export const ChatPage = ({
+     status,
+     // TODO: fix data property
+     data,
+-  } = useChat({
++  } = useChat<OurMessage>({
+     // TODO: fix body property
+     body: {
+       chatId,
+@@ -78,9 +77,6 @@ export const ChatPage = ({
                  parts={message.parts ?? []}
                  role={message.role}
                  userName={userName}
@@ -49,6 +86,26 @@ index 958589f..3f9eb1f 100644
                />
              );
            })}
+diff --git a/courses/01-deepsearch-in-typescript/00-apps/05-day-8-app/src/app/page.tsx b/courses/01-deepsearch-in-typescript/00-apps/05-day-8-app/src/app/page.tsx
+index 7996efc..d8bc705 100644
+--- a/courses/01-deepsearch-in-typescript/00-apps/05-day-8-app/src/app/page.tsx
++++ b/courses/01-deepsearch-in-typescript/00-apps/05-day-8-app/src/app/page.tsx
+@@ -5,7 +5,6 @@ import { ChatPage } from "./chat.tsx";
+ import { AuthButton } from "../components/auth-button.tsx";
+ import { getChats, getChat } from "~/server/db/queries";
+ import type { UIMessage } from "ai";
+-import type { OurMessageAnnotation } from "~/types.ts";
+ 
+ export default async function HomePage({
+   searchParams,
+@@ -36,7 +35,6 @@ export default async function HomePage({
+       role: msg.role as "user" | "assistant",
+       parts: msg.content as UIMessage["parts"],
+       content: "",
+-      annotations: (msg.annotations ?? []) as OurMessageAnnotation[],
+     })) ?? [];
+ 
+   return (
 diff --git a/courses/01-deepsearch-in-typescript/00-apps/05-day-8-app/src/components/chat-message.tsx b/courses/01-deepsearch-in-typescript/00-apps/05-day-8-app/src/components/chat-message.tsx
 index d219c31..e6bc893 100644
 --- a/courses/01-deepsearch-in-typescript/00-apps/05-day-8-app/src/components/chat-message.tsx
@@ -155,21 +212,26 @@ index d219c31..e6bc893 100644
          <div className="prose prose-invert max-w-none">
            {parts.map((part, index) => {
 diff --git a/courses/01-deepsearch-in-typescript/00-apps/05-day-8-app/src/deep-search.ts b/courses/01-deepsearch-in-typescript/00-apps/05-day-8-app/src/deep-search.ts
-index 875cd23..08b1140 100644
+index 875cd23..99c9e68 100644
 --- a/courses/01-deepsearch-in-typescript/00-apps/05-day-8-app/src/deep-search.ts
 +++ b/courses/01-deepsearch-in-typescript/00-apps/05-day-8-app/src/deep-search.ts
-@@ -1,16 +1,16 @@
- import { streamText, type UIMessage, type StreamTextResult } from "ai";
+@@ -1,16 +1,20 @@
+-import { streamText, type UIMessage, type StreamTextResult } from "ai";
++import {
++  streamText,
++  type StreamTextResult,
++  type UIMessage,
++  type UIMessageStreamWriter,
++} from "ai";
  import { runAgentLoop } from "./run-agent-loop";
 -import type { OurMessageAnnotation } from "./types";
-+import type { OurMessage } from "./types";
  
  export const streamFromDeepSearch = async (opts: {
    messages: UIMessage[];
    onFinish: Parameters<typeof streamText>[0]["onFinish"];
    langfuseTraceId?: string;
 -  writeMessageAnnotation?: (annotation: OurMessageAnnotation) => void;
-+  writeMessagePart?: (part: OurMessage["parts"][number]) => void;
++  writeMessagePart?: UIMessageStreamWriter["write"];
  }): Promise<StreamTextResult<{}, string>> => {
    return runAgentLoop(opts.messages, {
      langfuseTraceId: opts.langfuseTraceId,
@@ -179,11 +241,20 @@ index 875cd23..08b1140 100644
    });
  };
 diff --git a/courses/01-deepsearch-in-typescript/00-apps/05-day-8-app/src/run-agent-loop.ts b/courses/01-deepsearch-in-typescript/00-apps/05-day-8-app/src/run-agent-loop.ts
-index 43ca5d9..9f808da 100644
+index 43ca5d9..5867f37 100644
 --- a/courses/01-deepsearch-in-typescript/00-apps/05-day-8-app/src/run-agent-loop.ts
 +++ b/courses/01-deepsearch-in-typescript/00-apps/05-day-8-app/src/run-agent-loop.ts
-@@ -5,13 +5,13 @@ import { bulkCrawlWebsites } from "./server/scraper";
- import { streamText, type StreamTextResult, type UIMessage } from "ai";
+@@ -2,16 +2,21 @@ import { SystemContext } from "./system-context";
+ import { getNextAction } from "./get-next-action";
+ import { searchSerper } from "./serper";
+ import { bulkCrawlWebsites } from "./server/scraper";
+-import { streamText, type StreamTextResult, type UIMessage } from "ai";
++import {
++  streamText,
++  type StreamTextResult,
++  type UIMessage,
++  type UIMessageStreamWriter,
++} from "ai";
  import { model } from "~/model";
  import { answerQuestion } from "./answer-question";
 -import type { OurMessageAnnotation } from "./types";
@@ -194,11 +265,11 @@ index 43ca5d9..9f808da 100644
    opts: {
      langfuseTraceId?: string;
 -    writeMessageAnnotation?: (annotation: OurMessageAnnotation) => void;
-+    writeMessagePart?: (part: OurMessage["parts"][number]) => void;
++    writeMessagePart?: UIMessageStreamWriter["write"];
      onFinish: Parameters<typeof streamText>[0]["onFinish"];
    },
  ): Promise<StreamTextResult<{}, string>> {
-@@ -24,15 +24,11 @@ export async function runAgentLoop(
+@@ -24,15 +29,11 @@ export async function runAgentLoop(
      // We choose the next action based on the state of our system
      const nextAction = await getNextAction(ctx, opts);
  
@@ -219,6 +290,30 @@ index 43ca5d9..9f808da 100644
        });
      }
  
+diff --git a/courses/01-deepsearch-in-typescript/00-apps/05-day-8-app/src/server/db/queries.ts b/courses/01-deepsearch-in-typescript/00-apps/05-day-8-app/src/server/db/queries.ts
+index 969fb5a..6064b36 100644
+--- a/courses/01-deepsearch-in-typescript/00-apps/05-day-8-app/src/server/db/queries.ts
++++ b/courses/01-deepsearch-in-typescript/00-apps/05-day-8-app/src/server/db/queries.ts
+@@ -39,7 +39,6 @@ export const upsertChat = async (opts: {
+       chatId,
+       role: message.role,
+       parts: message.parts,
+-      annotations: message.annotations,
+       order: index,
+     })),
+   );
+diff --git a/courses/01-deepsearch-in-typescript/00-apps/05-day-8-app/src/server/db/schema.ts b/courses/01-deepsearch-in-typescript/00-apps/05-day-8-app/src/server/db/schema.ts
+index 7cb82c5..03ca716 100644
+--- a/courses/01-deepsearch-in-typescript/00-apps/05-day-8-app/src/server/db/schema.ts
++++ b/courses/01-deepsearch-in-typescript/00-apps/05-day-8-app/src/server/db/schema.ts
+@@ -150,7 +150,6 @@ export const messages = createTable("message", {
+     .references(() => chats.id),
+   role: varchar("role", { length: 255 }).notNull(),
+   parts: json("parts").notNull(),
+-  annotations: json("annotations"),
+   order: integer("order").notNull(),
+   createdAt: timestamp("created_at", {
+     mode: "date",
 diff --git a/courses/01-deepsearch-in-typescript/00-apps/05-day-8-app/src/types.ts b/courses/01-deepsearch-in-typescript/00-apps/05-day-8-app/src/types.ts
 index 9aaa41d..e17befa 100644
 --- a/courses/01-deepsearch-in-typescript/00-apps/05-day-8-app/src/types.ts
