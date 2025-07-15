@@ -54,7 +54,7 @@ index f20834c..1b90ffe 100644
          },
        });
 diff --git a/courses/01-deepsearch-in-typescript/00-apps/05-day-8-app/src/system-context.ts b/courses/01-deepsearch-in-typescript/00-apps/05-day-8-app/src/system-context.ts
-index fc95d4a..9c743ec 100644
+index 5750147..9c743ec 100644
 --- a/courses/01-deepsearch-in-typescript/00-apps/05-day-8-app/src/system-context.ts
 +++ b/courses/01-deepsearch-in-typescript/00-apps/05-day-8-app/src/system-context.ts
 @@ -1,4 +1,5 @@
@@ -63,24 +63,15 @@ index fc95d4a..9c743ec 100644
  
  type QueryResultSearchResult = {
    date: string;
-@@ -17,17 +18,6 @@ type ScrapeResult = {
-   result: string;
- };
- 
--const textPartsToContent = (parts: UIMessage["parts"]) => {
--  return parts
--    .map((part) => {
--      if (part.type === "text") {
--        return part.text;
--      }
--      return "";
--    })
--    .join("");
--};
--
- const toQueryResult = (query: QueryResultSearchResult) =>
-   [`### ${query.date} - ${query.title}`, query.url, query.snippet].join("\n\n");
- 
+@@ -49,7 +50,7 @@ export class SystemContext {
+     return this.messages
+       .map((message) => {
+         const role = message.role === "user" ? "User" : "Assistant";
+-        return `<${role}>${message.content}</${role}>`;
++        return `<${role}>${textPartsToContent(message.parts)}</${role}>`;
+       })
+       .join("\n\n");
+   }
 diff --git a/courses/01-deepsearch-in-typescript/00-apps/05-day-8-app/src/utils.ts b/courses/01-deepsearch-in-typescript/00-apps/05-day-8-app/src/utils.ts
 index ab604f1..29ce4a5 100644
 --- a/courses/01-deepsearch-in-typescript/00-apps/05-day-8-app/src/utils.ts
