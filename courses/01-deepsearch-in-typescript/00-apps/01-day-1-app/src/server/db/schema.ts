@@ -37,8 +37,34 @@ export const users = createTable("user", {
   isAdmin: boolean("is_admin").notNull().default(false),
 });
 
+export const requestLogs = createTable(
+  "request_log",
+  {
+    id: serial("id").primaryKey(),
+    userId: varchar("user_id", { length: 255 })
+      .notNull()
+      .references(() => users.id),
+    requestedAt: timestamp("requested_at", {
+      mode: "date",
+      withTimezone: true,
+    })
+      .notNull()
+      .default(sql`CURRENT_TIMESTAMP`),
+    endpoint: varchar("endpoint", { length: 255 }).notNull(),
+  },
+  (requestLog) => ({
+    userIdIdx: index("request_log_user_id_idx").on(requestLog.userId),
+    dateIdx: index("request_log_date_idx").on(requestLog.requestedAt),
+  }),
+);
+
 export const usersRelations = relations(users, ({ many }) => ({
   accounts: many(accounts),
+  requestLogs: many(requestLogs),
+}));
+
+export const requestLogsRelations = relations(requestLogs, ({ one }) => ({
+  user: one(users, { fields: [requestLogs.userId], references: [users.id] }),
 }));
 
 export const accounts = createTable(
@@ -126,4 +152,7 @@ export declare namespace DB {
   export type NewVerificationToken = InferInsertModel<
     typeof verificationTokens
   >;
+
+  export type RequestLog = InferSelectModel<typeof requestLogs>;
+  export type NewRequestLog = InferInsertModel<typeof requestLogs>;
 }
