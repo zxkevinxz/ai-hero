@@ -1,7 +1,10 @@
 import ReactMarkdown, { type Components } from "react-markdown";
+import type { Message } from "ai";
+
+export type MessagePart = NonNullable<Message["parts"]>[number];
 
 interface ChatMessageProps {
-  text: string;
+  parts: MessagePart[] | undefined;
   role: string;
   userName: string;
 }
@@ -38,7 +41,53 @@ const Markdown = ({ children }: { children: string }) => {
   return <ReactMarkdown components={components}>{children}</ReactMarkdown>;
 };
 
-export const ChatMessage = ({ text, role, userName }: ChatMessageProps) => {
+const ToolInvocation = ({ part }: { part: MessagePart }) => {
+  if (part.type !== "tool-invocation") return null;
+
+  const { toolInvocation } = part;
+
+  return (
+    <div className="mb-4 rounded-lg border border-gray-600 bg-gray-700 p-3">
+      <div className="mb-2">
+        <span className="text-xs font-semibold text-blue-400">
+          🔧 {toolInvocation.toolName}
+        </span>
+        <span className="ml-2 text-xs text-gray-400">
+          ({toolInvocation.state})
+        </span>
+      </div>
+
+      {toolInvocation.state === "call" ||
+      toolInvocation.state === "partial-call" ? (
+        <div>
+          <div className="mb-1 text-xs text-gray-500">Arguments:</div>
+          <pre className="overflow-x-auto rounded bg-gray-800 p-2 text-xs">
+            {JSON.stringify(toolInvocation.args, null, 2)}
+          </pre>
+        </div>
+      ) : toolInvocation.state === "result" ? (
+        <div>
+          <div className="mb-1 text-xs text-gray-500">Arguments:</div>
+          <pre className="mb-2 overflow-x-auto rounded bg-gray-800 p-2 text-xs">
+            {JSON.stringify(toolInvocation.args, null, 2)}
+          </pre>
+          <div className="mb-1 text-xs text-gray-500">Result:</div>
+          <pre className="overflow-x-auto rounded bg-gray-800 p-2 text-xs">
+            {JSON.stringify(toolInvocation.result, null, 2)}
+          </pre>
+        </div>
+      ) : null}
+    </div>
+  );
+};
+
+const TextPart = ({ part }: { part: MessagePart }) => {
+  if (part.type !== "text") return null;
+
+  return <Markdown>{part.text}</Markdown>;
+};
+
+export const ChatMessage = ({ parts, role, userName }: ChatMessageProps) => {
   const isAI = role === "assistant";
 
   return (
@@ -53,7 +102,16 @@ export const ChatMessage = ({ text, role, userName }: ChatMessageProps) => {
         </p>
 
         <div className="prose prose-invert max-w-none">
-          <Markdown>{text}</Markdown>
+          {parts?.map((part, index) => {
+            if (part.type === "text") {
+              return <TextPart key={index} part={part} />;
+            } else if (part.type === "tool-invocation") {
+              return <ToolInvocation key={index} part={part} />;
+            }
+
+            // For other part types we don't handle yet, just return null
+            return null;
+          })}
         </div>
       </div>
     </div>
